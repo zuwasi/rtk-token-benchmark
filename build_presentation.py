@@ -131,6 +131,42 @@ def plugin_excerpt():
     return code, src.count("\n") + 1
 
 
+def load_agents():
+    files = {"amp": "amp/amp_results.json", "claude": "agents/claude_results.json", "droid": "agents/droid_results.json"}
+    info = {
+        "amp": ("Amp", "Custom plugin (tool.call → modify)", "Cuts each result at 50K chars", None),
+        "claude": ("Claude Code", "Official PreToolUse hook, Bash tool", "Saves large outputs to a file, 2 KB preview", "cost_usd"),
+        "droid": ("Droid", "Official PreToolUse hook, Execute tool", "Keeps ~10K chars, rest to a log file", "credits"),
+    }
+    out = []
+    for key, rel in files.items():
+        path = os.path.join(BASE, rel)
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf-8") as f:
+            runs = json.load(f)["runs"]
+
+        def mean(side, fn):
+            return statistics.mean(fn(r) for r in runs if r["side"] == side)
+
+        def delta(fn):
+            return round(100 * (mean("on", fn) / mean("off", fn) - 1), 1)
+
+        name, hook, cap, cost_key = info[key]
+        row = {"key": key, "name": name, "hook": hook, "cap": cap,
+               "model": next((r.get("model") for r in runs if r.get("model")), None),
+               "n": len([r for r in runs if r["side"] == "on"]),
+               "chars": delta(lambda r: r["tool_result_chars"]),
+               "ctx": delta(lambda r: r["context_tokens"]),
+               "offOk": [r["correct"] for r in runs if r["side"] == "off"],
+               "onOk": [r["correct"] for r in runs if r["side"] == "on"],
+               "cost": delta(lambda r: r[cost_key]) if cost_key else None,
+               "costUnit": {"cost_usd": "USD", "credits": "credits"}.get(cost_key)}
+        out.append(row)
+    return out or None
+
+
+DATA["agents"] = load_agents()
 DATA["amp"] = load_amp()
 DATA["ampPluginCode"], DATA["ampPluginLines"] = plugin_excerpt()
 DATA["ampVersion"] = "0.0.1791950451"
@@ -300,7 +336,7 @@ frame("Background", "What rtk does", `
       <tr><td>"60–90% fewer tokens on common dev commands"</td><td>12 commands, real tokenizers for 5 model families</td><td class="n">6–12</td></tr>
       <tr><td>"&lt;10 ms overhead"</td><td>Median wall-clock time, 3–5 runs per side</td><td class="n">13</td></tr>
       <tr><td>Exit codes and failures are preserved</td><td>Compared exit codes and failure lists side by side</td><td class="n">9, 11</td></tr>
-      <tr><td>Supports your agent</td><td>No Amp support shipped; built and tested an Amp plugin</td><td class="n">16</td></tr>
+      <tr><td>Supports your agent</td><td>Official hooks in Claude Code and Droid; built an Amp plugin; A/B in all three</td><td class="n">16–18</td></tr>
     </table>
   </div>
 </div>`);
@@ -614,6 +650,37 @@ if (D.amp) {
 </div>`, "amp/amp_results.json");
 }
 
+// agents compared
+if (D.agents && D.agents.length > 1) {
+  const G = D.agents, sgn = v => (v > 0 ? "+" : "") + v + "%";
+  const cls = (v, goodNeg) => (v < 0) === goodNeg ? "g" : "r";
+  const ok = a => a.join(" · ");
+  frame("Agents compared", "Inside an agent, rtk's main win is accuracy, not tokens", `
+<div style="display:flex;flex-direction:column;gap:20px;height:100%">
+  <div class="card" style="padding:12px 20px"><h4 style="margin-bottom:6px">Table 4 · Same task and ground truth in each agent, ${G[0].n} threads per side, rtk on vs off</h4><table class="tight">
+    <tr><th>Agent</th><th>rtk integration</th><th>Agent's own limit on tool output</th><th class="n">Tool output</th><th class="n">Context tokens</th><th class="n">Correct, off → on</th><th class="n">Cost</th></tr>
+    ${G.map(a => `<tr><td><b>${a.name}</b>${a.model ? `<div class="mono" style="font-size:13px;color:var(--faint)">${a.model}</div>` : ""}</td>
+      <td style="font-size:16px">${a.hook}</td><td style="font-size:16px">${a.cap}</td>
+      <td class="n"><b class="${cls(a.chars, true)}">${sgn(a.chars)}</b></td><td class="n"><b class="${cls(a.ctx, true)}">${sgn(a.ctx)}</b></td>
+      <td class="n">${ok(a.offOk)} → <b class="g">${ok(a.onOk)}</b></td>
+      <td class="n">${a.cost === null ? "n/a" : `<b class="${cls(a.cost, true)}">${sgn(a.cost)}</b> <span class="small" style="font-size:13px">${a.costUnit}</span>`}</td></tr>`).join("")}
+  </table></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div class="card edge" style="flex:1.1"><h4>Why 88% becomes −16% to +13%</h4><p style="font-size:17px">Every agent already limits large tool output,
+      so the raw diff and grep never reach the model in full. rtk's compressed versions fit under those limits, which is why the
+      answers improved in all three agents. In Claude Code that means <i>more</i> tokens: without rtk the model saw a 2 KB preview, with rtk the real 23 KB summary.
+      Context also includes the system prompt and tool definitions, re-sent on every turn.</p></div>
+    <div class="card amber" style="flex:1"><h4>Windows integration findings</h4><ol class="num amber">
+      <li style="font-size:15.5px;margin-bottom:6px"><b>Claude Code</b> also has a PowerShell tool; rtk's hook only matches Bash, so commands run there are never compressed. Disabled for this test.</li>
+      <li style="font-size:15.5px;margin-bottom:6px"><b>Droid</b> runs hooks without the user PATH: the hook needs rtk's absolute path, and rewritten <span class="mono">rtk …</span> commands need an allowlist entry or higher autonomy.</li>
+      <li style="font-size:15.5px;margin-bottom:0"><b>Amp</b> has no rtk support; the plugin on slide 16 fills the gap.</li></ol></div>
+    <div class="card note" style="flex:.8"><h4>Reading the cost column</h4><p style="font-size:16px">Claude Code's +97% is driven by one cold-cache run
+      ($1.41; the other two rtk runs cost $0.58 and $0.78, against $0.43–0.52 without rtk). Amp's runs drew on a shared balance with no per-thread cost.
+      Each agent used its default model, so compare rows by direction, not across agents.</p></div>
+  </div>
+</div>`, "agents/*_results.json · amp/amp_results.json");
+}
+
 // 18 ─ verdict
 frame("Verdict", "rtk is worth installing for agent-driven development", `
 <div class="row">
@@ -622,15 +689,17 @@ frame("Verdict", "rtk is worth installing for agent-driven development", `
     <li>Savings follow output size: file reads 95–99%, grep 88%, diffs 86%, pytest and cargo test 62–88%.</li>
     <li>Compact output passes through unchanged and exit codes matched on all 12 commands.</li>
     <li>Truncated content can be recovered with <span class="mono">rtk recall &lt;id&gt;</span>.</li>
-    <li>Overhead is tens of milliseconds, more than the "&lt;10 ms" headline but negligible in practice.</li></ol></div></div>
+    <li>Overhead is tens of milliseconds, more than the "&lt;10 ms" headline but negligible in practice.</li>
+    <li>In Amp, Claude Code and Droid, answers improved (5→6–7 of 7) because compressed output fits under each agent's own output limit.</li></ol></div></div>
   <div class="col">
     <div class="card amber"><h4>Watch out for</h4><ol class="num amber">
       <li><span class="mono">rtk read</span> needs <span class="mono">--max-lines</span> to get the big file savings.</li>
       <li>Windows gaps: <span class="mono">rtk tree</span> sends Linux flags to Windows <span class="mono">tree</span> and fails.</li>
       <li>Compression is lossy: pytest showed 10 of 12 failures by name, so the agent may sometimes need a recall or rerun.</li></ol></div>
     <div class="card edge grow" style="background:var(--blue-bg)"><h4 style="color:var(--blue)">Recommendation</h4>
-      <p style="font-size:20px">Install it with <span class="mono">rtk init -g</span> for your agent, and expect roughly half to
-      nine-tenths less command output in context. Budget for a smaller change on the bill.</p></div>
+      <p style="font-size:18px">Install it with <span class="mono">rtk init -g</span> for your agent. Command output shrinks by half to nine-tenths;
+      inside Amp, Claude Code and Droid that mostly showed up as better answers on large outputs, with context between −16% and +13%.</p>
+      <p class="small" style="margin-top:10px">This study compares rtk with no tool, not with other output compressors.</p></div>
   </div>
 </div>`);
 

@@ -1,0 +1,200 @@
+{
+  "agent": "droid",
+  "truth": {
+    "modified_not_staged": 10,
+    "untracked_entries": 9,
+    "latest_commit_author": "Nicolas Le Cam",
+    "oldest_commit_author_of_40": "aesoft",
+    "diff_files_changed": 42,
+    "rg_files_with_pub_fn": 142,
+    "cargo_failed_tests": 6
+  },
+  "runs": [
+    {
+      "agent": "droid",
+      "side": "on",
+      "idx": 0,
+      "wall_s": 33.9,
+      "usage": {
+        "input": 18,
+        "cache_write": 24301,
+        "cache_read": 90132,
+        "output": 354
+      },
+      "context_tokens": 114451,
+      "new_input_tokens": 24319,
+      "tool_result_chars": 31829,
+      "answer": "{\"modified_not_staged\":10,\"untracked_entries\":9,\"latest_commit_author\":null,\"oldest_commit_author_of_40\":\"aesoft\",\"diff_files_changed\":42,\"rg_files_with_pub_fn\":142,\"cargo_failed_tests\":6}",
+      "correct": 6,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]\\work\\rsproj; cargo test"
+      ],
+      "turns": 6,
+      "model": "gpt-6.1-sol",
+      "cost_usd": null,
+      "credits": 29339,
+      "error": null
+    },
+    {
+      "agent": "droid",
+      "side": "off",
+      "idx": 0,
+      "wall_s": 37.5,
+      "usage": {
+        "input": 18,
+        "cache_write": 26622,
+        "cache_read": 94611,
+        "output": 364
+      },
+      "context_tokens": 121251,
+      "new_input_tokens": 26640,
+      "tool_result_chars": 36956,
+      "answer": "{\"modified_not_staged\":10,\"untracked_entries\":9,\"latest_commit_author\":\"Nicolas Le Cam\",\"oldest_commit_author_of_40\":\"aesoft\",\"diff_files_changed\":null,\"rg_files_with_pub_fn\":null,\"cargo_failed_tests\":6}",
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]\\work\\rsproj; cargo test"
+      ],
+      "turns": 6,
+      "model": "gpt-6.1-sol",
+      "cost_usd": null,
+      "credits": 31879,
+      "error": null
+    },
+    {
+      "agent": "droid",
+      "side": "off",
+      "idx": 1,
+      "wall_s": 32.6,
+      "usage": {
+        "input": 18,
+        "cache_write": 26556,
+        "cache_read": 94572,
+        "output": 287
+      },
+      "context_tokens": 121146,
+      "new_input_tokens": 26574,
+      "tool_result_chars": 36850,
+      "answer": "{\"modified_not_staged\":10,\"untracked_entries\":9,\"latest_commit_author\":\"Nicolas Le Cam\",\"oldest_commit_author_of_40\":\"aesoft\",\"diff_files_changed\":null,\"rg_files_with_pub_fn\":null,\"cargo_failed_tests\":6}",
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]\\work\\rsproj; cargo test"
+      ],
+      "turns": 6,
+      "model": "gpt-6.1-sol",
+      "cost_usd": null,
+      "credits": 31503,
+      "error": null
+    },
+    {
+      "agent": "droid",
+      "side": "on",
+      "idx": 1,
+      "wall_s": 33.5,
+      "usage": {
+        "input": 18,
+        "cache_write": 24321,
+        "cache_read": 90146,
+        "output": 369
+      },
+      "context_tokens": 114485,
+      "new_input_tokens": 24339,
+      "tool_result_chars": 31829,
+      "answer": "{\"modified_not_staged\":10,\"untracked_entries\":9,\"latest_commit_author\":null,\"oldest_commit_author_of_40\":\"aesoft\",\"diff_files_changed\":42,\"rg_files_with_pub_fn\":142,\"cargo_failed_tests\":6}",
+      "correct": 6,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd \"[your path]\\work\\rsproj\"; cargo test"
+      ],
+      "turns": 6,
+      "model": "gpt-6.1-sol",
+      "cost_usd": null,
+      "credits": 29420,
+      "error": null
+    },
+    {
+      "agent": "droid",
+      "side": "on",
+      "idx": 2,
+      "wall_s": 34.4,
+      "usage": {
+        "input": 18,
+        "cache_write": 24300,
+        "cache_read": 90140,
+        "output": 389
+      },
+      "context_tokens": 114458,
+      "new_input_tokens": 24318,
+      "tool_result_chars": 31830,
+      "answer": "{\"modified_not_staged\":10,\"untracked_entries\":9,\"latest_commit_author\":null,\"oldest_commit_author_of_40\":\"aesoft\",\"diff_files_changed\":42,\"rg_files_with_pub_fn\":142,\"cargo_failed_tests\":6}",
+      "correct": 6,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]\\work\\rsproj; cargo test"
+      ],
+      "turns": 6,
+      "model": "gpt-6.1-sol",
+      "cost_usd": null,
+      "credits": 29479,
+      "error": null
+    },
+    {
+      "agent": "droid",
+      "side": "off",
+      "idx": 2,
+      "wall_s": 34.2,
+      "usage": {
+        "input": 18,
+        "cache_write": 26863,
+        "cache_read": 94795,
+        "output": 377
+      },
+      "context_tokens": 121676,
+      "new_input_tokens": 26881,
+      "tool_result_chars": 37460,
+      "answer": "{\"modified_not_staged\":10,\"untracked_entries\":9,\"latest_commit_author\":\"Nicolas Le Cam\",\"oldest_commit_author_of_40\":\"aesoft\",\"diff_files_changed\":null,\"rg_files_with_pub_fn\":null,\"cargo_failed_tests\":6}",
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd \"[your path]\\work\\rsproj\" && cargo test"
+      ],
+      "turns": 6,
+      "model": "gpt-6.1-sol",
+      "cost_usd": null,
+      "credits": 32180,
+      "error": null
+    }
+  ]
+}

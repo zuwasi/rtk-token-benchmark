@@ -1,0 +1,200 @@
+{
+  "agent": "claude",
+  "truth": {
+    "modified_not_staged": 10,
+    "untracked_entries": 9,
+    "latest_commit_author": "Nicolas Le Cam",
+    "oldest_commit_author_of_40": "aesoft",
+    "diff_files_changed": 42,
+    "rg_files_with_pub_fn": 142,
+    "cargo_failed_tests": 6
+  },
+  "runs": [
+    {
+      "agent": "claude",
+      "side": "on",
+      "idx": 0,
+      "wall_s": 26.9,
+      "usage": {
+        "input": 130,
+        "cache_write": 64154,
+        "cache_read": 227736,
+        "output": 1468
+      },
+      "context_tokens": 292020,
+      "new_input_tokens": 64284,
+      "tool_result_chars": 53118,
+      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}",
+      "correct": 7,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]/work/rsproj && cargo test"
+      ],
+      "turns": 6,
+      "model": "claude-fable-5-1",
+      "cost_usd": 1.414714,
+      "credits": null,
+      "error": null
+    },
+    {
+      "agent": "claude",
+      "side": "off",
+      "idx": 0,
+      "wall_s": 21.0,
+      "usage": {
+        "input": 162,
+        "cache_write": 19459,
+        "cache_read": 325498,
+        "output": 874
+      },
+      "context_tokens": 345119,
+      "new_input_tokens": 19621,
+      "tool_result_chars": 31674,
+      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": null, \"rg_files_with_pub_fn\": null, \"cargo_failed_tests\": 6}",
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]/work/rsproj && cargo test"
+      ],
+      "turns": 6,
+      "model": "claude-fable-5-1",
+      "cost_usd": 0.5158745,
+      "credits": null,
+      "error": null
+    },
+    {
+      "agent": "claude",
+      "side": "off",
+      "idx": 1,
+      "wall_s": 22.5,
+      "usage": {
+        "input": 98,
+        "cache_write": 17925,
+        "cache_read": 200788,
+        "output": 1162
+      },
+      "context_tokens": 218811,
+      "new_input_tokens": 18023,
+      "tool_result_chars": 28116,
+      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}",
+      "correct": 7,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12 --stat | tail -5; echo ---; git diff HEAD~12 | grep -c '^diff --git'",
+        "rg -n \"pub fn\" src | cut -d: -f1 | sort -u | wc -l; echo ---; rg -n \"pub fn\" src | wc -l",
+        "cd [your path]/work/rsproj && cargo test 2>&1 | tail -40"
+      ],
+      "turns": 6,
+      "model": "claude-fable-5-1",
+      "cost_usd": 0.467777,
+      "credits": null,
+      "error": null
+    },
+    {
+      "agent": "claude",
+      "side": "on",
+      "idx": 1,
+      "wall_s": 23.4,
+      "usage": {
+        "input": 162,
+        "cache_write": 22222,
+        "cache_read": 344568,
+        "output": 1005
+      },
+      "context_tokens": 366952,
+      "new_input_tokens": 22384,
+      "tool_result_chars": 53120,
+      "answer": "```json\n{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}\n```",
+      "correct": 7,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd \"[your path]\\work\\rsproj\" && cargo test"
+      ],
+      "turns": 6,
+      "model": "claude-fable-5-1",
+      "cost_usd": 0.582452,
+      "credits": null,
+      "error": null
+    },
+    {
+      "agent": "claude",
+      "side": "on",
+      "idx": 2,
+      "wall_s": 36.3,
+      "usage": {
+        "input": 162,
+        "cache_write": 31426,
+        "cache_read": 335878,
+        "output": 1318
+      },
+      "context_tokens": 367466,
+      "new_input_tokens": 31588,
+      "tool_result_chars": 53119,
+      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}",
+      "correct": 7,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]/work/rsproj && cargo test"
+      ],
+      "turns": 6,
+      "model": "claude-fable-5-1",
+      "cost_usd": 0.7800094999999999,
+      "credits": null,
+      "error": null
+    },
+    {
+      "agent": "claude",
+      "side": "off",
+      "idx": 2,
+      "wall_s": 20.4,
+      "usage": {
+        "input": 162,
+        "cache_write": 14919,
+        "cache_read": 330043,
+        "output": 931
+      },
+      "context_tokens": 345124,
+      "new_input_tokens": 15081,
+      "tool_result_chars": 31674,
+      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": null, \"rg_files_with_pub_fn\": null, \"cargo_failed_tests\": 6}",
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cd [your path]/work/rsproj && cargo test"
+      ],
+      "turns": 6,
+      "model": "claude-fable-5-1",
+      "cost_usd": 0.42906074999999994,
+      "credits": null,
+      "error": null
+    }
+  ]
+}

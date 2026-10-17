@@ -11,3 +11,6 @@ amp/runs/
 amp/bench.log
 amp/bench*.log
 amp/amp_results.partial.json
+agents/runs/
+agents/*.partial.json
+agents/bench*.log

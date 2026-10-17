@@ -19,7 +19,7 @@ How many tokens does [rtk](https://github.com/rtk-ai/rtk) really save? I ran 12 
 
 **Presentation (live):** **https://zuwasi.github.io/rtk-token-benchmark/**
 
-Navigate with the large side arrows, the Home button, the keyboard (arrow keys, Home, End) or a swipe on touch screens. The deck is a single self-contained file, [`presentation.html`](presentation.html), and all 20 slides are also shown as images below.
+Navigate with the large side arrows, the Home button, the keyboard (arrow keys, Home, End) or a swipe on touch screens. The deck is a single self-contained file, [`presentation.html`](presentation.html), and all 21 slides are also shown as images below.
 
 ## Slides
 
@@ -59,11 +59,12 @@ Navigate with the large side arrows, the Home button, the keyboard (arrow keys, 
     <td><img src="shots/slide17.png" alt="Amp results"></td>
   </tr>
   <tr>
-    <td><img src="shots/slide18.png" alt="Verdict"></td>
-    <td><img src="shots/slide19.png" alt="Full results"></td>
+    <td><img src="shots/slide18.png" alt="Agents compared"></td>
+    <td><img src="shots/slide19.png" alt="Verdict"></td>
   </tr>
   <tr>
-    <td colspan="2"><img src="shots/slide20.png" alt="Contact"></td>
+    <td><img src="shots/slide20.png" alt="Full results"></td>
+    <td><img src="shots/slide21.png" alt="Contact"></td>
   </tr>
 </table>
 
@@ -125,6 +126,24 @@ The plugin was checked in a live Amp thread: `git status`, `git log`, `git diff`
 
 Amp cuts any single tool result above 50,000 characters. Without rtk, the `git diff` and `rg` outputs hit that limit, so the model could not answer two of the questions in any run. With rtk both outputs fit. rtk's only miss was the latest commit author, in 2 of 3 runs. Raw data is in [`amp/amp_results.json`](amp/amp_results.json).
 
+## Agents compared: Amp, Claude Code, Droid
+
+[`agents/agent_bench.py`](agents/agent_bench.py) runs the same task and ground truth in Claude Code and Factory Droid, using rtk's official `PreToolUse` hooks passed through a per-run `--settings` file (global agent configs are not touched). 3 threads per side, each agent on its default model.
+
+| Agent | rtk integration | Tool output | Context tokens | Correct (of 7), off → on | Cost |
+|---|---|---:|---:|---|---:|
+| Amp | Custom plugin ([`amp/rtk.ts`](amp/rtk.ts)) | −56.4% | −16.2% | 5·5·5 → 6·7·6 | n/a |
+| Claude Code (claude-fable-5-1) | Official hook, Bash tool | +74.2% | +12.9% | 5·7·5 → 7·7·7 | +96.6% USD* |
+| Droid (gpt-6.1-sol) | Official hook, Execute tool | −14.2% | −5.7% | 5·5·5 → 6·6·6 | −7.7% credits |
+
+Every agent already limits large tool output (Amp cuts at 50K characters, Claude Code saves big outputs to a file and shows a 2 KB preview, Droid keeps about 10K). rtk's compressed output fits under those limits, so answers improved in all three agents. In Claude Code that also means more tokens, because the model reads rtk's real 23 KB diff summary instead of a 2 KB preview.
+
+\* One cold-cache rtk run cost $1.41; the other two cost $0.58 and $0.78, against $0.43–0.52 without rtk.
+
+Windows notes: Claude Code also has a PowerShell tool that rtk's Bash hook never sees (disabled for this test). Droid runs hooks without the user PATH, so the hook needs rtk's absolute path, and rewritten `rtk …` commands need an allowlist entry or `--auto high`.
+
+This study compares rtk with no tool. It does not compare rtk with other output-compression tools.
+
 ## Reproduce (Windows, PowerShell 7)
 
 Needs Git for Windows, Python 3.12+, Node 22 and Rust/Cargo.
@@ -147,6 +166,7 @@ pwsh ./setup.ps1                              # rtk binary, rtk repo, tokenizers
 | `build_presentation.py`, `deck_style.css` | Build `presentation.html` from `results.json`, `out/` and `assets/` |
 | `index.html` | Redirects the GitHub Pages root to the presentation |
 | `amp/` | Amp plugin (`rtk.ts`) and the end-to-end A/B harness (`amp_bench.py`) |
+| `agents/` | Claude Code and Droid A/B harness (`agent_bench.py`) and results |
 | `results.json` | Full measurements |
 | `out/` | Captured stdout and stderr of every command, raw and filtered. Local paths and the user name are replaced with `[your path]`, `[usr]` and `[group]`, so a few files differ slightly from the byte counts in `results.json`, which were measured before anonymizing |
 | `probes/` | Exploratory scripts used to choose the rtk invocation for each command |
