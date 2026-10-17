@@ -132,7 +132,8 @@ Amp cuts any single tool result above 50,000 characters. Without rtk, the `git d
 
 | Agent | rtk integration | Tool output | Context tokens | Correct (of 7), off → on | Cost |
 |---|---|---:|---:|---|---:|
-| Amp | Custom plugin ([`amp/rtk.ts`](amp/rtk.ts)) | −56.4% | −16.2% | 5·5·5 → 6·7·6 | n/a |
+| Amp, Windows | Custom plugin ([`amp/rtk.ts`](amp/rtk.ts)) | −56.4% | −16.2% | 5·5·5 → 6·7·6 | n/a |
+| Amp, WSL Ubuntu (2nd account) | Same plugin, Linux rtk build | −57.2% | −20.6% | 5·5·5 → 6·6·7 | n/a |
 | Claude Code (claude-fable-5-1) | Official hook, Bash tool | +74.2% | +12.9% | 5·7·5 → 7·7·7 | +96.6% USD* |
 | Droid (gpt-6.1-sol) | Official hook, Execute tool | −14.2% | −5.7% | 5·5·5 → 6·6·6 | −7.7% credits |
 

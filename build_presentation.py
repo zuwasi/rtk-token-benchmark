@@ -132,9 +132,11 @@ def plugin_excerpt():
 
 
 def load_agents():
-    files = {"amp": "amp/amp_results.json", "claude": "agents/claude_results.json", "droid": "agents/droid_results.json"}
+    files = {"amp": "amp/amp_results.json", "amp_wsl": "amp/amp_results_wsl.json",
+             "claude": "agents/claude_results.json", "droid": "agents/droid_results.json"}
     info = {
-        "amp": ("Amp", "Custom plugin (tool.call → modify)", "Cuts each result at 50K chars", None),
+        "amp": ("Amp · Windows", "Custom plugin (tool.call → modify)", "Cuts each result at 50K chars", None),
+        "amp_wsl": ("Amp · WSL Ubuntu", "Same plugin, Linux rtk build, 2nd account", "Cuts each result at 50K chars", None),
         "claude": ("Claude Code", "Official PreToolUse hook, Bash tool", "Saves large outputs to a file, 2 KB preview", "cost_usd"),
         "droid": ("Droid", "Official PreToolUse hook, Execute tool", "Keeps ~10K chars, rest to a log file", "credits"),
     }
@@ -655,6 +657,7 @@ if (D.agents && D.agents.length > 1) {
   const G = D.agents, sgn = v => (v > 0 ? "+" : "") + v + "%";
   const cls = (v, goodNeg) => (v < 0) === goodNeg ? "g" : "r";
   const ok = a => a.join(" · ");
+  const ctxLo = Math.min(...G.map(a => a.ctx)), ctxHi = Math.max(...G.map(a => a.ctx));
   frame("Agents compared", "Inside an agent, rtk's main win is accuracy, not tokens", `
 <div style="display:flex;flex-direction:column;gap:20px;height:100%">
   <div class="card" style="padding:12px 20px"><h4 style="margin-bottom:6px">Table 4 · Same task and ground truth in each agent, ${G[0].n} threads per side, rtk on vs off</h4><table class="tight">
@@ -666,7 +669,7 @@ if (D.agents && D.agents.length > 1) {
       <td class="n">${a.cost === null ? "n/a" : `<b class="${cls(a.cost, true)}">${sgn(a.cost)}</b> <span class="small" style="font-size:13px">${a.costUnit}</span>`}</td></tr>`).join("")}
   </table></div>
   <div class="row" style="flex:1;min-height:0">
-    <div class="card edge" style="flex:1.1"><h4>Why 88% becomes −16% to +13%</h4><p style="font-size:17px">Every agent already limits large tool output,
+    <div class="card edge" style="flex:1.1"><h4>Why 88% becomes ${sgn(Math.round(ctxLo))} to ${sgn(Math.round(ctxHi))}</h4><p style="font-size:17px">Every agent already limits large tool output,
       so the raw diff and grep never reach the model in full. rtk's compressed versions fit under those limits, which is why the
       answers improved in all three agents. In Claude Code that means <i>more</i> tokens: without rtk the model saw a 2 KB preview, with rtk the real 23 KB summary.
       Context also includes the system prompt and tool definitions, re-sent on every turn.</p></div>
@@ -698,7 +701,7 @@ frame("Verdict", "rtk is worth installing for agent-driven development", `
       <li>Compression is lossy: pytest showed 10 of 12 failures by name, so the agent may sometimes need a recall or rerun.</li></ol></div>
     <div class="card edge grow" style="background:var(--blue-bg)"><h4 style="color:var(--blue)">Recommendation</h4>
       <p style="font-size:18px">Install it with <span class="mono">rtk init -g</span> for your agent. Command output shrinks by half to nine-tenths;
-      inside Amp, Claude Code and Droid that mostly showed up as better answers on large outputs, with context between −16% and +13%.</p>
+      inside Amp, Claude Code and Droid that mostly showed up as better answers on large outputs, with context ${D.agents ? `between ${Math.round(Math.min(...D.agents.map(a => a.ctx)))}% and +${Math.round(Math.max(...D.agents.map(a => a.ctx)))}%` : "changing less than raw output"}.</p>
       <p class="small" style="margin-top:10px">This study compares rtk with no tool, not with other output compressors.</p></div>
   </div>
 </div>`);
