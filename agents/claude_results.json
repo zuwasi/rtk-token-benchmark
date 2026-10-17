@@ -24,7 +24,15 @@
       "context_tokens": 292020,
       "new_input_tokens": 64284,
       "tool_result_chars": 53118,
-      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}",
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": 42,
+        "rg_files_with_pub_fn": 142,
+        "cargo_failed_tests": 6
+      },
       "correct": 7,
       "of": 7,
       "rc": 0,
@@ -39,7 +47,34 @@
       "model": "claude-fable-5-1",
       "cost_usd": 1.414714,
       "credits": null,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 692,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 9289,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 23455,
+          "note": ""
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 18487,
+          "note": ""
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 1195,
+          "note": ""
+        }
+      ]
     },
     {
       "agent": "claude",
@@ -55,7 +90,15 @@
       "context_tokens": 345119,
       "new_input_tokens": 19621,
       "tool_result_chars": 31674,
-      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": null, \"rg_files_with_pub_fn\": null, \"cargo_failed_tests\": 6}",
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": null,
+        "rg_files_with_pub_fn": null,
+        "cargo_failed_tests": 6
+      },
       "correct": 5,
       "of": 7,
       "rc": 0,
@@ -70,7 +113,34 @@
       "model": "claude-fable-5-1",
       "cost_usd": 0.5158745,
       "credits": null,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 1160,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 22925,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 2225,
+          "note": "preview"
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 2235,
+          "note": "preview"
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 3129,
+          "note": ""
+        }
+      ]
     },
     {
       "agent": "claude",
@@ -86,7 +156,15 @@
       "context_tokens": 218811,
       "new_input_tokens": 18023,
       "tool_result_chars": 28116,
-      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}",
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": 42,
+        "rg_files_with_pub_fn": 142,
+        "cargo_failed_tests": 6
+      },
       "correct": 7,
       "of": 7,
       "rc": 0,
@@ -101,7 +179,34 @@
       "model": "claude-fable-5-1",
       "cost_usd": 0.467777,
       "credits": null,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 1160,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 22925,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 2874,
+          "note": ""
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 11,
+          "note": ""
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 1146,
+          "note": ""
+        }
+      ]
     },
     {
       "agent": "claude",
@@ -117,7 +222,15 @@
       "context_tokens": 366952,
       "new_input_tokens": 22384,
       "tool_result_chars": 53120,
-      "answer": "```json\n{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}\n```",
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": 42,
+        "rg_files_with_pub_fn": 142,
+        "cargo_failed_tests": 6
+      },
       "correct": 7,
       "of": 7,
       "rc": 0,
@@ -132,7 +245,34 @@
       "model": "claude-fable-5-1",
       "cost_usd": 0.582452,
       "credits": null,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 692,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 9289,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 23455,
+          "note": ""
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 18487,
+          "note": ""
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 1197,
+          "note": ""
+        }
+      ]
     },
     {
       "agent": "claude",
@@ -148,7 +288,15 @@
       "context_tokens": 367466,
       "new_input_tokens": 31588,
       "tool_result_chars": 53119,
-      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": 42, \"rg_files_with_pub_fn\": 142, \"cargo_failed_tests\": 6}",
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": 42,
+        "rg_files_with_pub_fn": 142,
+        "cargo_failed_tests": 6
+      },
       "correct": 7,
       "of": 7,
       "rc": 0,
@@ -163,7 +311,34 @@
       "model": "claude-fable-5-1",
       "cost_usd": 0.7800094999999999,
       "credits": null,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 692,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 9289,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 23455,
+          "note": ""
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 18487,
+          "note": ""
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 1196,
+          "note": ""
+        }
+      ]
     },
     {
       "agent": "claude",
@@ -179,7 +354,15 @@
       "context_tokens": 345124,
       "new_input_tokens": 15081,
       "tool_result_chars": 31674,
-      "answer": "{\"modified_not_staged\": 10, \"untracked_entries\": 9, \"latest_commit_author\": \"Nicolas Le Cam\", \"oldest_commit_author_of_40\": \"aesoft\", \"diff_files_changed\": null, \"rg_files_with_pub_fn\": null, \"cargo_failed_tests\": 6}",
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": null,
+        "rg_files_with_pub_fn": null,
+        "cargo_failed_tests": 6
+      },
       "correct": 5,
       "of": 7,
       "rc": 0,
@@ -194,7 +377,34 @@
       "model": "claude-fable-5-1",
       "cost_usd": 0.42906074999999994,
       "credits": null,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 1160,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 22925,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 2225,
+          "note": "preview"
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 2235,
+          "note": "preview"
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 3129,
+          "note": ""
+        }
+      ]
     }
   ]
 }

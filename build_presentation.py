@@ -146,7 +146,8 @@ def load_agents():
         if not os.path.exists(path):
             continue
         with open(path, encoding="utf-8") as f:
-            runs = json.load(f)["runs"]
+            doc = json.load(f)
+        runs, truth = doc["runs"], doc["truth"]
 
         def mean(side, fn):
             return statistics.mean(fn(r) for r in runs if r["side"] == side)
@@ -155,17 +156,48 @@ def load_agents():
             return round(100 * (mean("on", fn) / mean("off", fn) - 1), 1)
 
         name, hook, cap, cost_key = info[key]
+        metrics = {"chars": lambda r: r["tool_result_chars"], "ctx": lambda r: r["context_tokens"],
+                   "out": lambda r: r["usage"]["output"], "wall": lambda r: r["wall_s"]}
+        if cost_key:
+            metrics["cost"] = lambda r: r[cost_key]
+        per_cmd = []
+        for cmd in AGENT_CMDS:
+            row = {"cmd": cmd}
+            for side in ("off", "on"):
+                xs = [pc for r in runs if r["side"] == side for pc in r.get("per_command", []) if pc["cmd"] == cmd]
+                row[side] = statistics.median(x["chars"] for x in xs) if xs else None
+                row[side + "Note"] = next((x["note"] for x in xs if x["note"]), "")
+            per_cmd.append(row)
+
+        def answer(r):
+            a = r.get("answer")
+            if isinstance(a, str):
+                m = re.search(r"\{.*\}", a, re.S)
+                a = json.loads(m.group(0)) if m else {}
+            return a or {}
+
+        def wrong(r, q):
+            return str(answer(r).get(q)).lower() != str(truth[q]).lower()
+
         row = {"key": key, "name": name, "hook": hook, "cap": cap,
                "model": next((r.get("model") for r in runs if r.get("model")), None),
                "n": len([r for r in runs if r["side"] == "on"]),
-               "chars": delta(lambda r: r["tool_result_chars"]),
-               "ctx": delta(lambda r: r["context_tokens"]),
+               "chars": delta(metrics["chars"]), "ctx": delta(metrics["ctx"]),
                "offOk": [r["correct"] for r in runs if r["side"] == "off"],
                "onOk": [r["correct"] for r in runs if r["side"] == "on"],
-               "cost": delta(lambda r: r[cost_key]) if cost_key else None,
-               "costUnit": {"cost_usd": "USD", "credits": "credits"}.get(cost_key)}
+               "cost": delta(metrics["cost"]) if cost_key else None,
+               "costUnit": {"cost_usd": "USD", "credits": "Factory credits"}.get(cost_key),
+               "m": {k: {"off": mean("off", f), "on": mean("on", f), "d": delta(f)} for k, f in metrics.items()},
+               "perCmd": per_cmd,
+               "miss": {q: {s: sum(wrong(r, q) for r in runs if r["side"] == s) for s in ("off", "on")} for q in truth},
+               "runs": [{"side": r["side"], "idx": r["idx"], "chars": r["tool_result_chars"], "ctx": r["context_tokens"],
+                         "correct": r["correct"], "wall": r["wall_s"], "cost": r.get(cost_key) if cost_key else None}
+                        for r in sorted(runs, key=lambda r: (r["idx"], r["side"] != "off"))]}
         out.append(row)
     return out or None
+
+
+AGENT_CMDS = ["git status", "git log -40", "git diff HEAD~12", 'rg -n "pub fn" src', "cargo test"]
 
 
 DATA["agents"] = load_agents()
@@ -248,10 +280,11 @@ slides.push({sec: "Title", html: `
   <div style="flex:1.3;padding:70px 64px 60px 80px;display:flex;flex-direction:column">
     <a href="${ESL}" target="_blank"><img src="${D.logo}" style="height:78px" alt="ESL, Engineering Software Lab"></a>
     <div class="mono" style="margin-top:58px;font-size:16px;letter-spacing:2px;color:var(--blue);text-transform:uppercase">Technical report · ESL-TR-2026-10 · October 2026</div>
-    <h1 style="font-size:58px;font-weight:600;line-height:1.1;letter-spacing:-1px;margin-top:16px">rtk output compression:<br>measured token savings<br>across five LLM tokenizers</h1>
+    <h1 style="font-size:58px;font-weight:600;line-height:1.1;letter-spacing:-1px;margin-top:16px">rtk output compression:<br>five LLM tokenizers,<br>three coding agents</h1>
     <div style="height:1px;background:var(--ink);margin:30px 0 24px;width:100%"></div>
     <p class="lead" style="font-size:21px;max-width:820px">12 developer commands run with and without rtk v${D.rtkVersion}; outputs counted with
-      the GPT-4o, Claude, Gemma, Llama and Qwen tokenizers; plus an rtk integration for the Amp coding agent through its plugin API${D.amp ? ", tested A/B end to end" : ""}.</p>
+      the GPT-4o, Claude, Gemma, Llama and Qwen tokenizers. Then the same rtk tested end to end inside three coding agents:
+      Claude Code and Droid through rtk's official hooks, and Amp through a plugin written for this study.</p>
     <div style="margin-top:auto;display:flex;align-items:center;gap:20px">
       <img src="${D.photo}" style="width:92px;height:92px;border-radius:2px;object-fit:cover;border:1px solid var(--line)" alt="Daniel Liezrowice">
       <div><div style="font-size:24px;font-weight:600">Daniel Liezrowice</div>
@@ -279,14 +312,15 @@ slides.push({sec: "Title", html: `
         <li style="font-size:17px;margin-bottom:0">Amp plugin rewrites shell calls transparently (slide 16).</li>
       </ol>
     </div>`}
-    ${D.amp ? `<div class="card" style="padding:18px 22px">
-      <h4>Table 2 · Amp end-to-end (mean of ${D.amp.n} runs each)</h4>
+    ${D.agents ? `<div class="card" style="padding:18px 22px">
+      <h4>Table 2 · Inside coding agents, rtk on vs off</h4>
       <table class="tight">
-        <tr><th>Metric</th><th class="n">No rtk</th><th class="n">rtk plugin</th><th class="n">Δ</th></tr>
-        <tr><td>Tool output to model</td><td class="n">${fmtK(D.amp.off.chars)} ch</td><td class="n">${fmtK(D.amp.on.chars)} ch</td><td class="n"><b class="g">${D.amp.d.chars}%</b></td></tr>
-        <tr><td>Context tokens processed</td><td class="n">${fmtK(D.amp.off.ctx)}</td><td class="n">${fmtK(D.amp.on.ctx)}</td><td class="n"><b class="${D.amp.d.ctx<0?'g':'r'}">${D.amp.d.ctx}%</b></td></tr>
-        <tr><td>Answers correct</td><td class="n">${D.amp.off.correct}/7</td><td class="n">${D.amp.on.correct}/7</td><td class="n"></td></tr>
-      </table></div>` : ""}
+        <tr><th>Agent</th><th class="n">Tool output</th><th class="n">Context</th><th class="n">Correct of 7</th></tr>
+        ${D.agents.map(a => `<tr><td>${a.name}</td><td class="n"><b class="${a.chars<0?'g':'r'}">${a.chars>0?'+':''}${a.chars.toFixed(0)}%</b></td>
+          <td class="n"><b class="${a.ctx<0?'g':'r'}">${a.ctx>0?'+':''}${a.ctx.toFixed(0)}%</b></td>
+          <td class="n">${(a.offOk.reduce((x,y)=>x+y,0)/a.offOk.length).toFixed(1)} → <b class="g">${(a.onOk.reduce((x,y)=>x+y,0)/a.onOk.length).toFixed(1)}</b></td></tr>`).join("")}
+      </table>
+      <div class="fig">Same task in each agent · mean of ${D.agents[0].n} threads per side</div></div>` : ""}
   </div>
 </div>`});
 
@@ -306,13 +340,13 @@ frame("About this study", "Who ran it, and what question it answers", `
   </div>
   <div class="col">
     <div class="card edge"><h4>The question</h4><p>rtk promises to cut the tokens your coding agent spends on shell output by 60–90%.
-      Does that hold up on real commands, and does the answer change depending on which LLM you use?</p></div>
+      Does that hold up on real commands, does it depend on the LLM, and what happens inside Claude Code, Droid and Amp?</p></div>
     <div class="card edge"><h4>What I did</h4><p>I designed and ran this benchmark myself on a Windows 11 workstation.
       rtk was tested exactly as shipped in its public v${D.rtkVersion} release, with no configuration changes. Each command ran
       with and without rtk; every output was counted with five different tokenizers.</p></div>
-    <div class="card edge grow"><h4>What this is not</h4><p>It measures what the agent <i>reads</i>. It does not score whether an agent
-      solves tasks better or worse with compressed output, and it is not a bill forecast. Slide 15 covers how the
-      saving shrinks once prompts, history and output tokens are counted.</p></div>
+    <div class="card edge grow"><h4>Two levels of test</h4><p style="font-size:19px"><b>Commands (slides 5–15):</b> what rtk removes from
+      12 outputs, counted with five tokenizers. <b>Agents (slides 16–21):</b> the same task run in Claude Code, Droid and Amp with rtk on
+      and off, scoring tokens and answer accuracy. rtk is compared with no tool, not with other compressors, and none of this is a bill forecast.</p></div>
   </div>
 </div>`);
 
@@ -338,7 +372,7 @@ frame("Background", "What rtk does", `
       <tr><td>"60–90% fewer tokens on common dev commands"</td><td>12 commands, real tokenizers for 5 model families</td><td class="n">6–12</td></tr>
       <tr><td>"&lt;10 ms overhead"</td><td>Median wall-clock time, 3–5 runs per side</td><td class="n">13</td></tr>
       <tr><td>Exit codes and failures are preserved</td><td>Compared exit codes and failure lists side by side</td><td class="n">9, 11</td></tr>
-      <tr><td>Supports your agent</td><td>Official hooks in Claude Code and Droid; built an Amp plugin; A/B in all three</td><td class="n">16–18</td></tr>
+      <tr><td>Supports your agent</td><td>Official hooks in Claude Code and Droid; built an Amp plugin; A/B in all three</td><td class="n">16–21</td></tr>
     </table>
   </div>
 </div>`);
@@ -584,6 +618,87 @@ frame("Self-report vs measurement", `rtk's own dashboard shows 44.9%. Measured: 
 </div>`);
 }
 
+// agents ─ integrations overview
+const AG = k => (D.agents || []).find(a => a.key === k);
+frame("Agents", "Three coding agents, three ways to plug rtk in", `
+<div style="display:flex;flex-direction:column;gap:20px;height:100%">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1;min-height:0">
+    ${[["Claude Code", "Official · rtk init -g", "A <span class=\"mono\">PreToolUse</span> hook on the Bash tool. rtk returns the rewritten command and Claude Code runs it.",
+        "~/.claude/settings.json\n{\"hooks\": {\"PreToolUse\": [{\n  \"matcher\": \"Bash\",\n  \"hooks\": [{\"type\": \"command\",\n    \"command\": \"rtk hook claude\"}]\n}]}}",
+        "Large output goes to a file; the model sees a 2 KB preview.", AG("claude")],
+       ["Droid", "Official · rtk init -g --agent droid", "A <span class=\"mono\">PreToolUse</span> hook on the Execute tool. Droid's own permission flow approves the rewritten command.",
+        "~/.factory/hooks.json\n{\"PreToolUse\": [{\n  \"matcher\": \"Execute\",\n  \"hooks\": [{\"type\": \"command\",\n    \"command\": \"rtk hook droid\"}]\n}]}",
+        "Keeps about 10K chars of each result; the rest goes to a log file.", AG("droid")],
+       ["Amp", "No rtk support · plugin built here", "A <span class=\"mono\">tool.call</span> handler in Amp's plugin API returns <span class=\"mono\">modify</span> with the rtk command (slide 19).",
+        "~/.config/amp/plugins/rtk.ts\namp.on('tool.call', async (e, ctx) => {\n  // rtk rewrite <command>\n  return { action: 'modify',\n    input: { ...e.input, command } }\n})",
+        "Cuts each tool result at 50,000 chars.", AG("amp")]].map(([n, tag, how, code, cap, a]) => `
+      <div class="card edge" style="display:flex;flex-direction:column;gap:12px;padding:18px 22px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:26px;font-weight:700">${n}</div><span class="pill">${tag}</span></div>
+        <p style="font-size:17px">${how}</p>
+        <pre class="snip code" style="font-size:13px;margin:0">${esc(code)}</pre>
+        <div style="font-size:16px"><b>Agent's own output limit:</b> ${cap}</div>
+        ${a ? `<div class="mono" style="margin-top:auto;font-size:15px;color:var(--muted)">model ${a.model || "chosen by Amp"} · correct ${a.offOk.join("·")} → <b class="g">${a.onOk.join("·")}</b></div>` : ""}
+      </div>`).join("")}
+  </div>
+  <div class="card note" style="padding:14px 22px"><h4 style="margin-bottom:6px">One protocol for all three</h4><p style="font-size:16.5px">Same prompt: run
+    <span class="mono">git status</span>, <span class="mono">git log -40</span>, <span class="mono">git diff HEAD~12</span>, <span class="mono">rg -n "pub fn" src</span>,
+    <span class="mono">cargo test</span>, then answer 7 questions as JSON, scored by exact match. 3 fresh threads per side, rtk on and off alternating.
+    The hook is added per run with <span class="mono">--settings</span>; global agent configs are untouched. Each agent uses its default model.</p></div>
+</div>`);
+
+// agents ─ per-agent results
+function agentSlide(a, read, setup) {
+  if (!a) return;
+  const pct = v => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`;
+  const avg = xs => (xs.reduce((s, x) => s + x, 0) / xs.length).toFixed(1);
+  const costFmt = a.costUnit === "USD" ? (v => "$" + v.toFixed(2)) : (v => fmtK(v));
+  const mrow = (label, k, fmt) => a.m[k] ? `<tr><td>${label}</td><td class="n">${fmt(a.m[k].off)}</td><td class="n">${fmt(a.m[k].on)}</td>
+    <td class="n"><b class="${a.m[k].d < 0 ? "g" : "r"}">${pct(a.m[k].d)}</b></td></tr>` : "";
+  const QN = {modified_not_staged: "Modified, not staged", untracked_entries: "Untracked entries", latest_commit_author: "Latest commit author",
+    oldest_commit_author_of_40: "Oldest author of 40", diff_files_changed: "Files changed in diff", rg_files_with_pub_fn: "Files with pub fn",
+    cargo_failed_tests: "Failed cargo tests"};
+  const missed = Object.entries(a.miss).filter(([, v]) => v.off || v.on);
+  const tag = n => n === "preview" ? ` <span class="pill">2 KB preview</span>` : n === "truncated" ? ` <span class="pill">cut</span>` : "";
+  frame(a.name + " results", `${a.name}: ${avg(a.offOk)} → ${avg(a.onOk)} of 7 answers correct, context ${pct(a.ctx)}`, `
+<div class="row">
+  <div class="col" style="flex:1">
+    <div class="card" style="padding:12px 20px"><h4 style="margin-bottom:6px">Mean of ${a.n} threads per side · ${a.model}</h4><table class="tight">
+      <tr><th>Metric</th><th class="n">No rtk</th><th class="n">rtk hook</th><th class="n">Δ</th></tr>
+      ${mrow("Tool output to model (chars)", "chars", fmtK)}
+      ${mrow("Context tokens (all turns)", "ctx", fmtK)}
+      ${mrow("Output tokens", "out", fmtK)}
+      ${mrow("Wall time (s)", "wall", v => v.toFixed(1))}
+      ${mrow("Cost (" + a.costUnit + ")", "cost", costFmt)}
+      <tr><td>Answers correct, per run</td><td class="n">${a.offOk.join(" · ")}</td><td class="n"><b class="g">${a.onOk.join(" · ")}</b></td><td class="n"></td></tr>
+    </table></div>
+    <div class="card grow" style="padding:12px 20px"><h4 style="margin-bottom:6px">Questions missed (runs of ${a.n})</h4><table class="tight">
+      <tr><th>Question</th><th class="n">No rtk</th><th class="n">rtk hook</th></tr>
+      ${missed.map(([q, v]) => `<tr><td>${QN[q] || q}</td><td class="n"><b class="${v.off ? "r" : ""}">${v.off}</b></td><td class="n"><b class="${v.on ? "r" : ""}">${v.on}</b></td></tr>`).join("")}
+    </table></div>
+  </div>
+  <div class="col" style="flex:1.05">
+    <div class="card" style="padding:12px 20px"><h4 style="margin-bottom:6px">What the model received per command (chars, median)</h4><table class="tight">
+      <tr><th>Command</th><th class="n">No rtk</th><th class="n">rtk hook</th></tr>
+      ${a.perCmd.map(c => `<tr><td class="mono" style="font-size:15px">${esc(c.cmd)}</td><td class="n">${fmtK(c.off)}${tag(c.offNote)}</td><td class="n">${fmtK(c.on)}${tag(c.onNote)}</td></tr>`).join("")}
+    </table></div>
+    <div class="card edge" style="padding:14px 20px"><h4 style="margin-bottom:6px">Reading it</h4><p style="font-size:16px;line-height:1.45">${read}</p></div>
+    <div class="card amber grow" style="padding:14px 20px"><h4 style="margin-bottom:6px">Setup finding</h4><p style="font-size:15.5px;line-height:1.45">${setup}</p></div>
+  </div>
+</div>`, `agents/${a.key}_results.json`);
+}
+agentSlide(AG("claude"),
+  `Claude Code moves large Bash output to a file and shows the model a 2 KB preview. Without rtk, the 168 KB diff and 56 KB rg output arrived only as
+   previews, so the file counts were guessed or left empty. rtk's 23 KB and 18 KB summaries fit and were read in full: more tokens, every answer correct.`,
+  `On Windows, Claude Code also offers a PowerShell tool that rtk's Bash hook never sees. In a first attempt the model used it and rtk was bypassed;
+   those runs were discarded and PowerShell was disabled on both sides. Cost is Claude Code's own report; one cold-cache rtk run cost $1.41.`);
+agentSlide(AG("droid"),
+  `Droid keeps about 10K characters of each result. Without rtk, git log, the diff and rg were all cut, and both file counts were lost in every run.
+   With rtk, git log fits whole; the diff and rg summaries are still cut, but their totals survived. rtk shortens git log lines to ~120 chars, so the newest
+   commit's author appears as "&lt;Nicolas..." and was missed in every rtk run.`,
+  `Droid runs hooks without the user PATH on Windows, so the hook needs rtk's absolute path. rtk leaves approval to Droid, and medium autonomy does not
+   auto-approve rewritten <span class="mono">rtk …</span> commands: add them to <span class="mono">commandAllowlist</span> or use
+   <span class="mono">--auto high</span> (used on both sides here).`);
+
 // 16 ─ Amp integration
 frame("Amp integration", "Integrating rtk into Amp through the plugin API", `
 <div style="display:flex;flex-direction:column;gap:20px;height:100%">
@@ -673,10 +788,11 @@ if (D.agents && D.agents.length > 1) {
       so the raw diff and grep never reach the model in full. rtk's compressed versions fit under those limits, which is why the
       answers improved in all three agents. In Claude Code that means <i>more</i> tokens: without rtk the model saw a 2 KB preview, with rtk the real 23 KB summary.
       Context also includes the system prompt and tool definitions, re-sent on every turn.</p></div>
-    <div class="card amber" style="flex:1"><h4>Windows integration findings</h4><ol class="num amber">
-      <li style="font-size:15.5px;margin-bottom:6px"><b>Claude Code</b> also has a PowerShell tool; rtk's hook only matches Bash, so commands run there are never compressed. Disabled for this test.</li>
-      <li style="font-size:15.5px;margin-bottom:6px"><b>Droid</b> runs hooks without the user PATH: the hook needs rtk's absolute path, and rewritten <span class="mono">rtk …</span> commands need an allowlist entry or higher autonomy.</li>
-      <li style="font-size:15.5px;margin-bottom:0"><b>Amp</b> has no rtk support; the plugin on slide 16 fills the gap.</li></ol></div>
+    <div class="card amber" style="flex:1"><h4>Where rtk lost information</h4>
+      <p style="font-size:16px;margin-bottom:8px">rtk shortens <span class="mono">git log</span> lines to ~120 chars, so the newest commit's author shows as
+      <span class="mono">&lt;Nicolas...</span>. Runs that missed "latest commit author":</p>
+      <table class="tight">${G.map(a => `<tr><td style="font-size:15.5px">${a.name}</td><td class="n" style="font-size:15px">no rtk ${a.miss.latest_commit_author.off}/${a.n}</td>
+        <td class="n" style="font-size:15px">rtk <b class="${a.miss.latest_commit_author.on ? "r" : "g"}">${a.miss.latest_commit_author.on}/${a.n}</b></td></tr>`).join("")}</table></div>
     <div class="card note" style="flex:.8"><h4>Reading the cost column</h4><p style="font-size:16px">Claude Code's +97% is driven by one cold-cache run
       ($1.41; the other two rtk runs cost $0.58 and $0.78, against $0.43–0.52 without rtk). Amp's runs drew on a shared balance with no per-thread cost.
       Each agent used its default model, so compare rows by direction, not across agents.</p></div>
@@ -698,7 +814,8 @@ frame("Verdict", "rtk is worth installing for agent-driven development", `
     <div class="card amber"><h4>Watch out for</h4><ol class="num amber">
       <li><span class="mono">rtk read</span> needs <span class="mono">--max-lines</span> to get the big file savings.</li>
       <li>Windows gaps: <span class="mono">rtk tree</span> sends Linux flags to Windows <span class="mono">tree</span> and fails.</li>
-      <li>Compression is lossy: pytest showed 10 of 12 failures by name, so the agent may sometimes need a recall or rerun.</li></ol></div>
+      <li>Compression is lossy: pytest showed 10 of 12 failures by name, and shortened git log lines hid the newest author from Amp and Droid.</li>
+      <li>Hooks only see the shell tool they match: Claude Code's PowerShell tool and agents' built-in read/grep tools bypass rtk.</li></ol></div>
     <div class="card edge grow" style="background:var(--blue-bg)"><h4 style="color:var(--blue)">Recommendation</h4>
       <p style="font-size:18px">Install it with <span class="mono">rtk init -g</span> for your agent. Command output shrinks by half to nine-tenths;
       inside Amp, Claude Code and Droid that mostly showed up as better answers on large outputs, with context ${D.agents ? `between ${Math.round(Math.min(...D.agents.map(a => a.ctx)))}% and +${Math.round(Math.max(...D.agents.map(a => a.ctx)))}%` : "changing less than raw output"}.</p>

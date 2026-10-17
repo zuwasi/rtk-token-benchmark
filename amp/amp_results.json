@@ -44,7 +44,34 @@
       "correct": 6,
       "of": 7,
       "rc": 0,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 819,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 9521,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 24533,
+          "note": ""
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 19384,
+          "note": ""
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 1334,
+          "note": ""
+        }
+      ]
     },
     {
       "side": "off",
@@ -80,7 +107,34 @@
       "correct": 5,
       "of": 7,
       "rc": 0,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 1251,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 23509,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 49665,
+          "note": "truncated"
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 49838,
+          "note": "truncated"
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 3254,
+          "note": ""
+        }
+      ]
     },
     {
       "side": "off",
@@ -116,7 +170,34 @@
       "correct": 5,
       "of": 7,
       "rc": 0,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 1251,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 23509,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 49665,
+          "note": "truncated"
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 49845,
+          "note": "truncated"
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 3254,
+          "note": ""
+        }
+      ]
     },
     {
       "side": "on",
@@ -152,7 +233,34 @@
       "correct": 7,
       "of": 7,
       "rc": 0,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 819,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 9521,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 24533,
+          "note": ""
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 19384,
+          "note": ""
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 1334,
+          "note": ""
+        }
+      ]
     },
     {
       "side": "on",
@@ -188,7 +296,34 @@
       "correct": 6,
       "of": 7,
       "rc": 0,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 819,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 9521,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 24533,
+          "note": ""
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 19384,
+          "note": ""
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 1332,
+          "note": ""
+        }
+      ]
     },
     {
       "side": "off",
@@ -224,7 +359,34 @@
       "correct": 5,
       "of": 7,
       "rc": 0,
-      "error": null
+      "error": null,
+      "per_command": [
+        {
+          "cmd": "git status",
+          "chars": 1251,
+          "note": ""
+        },
+        {
+          "cmd": "git log -40",
+          "chars": 23509,
+          "note": ""
+        },
+        {
+          "cmd": "git diff HEAD~12",
+          "chars": 49665,
+          "note": "truncated"
+        },
+        {
+          "cmd": "rg -n \"pub fn\" src",
+          "chars": 49845,
+          "note": "truncated"
+        },
+        {
+          "cmd": "cargo test",
+          "chars": 3253,
+          "note": ""
+        }
+      ]
     }
   ]
 }

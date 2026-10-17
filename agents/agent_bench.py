@@ -109,7 +109,7 @@ def run_once(agent, side, idx):
     r = parse(agent, p.stdout)
     if not r["answer"] and not r["error"]:
         r["error"] = (p.stderr or "no answer")[-400:]
-    ans, correct = score(r["answer"])
+    ans, correct = score(r.pop("answer"))
     u = r.pop("usage")
     return {"agent": agent, "side": side, "idx": idx, "wall_s": round(wall, 1), "usage": u,
             "context_tokens": u["input"] + u["cache_write"] + u["cache_read"],

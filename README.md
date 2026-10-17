@@ -19,7 +19,7 @@ How many tokens does [rtk](https://github.com/rtk-ai/rtk) really save? I ran 12 
 
 **Presentation (live):** **https://zuwasi.github.io/rtk-token-benchmark/**
 
-Navigate with the large side arrows, the Home button, the keyboard (arrow keys, Home, End) or a swipe on touch screens. The deck is a single self-contained file, [`presentation.html`](presentation.html), and all 21 slides are also shown as images below.
+Navigate with the large side arrows, the Home button, the keyboard (arrow keys, Home, End) or a swipe on touch screens. The deck is a single self-contained file, [`presentation.html`](presentation.html), and all 24 slides are also shown as images below.
 
 ## Slides
 
@@ -55,16 +55,23 @@ Navigate with the large side arrows, the Home button, the keyboard (arrow keys, 
     <td><img src="shots/slide15.png" alt="Cost"></td>
   </tr>
   <tr>
-    <td><img src="shots/slide16.png" alt="Amp integration"></td>
-    <td><img src="shots/slide17.png" alt="Amp results"></td>
+    <td><img src="shots/slide16.png" alt="Agents: three integrations"></td>
+    <td><img src="shots/slide17.png" alt="Claude Code results"></td>
   </tr>
   <tr>
-    <td><img src="shots/slide18.png" alt="Agents compared"></td>
-    <td><img src="shots/slide19.png" alt="Verdict"></td>
+    <td><img src="shots/slide18.png" alt="Droid results"></td>
+    <td><img src="shots/slide19.png" alt="Amp integration"></td>
   </tr>
   <tr>
-    <td><img src="shots/slide20.png" alt="Full results"></td>
-    <td><img src="shots/slide21.png" alt="Contact"></td>
+    <td><img src="shots/slide20.png" alt="Amp results"></td>
+    <td><img src="shots/slide21.png" alt="Agents compared"></td>
+  </tr>
+  <tr>
+    <td><img src="shots/slide22.png" alt="Verdict"></td>
+    <td><img src="shots/slide23.png" alt="Full results"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="shots/slide24.png" alt="Contact"></td>
   </tr>
 </table>
 
