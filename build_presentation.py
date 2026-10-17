@@ -345,7 +345,7 @@ frame("About this study", "Who ran it, and what question it answers", `
       rtk was tested exactly as shipped in its public v${D.rtkVersion} release, with no configuration changes. Each command ran
       with and without rtk; every output was counted with five different tokenizers.</p></div>
     <div class="card edge grow"><h4>Two levels of test</h4><p style="font-size:19px"><b>Commands (slides 5–15):</b> what rtk removes from
-      12 outputs, counted with five tokenizers. <b>Agents (slides 16–21):</b> the same task run in Claude Code, Droid and Amp with rtk on
+      12 outputs, counted with five tokenizers. <b>Agents (slides 16–22):</b> the same task run in Claude Code, Droid and Amp with rtk on
       and off, scoring tokens and answer accuracy. rtk is compared with no tool, not with other compressors, and none of this is a bill forecast.</p></div>
   </div>
 </div>`);
@@ -372,7 +372,7 @@ frame("Background", "What rtk does", `
       <tr><td>"60–90% fewer tokens on common dev commands"</td><td>12 commands, real tokenizers for 5 model families</td><td class="n">6–12</td></tr>
       <tr><td>"&lt;10 ms overhead"</td><td>Median wall-clock time, 3–5 runs per side</td><td class="n">13</td></tr>
       <tr><td>Exit codes and failures are preserved</td><td>Compared exit codes and failure lists side by side</td><td class="n">9, 11</td></tr>
-      <tr><td>Supports your agent</td><td>Official hooks in Claude Code and Droid; built an Amp plugin; A/B in all three</td><td class="n">16–21</td></tr>
+      <tr><td>Supports your agent</td><td>Official hooks in Claude Code and Droid; built an Amp plugin; A/B in all three</td><td class="n">16–22</td></tr>
     </table>
   </div>
 </div>`);
@@ -767,37 +767,116 @@ if (D.amp) {
 </div>`, "amp/amp_results.json");
 }
 
-// agents compared
+// agents compared ─ scoreboard and failures
 if (D.agents && D.agents.length > 1) {
-  const G = D.agents, sgn = v => (v > 0 ? "+" : "") + v + "%";
-  const cls = (v, goodNeg) => (v < 0) === goodNeg ? "g" : "r";
-  const ok = a => a.join(" · ");
-  const ctxLo = Math.min(...G.map(a => a.ctx)), ctxHi = Math.max(...G.map(a => a.ctx));
-  frame("Agents compared", "Inside an agent, rtk's main win is accuracy, not tokens", `
-<div style="display:flex;flex-direction:column;gap:20px;height:100%">
-  <div class="card" style="padding:12px 20px"><h4 style="margin-bottom:6px">Table 4 · Same task and ground truth in each agent, ${G[0].n} threads per side, rtk on vs off</h4><table class="tight">
-    <tr><th>Agent</th><th>rtk integration</th><th>Agent's own limit on tool output</th><th class="n">Tool output</th><th class="n">Context tokens</th><th class="n">Correct, off → on</th><th class="n">Cost</th></tr>
-    ${G.map(a => `<tr><td><b>${a.name}</b>${a.model ? `<div class="mono" style="font-size:13px;color:var(--faint)">${a.model}</div>` : ""}</td>
-      <td style="font-size:16px">${a.hook}</td><td style="font-size:16px">${a.cap}</td>
-      <td class="n"><b class="${cls(a.chars, true)}">${sgn(a.chars)}</b></td><td class="n"><b class="${cls(a.ctx, true)}">${sgn(a.ctx)}</b></td>
-      <td class="n">${ok(a.offOk)} → <b class="g">${ok(a.onOk)}</b></td>
-      <td class="n">${a.cost === null ? "n/a" : `<b class="${cls(a.cost, true)}">${sgn(a.cost)}</b> <span class="small" style="font-size:13px">${a.costUnit}</span>`}</td></tr>`).join("")}
-  </table></div>
-  <div class="row" style="flex:1;min-height:0">
-    <div class="card edge" style="flex:1.1"><h4>Why 88% becomes ${sgn(Math.round(ctxLo))} to ${sgn(Math.round(ctxHi))}</h4><p style="font-size:17px">Every agent already limits large tool output,
-      so the raw diff and grep never reach the model in full. rtk's compressed versions fit under those limits, which is why the
-      answers improved in all three agents. In Claude Code that means <i>more</i> tokens: without rtk the model saw a 2 KB preview, with rtk the real 23 KB summary.
-      Context also includes the system prompt and tool definitions, re-sent on every turn.</p></div>
-    <div class="card amber" style="flex:1"><h4>Where rtk lost information</h4>
-      <p style="font-size:16px;margin-bottom:8px">rtk shortens <span class="mono">git log</span> lines to ~120 chars, so the newest commit's author shows as
-      <span class="mono">&lt;Nicolas...</span>. Runs that missed "latest commit author":</p>
-      <table class="tight">${G.map(a => `<tr><td style="font-size:15.5px">${a.name}</td><td class="n" style="font-size:15px">no rtk ${a.miss.latest_commit_author.off}/${a.n}</td>
-        <td class="n" style="font-size:15px">rtk <b class="${a.miss.latest_commit_author.on ? "r" : "g"}">${a.miss.latest_commit_author.on}/${a.n}</b></td></tr>`).join("")}</table></div>
-    <div class="card note" style="flex:.8"><h4>Reading the cost column</h4><p style="font-size:16px">Claude Code's +97% is driven by one cold-cache run
-      ($1.41; the other two rtk runs cost $0.58 and $0.78, against $0.43–0.52 without rtk). Amp's runs drew on a shared balance with no per-thread cost.
-      Each agent used its default model, so compare rows by direction, not across agents.</p></div>
+  const G = D.agents;
+  const avg = xs => xs.reduce((s, x) => s + x, 0) / xs.length;
+  const AC = {claude: "#c96442", droid: "#3d7cdb", amp: "#d98e04", amp_wsl: "#b07300"};
+  const sgn = v => (v > 0 ? "+" : "") + Math.round(v) + "%";
+
+  // Amp ran on two machines; rank it once, on the pooled runs.
+  const groups = {};
+  G.forEach(a => { const k = a.key.startsWith("amp") ? "amp" : a.key; (groups[k] = groups[k] || []).push(a); });
+  const rank = Object.entries(groups).map(([k, as]) => {
+    const n = as.reduce((s, a) => s + a.n, 0);
+    const missOn = q => as.reduce((s, a) => s + a.miss[q].on, 0), missOff = q => as.reduce((s, a) => s + a.miss[q].off, 0);
+    return {k, name: k === "amp" ? "Amp" : as[0].name, model: k === "amp" ? "model chosen by Amp" : as[0].model, n,
+      off: avg(as.flatMap(a => a.offOk)), on: avg(as.flatMap(a => a.onOk)),
+      perfect: as.flatMap(a => a.onOk).filter(x => x === 7).length,
+      ctx: avg(as.map(a => a.ctx)), chars: avg(as.map(a => a.chars)), missOn, missOff, color: AC[k]};
+  }).sort((a, b) => b.on - a.on || a.ctx - b.ctx);
+  const W = rank[0];
+
+  function divbar(items, o) {
+    const Wd = o.w, rowH = o.rowH, L = o.padL, R = o.padR, top = 6, H = items.length * rowH + top + 30;
+    const x = v => L + (v - o.min) / (o.max - o.min) * (Wd - L - R);
+    const mono = 'font-family="Cascadia Mono,Consolas,monospace"';
+    let s = `<svg viewBox="0 0 ${Wd} ${H}" width="${Wd}" height="${H}">`;
+    o.ticks.forEach(v => {
+      s += `<line x1="${x(v)}" y1="${top}" x2="${x(v)}" y2="${H - 26}" stroke="${v === 0 ? "#1c2430" : "#e3e8ee"}" stroke-width="${v === 0 ? 1.5 : 1}"/>`;
+      s += `<text x="${x(v)}" y="${H - 8}" text-anchor="middle" font-size="13" fill="#8a95a5" ${mono}>${v > 0 ? "+" : ""}${v}%</text>`;
+    });
+    items.forEach((it, i) => {
+      const cy = top + i * rowH + rowH / 2, x0 = x(0), x1 = x(it.v);
+      s += `<text x="${L - 12}" y="${cy + 5}" text-anchor="end" font-size="${o.fs}" font-weight="600" fill="#1c2430">${it.l}</text>`;
+      s += `<rect x="${Math.min(x0, x1)}" y="${cy - 11}" width="${Math.max(2, Math.abs(x1 - x0))}" height="22" fill="${it.v < 0 ? "#1f8a5b" : "#c2410c"}"/>`;
+      s += `<text x="${(it.v < 0 ? x0 : x1) + 8}" y="${cy + 5}" font-size="${o.fs - 1}" font-weight="700" fill="${it.v < 0 ? "#17784c" : "#b4380b"}" ${mono}>${sgn(it.v)}</text>`;
+    });
+    return s + `</svg>`;
+  }
+  const short = a => a.key === "amp" ? "Amp · Win" : a.key === "amp_wsl" ? "Amp · WSL" : a.name;
+  const chartOpts = {w: 440, rowH: 50, padL: 112, padR: 20, fs: 16};
+
+  frame("Agents compared", `Winner: ${W.name} with rtk, ${W.on.toFixed(1)} of 7 answers correct`, `
+<div style="display:flex;flex-direction:column;gap:18px;height:100%">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+    <div class="card" style="padding:12px 16px"><div class="lab" style="font-size:14px">Answers correct, of 7 <span><span class="dot" style="background:#b8c1cc"></span>no rtk colored = rtk</span></div>
+      ${hbar(G.map(a => ({l: short(a), v: avg(a.offOk), v2: avg(a.onOk), c: AC[a.key],
+        n: `${avg(a.offOk).toFixed(1)}→${avg(a.onOk).toFixed(1)}`})), {...chartOpts, max: 7, fs: 16, padR: 86, tickFmt: v => v.toFixed(v % 1 ? 2 : 0)})}
+      <div class="fig">Higher is better · mean of ${G[0].n} threads per side</div></div>
+    <div class="card" style="padding:12px 16px"><div class="lab" style="font-size:14px">Context tokens, rtk vs no rtk <span>lower is better</span></div>
+      ${divbar(G.map(a => ({l: short(a), v: a.ctx})), {...chartOpts, min: -40, max: 40, ticks: [-40, -20, 0, 20, 40]})}
+      <div class="fig">All tokens processed over the whole thread</div></div>
+    <div class="card" style="padding:12px 16px"><div class="lab" style="font-size:14px">Tool output read by the model <span>lower is better</span></div>
+      ${divbar(G.map(a => ({l: short(a), v: a.chars})), {...chartOpts, padR: 52, min: -100, max: 100, ticks: [-100, -50, 0, 50, 100]})}
+      <div class="fig">Characters of command output returned to the model</div></div>
   </div>
-</div>`, "agents/*_results.json · amp/amp_results.json");
+  <div class="row" style="flex:1;min-height:0;gap:20px">
+    <div class="card edge" style="flex:1.55;padding:14px 22px"><h4 style="margin-bottom:8px">Ranking · accuracy first, then tokens</h4>
+      ${rank.map((r, i) => `<div style="display:flex;gap:16px;align-items:flex-start;padding:7px 0;${i ? "border-top:1px solid var(--line2)" : ""}">
+        <div class="mono" style="font-size:30px;font-weight:700;line-height:1;width:34px;color:${i === 0 ? "var(--good)" : "var(--faint)"}">${i + 1}</div>
+        <div style="flex:1"><div style="font-size:19px;font-weight:700"><span class="dot" style="background:${r.color}"></span>${r.name}
+          <span class="mono" style="font-size:13px;font-weight:400;color:var(--faint)">${r.model}</span>
+          <span class="mono" style="font-size:16px;float:right">${r.off.toFixed(1)} → <b class="g">${r.on.toFixed(1)}</b> of 7 · context ${sgn(r.ctx)}</span></div>
+          <div style="font-size:15.5px;color:var(--muted);margin-top:2px">${{
+            claude: `Only agent with every rtk run at 7/7. rtk's full diff and rg summaries replaced 2 KB previews. The price: more context (${sgn(r.ctx)}) and a higher bill.`,
+            amp: `Same accuracy gain plus the biggest token cut (${sgn(r.ctx)} context, ${sgn(r.chars)} tool output) on two machines. Lost the newest commit author in ${r.missOn("latest_commit_author")} of ${r.n} rtk runs.`,
+            droid: `Smallest gain. Droid's ~10K cap still cuts rtk's diff and rg summaries, and rtk's shortened git log hid the newest author in ${r.missOn("latest_commit_author")} of ${r.n} runs.`
+          }[r.k]}</div></div></div>`).join("")}
+    </div>
+    <div class="card note" style="flex:1;padding:14px 22px"><h4 style="margin-bottom:8px">What was tested</h4><p style="font-size:15.5px;line-height:1.45">
+      Each agent got the same prompt: run <span class="mono">git status</span>, <span class="mono">git log -40</span>, <span class="mono">git diff HEAD~12</span>,
+      <span class="mono">rg -n "pub fn" src</span> and <span class="mono">cargo test</span> on the rtk repository, then answer 7 factual questions (file counts, authors,
+      failing tests) as JSON, scored against ground truth. ${G[0].n} fresh threads with rtk and ${G[0].n} without, alternating.</p>
+      <p class="small" style="margin-top:8px;font-size:14.5px">"Winner" means agent <i>and</i> its default model as shipped: claude-fable-5-1, gpt-6.1-sol, and Amp's own choice.
+      Three runs per side and one task: a direction, not a league table.</p></div>
+  </div>
+</div>`, "agents/*_results.json · amp/amp_results*.json");
+
+  const QN = {latest_commit_author: "Newest commit's author", diff_files_changed: "Files changed in the diff", rg_files_with_pub_fn: "Files containing pub fn",
+    modified_not_staged: "Modified, not staged", untracked_entries: "Untracked entries", oldest_commit_author_of_40: "Oldest author of 40", cargo_failed_tests: "Failed cargo tests"};
+  const qs = Object.keys(QN).filter(q => rank.some(r => r.missOff(q) || r.missOn(q)));
+  const cell = (n, of) => `<b class="${n ? "r" : "g"}">${n}/${of}</b>`;
+  frame("Agents compared", "What each agent failed on, and what that means in practice", `
+<div class="row">
+  <div class="col" style="flex:1.05">
+    <div class="card" style="padding:12px 20px"><h4 style="margin-bottom:6px">Runs with a wrong or empty answer · no rtk → rtk</h4><table class="tight">
+      <tr><th>Question</th>${rank.map(r => `<th class="n"><span class="dot" style="background:${r.color}"></span>${r.name}</th>`).join("")}</tr>
+      ${qs.map(q => `<tr><td>${QN[q]}</td>${rank.map(r => `<td class="n">${cell(r.missOff(q), r.n)} → ${cell(r.missOn(q), r.n)}</td>`).join("")}</tr>`).join("")}
+      <tr><td colspan="${rank.length + 1}" class="small" style="font-size:14px">Every other question was answered correctly in every run, by every agent.</td></tr>
+    </table></div>
+    <div class="card grow" style="padding:12px 20px"><h4 style="margin-bottom:6px">Why</h4><table class="tight">
+      <tr><th style="width:18%">Agent</th><th>Without rtk</th><th>With rtk</th></tr>
+      <tr><td><b>Claude Code</b></td><td style="font-size:15.5px">Diff and rg saved to a file; the model saw only a 2 KB preview and guessed the counts.</td><td style="font-size:15.5px">Nothing missed.</td></tr>
+      <tr><td><b>Droid</b></td><td style="font-size:15.5px">git log, diff and rg cut at ~10K chars; both file counts lost.</td><td style="font-size:15.5px">Counts survive in rtk's summary; newest author lost in the shortened git log line.</td></tr>
+      <tr><td><b>Amp</b></td><td style="font-size:15.5px">Diff and rg cut at 50K chars; both file counts lost.</td><td style="font-size:15.5px">Same author loss as Droid in most runs.</td></tr>
+    </table></div>
+  </div>
+  <div class="col">
+    <div class="card edge grow" style="padding:14px 22px"><h4 style="margin-bottom:8px">Implications in real work</h4><ol class="num">
+      <li style="font-size:16.5px;margin-bottom:9px"><b>Without rtk, the risk is silent wrong answers, not cost.</b> Every agent clips big output, and the model then guesses:
+        "how many files does this PR touch?", "where is this function used?" on a large repo.</li>
+      <li style="font-size:16.5px;margin-bottom:9px"><b>rtk makes big output fit.</b> Totals and structure survive, so these questions get answered. It pays off most on large
+        repos, long diffs, wide searches and test suites.</li>
+      <li style="font-size:16.5px;margin-bottom:9px"><b>Don't plan on a smaller bill.</b> Context ranged from ${sgn(Math.min(...G.map(a => a.ctx)))} to ${sgn(Math.max(...G.map(a => a.ctx)))};
+        in Claude Code, rtk raised the cost because the model finally read the whole summary.</li>
+      <li style="font-size:16.5px;margin-bottom:9px"><b>rtk drops details.</b> Shortened lines and "+N more" can hide the one fact you need. For exact details,
+        let the agent use <span class="mono">rtk recall</span> or rerun with <span class="mono">RTK_DISABLED=1</span>.</li>
+      <li style="font-size:16.5px;margin-bottom:0"><b>Check what the hook covers.</b> PowerShell in Claude Code and built-in read/grep tools bypass rtk.</li></ol></div>
+    <div class="card amber" style="padding:12px 22px"><p style="font-size:16px"><b>Pick by need:</b> best answers → Claude Code + rtk.
+      Lowest tokens with the same gain → Amp + rtk. Droid gains least from rtk on Windows today.</p></div>
+  </div>
+</div>`, "agents/*_results.json · amp/amp_results*.json");
 }
 
 // 18 ─ verdict

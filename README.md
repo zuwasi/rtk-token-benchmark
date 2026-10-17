@@ -19,7 +19,7 @@ How many tokens does [rtk](https://github.com/rtk-ai/rtk) really save? I ran 12 
 
 **Presentation (live):** **https://zuwasi.github.io/rtk-token-benchmark/**
 
-Navigate with the large side arrows, the Home button, the keyboard (arrow keys, Home, End) or a swipe on touch screens. The deck is a single self-contained file, [`presentation.html`](presentation.html), and all 24 slides are also shown as images below.
+Navigate with the large side arrows, the Home button, the keyboard (arrow keys, Home, End) or a swipe on touch screens. The deck is a single self-contained file, [`presentation.html`](presentation.html), and all 25 slides are also shown as images below.
 
 ## Slides
 
@@ -64,14 +64,15 @@ Navigate with the large side arrows, the Home button, the keyboard (arrow keys, 
   </tr>
   <tr>
     <td><img src="shots/slide20.png" alt="Amp results"></td>
-    <td><img src="shots/slide21.png" alt="Agents compared"></td>
+    <td><img src="shots/slide21.png" alt="Agents compared: winner"></td>
   </tr>
   <tr>
-    <td><img src="shots/slide22.png" alt="Verdict"></td>
-    <td><img src="shots/slide23.png" alt="Full results"></td>
+    <td><img src="shots/slide22.png" alt="Agents compared: failures and implications"></td>
+    <td><img src="shots/slide23.png" alt="Verdict"></td>
   </tr>
   <tr>
-    <td colspan="2"><img src="shots/slide24.png" alt="Contact"></td>
+    <td><img src="shots/slide24.png" alt="Full results"></td>
+    <td><img src="shots/slide25.png" alt="Contact"></td>
   </tr>
 </table>
 
@@ -149,6 +150,8 @@ Every agent already limits large tool output (Amp cuts at 50K characters, Claude
 \* One cold-cache rtk run cost $1.41; the other two cost $0.58 and $0.78, against $0.43–0.52 without rtk.
 
 Windows notes: Claude Code also has a PowerShell tool that rtk's Bash hook never sees (disabled for this test). Droid runs hooks without the user PATH, so the hook needs rtk's absolute path, and rewritten `rtk …` commands need an allowlist entry or `--auto high`.
+
+**Winner: Claude Code + rtk**, the only agent with every rtk run at 7/7 (5.7 → 7.0), at the cost of more context. Amp + rtk gained as much accuracy (5.0 → 6.3) with the biggest token cut. Droid gained least (5.0 → 6.0). Slides 21–22 show the charts, what each agent failed on and the practical implications.
 
 This study compares rtk with no tool. It does not compare rtk with other output-compression tools.
 
