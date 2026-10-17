@@ -1,0 +1,150 @@
+//! Compares two files and shows only the changed lines.
+
+use crate::core::guard::never_worse;
+use crate::core::shell::display_args;
+use crate::core::tracking;
+use anyhow::{Context, Result};
+use regex::Regex;
+use std::collections::HashSet;
+use std::fs;
+use std::path::Path;
+use std::sync::LazyLock;
+
+/// A format-patch diffstat body line: ` <path> | <count>[ <+- graph>]`, or the
+/// binary form ` <path> | Bin [<n> -> <m> bytes]`. Anchored on the count-and-
+/// signs right-hand side rather than a bare ` | `, so a commit message's
+/// markdown table (` col | val`, ` --- | ---`) is prose, not a diffstat. The
+/// bare-count form has no graph: a pure rename or mode change stats as `0`.
+static MBOX_DIFFSTAT_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^ .+\| *(?:\d+(?: [-+]+)?|Bin\b.*) *$").unwrap());
+
+/// Column-0 marked shapes a commit message writes: a `- text` / `+ text`
+/// bullet, a rule or table separator (`-`, `--`, `---------`), and a long
+/// option (`--no-stat`) that prose wrapped to the start of a line. Hunk
+/// content carries its marker against the line's own first byte, so a body
+/// line takes one of these shapes only by coincidence: over 111k marked
+/// lines from 698 real diffs, 3.4% are prose-shaped and no whole diff is
+/// entirely so. The long-option arm is what admitting it costs: 4 more of
+/// those 111k lines, and still no whole diff. Wrapping a *short* option
+/// (`-p`) is left out — `-` plus a letter is the commonest diff line there
+/// is, and admitting it would answer the question with "always prose".
+static MARKED_PROSE_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(?:[-+] \S|-+\s*$|--[A-Za-z])").unwrap());
+
+const IDENTICAL_FILES_MESSAGE: &str = "[ok] Files are identical\n";
+
+/// POSIX diff's "trouble" exit code: an operand could not be read at all
+/// (missing, permission denied, is-a-directory). Distinct from 1, which says
+/// the two files differ — the distinction a caller's `if diff a b` relies on.
+const DIFF_EXIT_TROUBLE: i32 = 2;
+
+/// Ultra-condensed diff - only changed lines, no context.
+/// Returns the diff-convention exit code: 0 if identical, 1 if files differ,
+/// 2 if an operand cannot be read.
+pub fn run(file1: &Path, file2: &Path, verbose: u8) -> Result<i32> {
+    let timer = tracking::TimedExecution::start();
+    let command = format!(
+        "diff {}",
+        display_args(&[file1.to_string_lossy(), file2.to_string_lossy()])
+    );
+
+    if verbose > 0 {
+        eprintln!("Comparing: {} vs {}", file1.display(), file2.display());
+    }
+
+    // Read bytes first so non-UTF-8 data is not mistaken for an I/O failure.
+    let (bytes1, bytes2) = match fs::read(file1)
+        .map_err(|error| (file1, error))
+        .and_then(|first| {
+            fs::read(file2)
+                .map(|second| (first, second))
+                .map_err(|error| (file2, error))
+        }) {
+        Ok(contents) => contents,
+        Err((path, error)) => {
+            let message = format!("rtk diff: {}: {}", path.display(), error);
+            eprintln!("{}", message);
+            timer.track(&command, "rtk diff", &message, &message);
+            return Ok(DIFF_EXIT_TROUBLE);
+        }
+    };
+
+    let (content1, content2) = match (std::str::from_utf8(&bytes1), std::str::from_utf8(&bytes2)) {
+        (Ok(first), Ok(second)) => (first, second),
+        _ => {
+            let different = bytes1 != bytes2;
+        }
+}
+enum FileComparison {
+}
+fn compare_files(content1: &str, content2: &str) -> FileComparison {
+    }
+    }
+}
+fn classic_fallback(comparison: &FileComparison) -> String {
+    }
+}
+fn tracking_baseline<'a>(fallback: &'a str, both_files: &'a str, shown: &'a str) -> &'a str {
+    }
+    }
+}
+fn select_file_diff_output<'a>(
+        }
+    }
+}
+fn render_diff(file1: &Path, file2: &Path, comparison: &FileComparison) -> (String, i32) {
+                }
+        }
+        }
+                }
+        }
+    }
+    }
+    }
+    }
+}
+fn count_lines(n: usize) -> String {
+    }
+}
+fn format_megabytes(bytes: usize) -> String {
+}
+fn frame_legend(diff: &DiffResult) -> Option<String> {
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+}
+fn crlf_line_numbers(content: &str) -> Vec<usize> {
+}
+fn describe_invisible_difference(content1: &str, content2: &str) -> String {
+    }
+    }
+    }
+}
+pub fn run_stdin(_verbose: u8) -> Result<()> {
+    use std::io::{self, Read};
+        }
+            use std::io::Write;
+            }
+        }
+    }
+}
+fn condense_stdin(bytes: &[u8]) -> Option<String> {
+    {
+    }
+}
+struct Hunk {
+}
+    fn at(start1: usize, start2: usize) -> Self {
+        }
+    }
+    fn pairs_cross(&self) -> bool {
+    }
+    fn changes(&self) -> Vec<DiffChange<'_>> {
+        }
+                }
+            }
+[7288 more lines]

@@ -1,0 +1,619 @@
+.github/workflows/cd.yml                       |   2 +-
+ .github/workflows/ci.yml                       |  23 +-
+ .github/workflows/release.yml                  |  12 +-
+ Cargo.lock                                     |  78 +--
+ Cargo.toml                                     |   2 +-
+ build.rs                                       |  36 +-
+ docs/TELEMETRY.md                              |   2 +
+ docs/contributing/ARCHITECTURE.md              |   2 +
+ docs/contributing/CODING_PRACTICES.md          |   2 +
+ docs/contributing/TECHNICAL.md                 |   2 +
+ docs/guide/analytics/discover.md               |   2 +
+ docs/guide/analytics/gain.md                   |   2 +
+ docs/guide/getting-started/configuration.md    |   2 +
+ docs/guide/getting-started/installation.md     |   2 +
+ docs/guide/getting-started/quick-start.md      |   2 +
+ docs/guide/getting-started/supported-agents.md |   4 +-
+ docs/guide/index.md                            |   2 +
+ docs/guide/pipelines/commands.md               |   2 +
+ src/cmds/dotnet/dotnet_cmd.rs                  |  83 +++
+ src/cmds/git/git_cmd.rs                        | 115 +++-
+ src/cmds/go/go_cmd.rs                          |  19 +-
+ src/cmds/go/golangci_cmd.rs                    |   4 +-
+ src/cmds/js/bun_cmd.rs                         |   1 +
+ src/cmds/js/deno_cmd.rs                        |   1 +
+ src/cmds/python/uv_cmd.rs                      |  20 +-
+ src/cmds/rust/runner.rs                        |   3 +-
+ src/cmds/system/find_cmd.rs                    |   4 +
+ src/cmds/system/search.rs                      |   5 +-
+ src/cmds/system/summary.rs                     |   4 +-
+ src/core/constants.rs                          |   2 +
+ src/core/runner.rs                             | 372 ++++++++++++-
+ src/core/stream.rs                             |  32 +-
+ src/discover/README.md                         |   3 +
+ src/discover/registry.rs                       | 167 +++++-
+ src/hooks/README.md                            |   2 +
+ src/hooks/permissions.rs                       | 339 +++++++++++-
+ src/lib.rs                                     | 700 ++++++++++++++++++++++---
+ tests/common/mod.rs                            |   6 +
+ tests/help_passthrough_fuzz_test.rs            | 573 ++++++++++++++++++++
+ tests/rewrite_exit_code_test.rs                | 197 +++++++
+ tests/stderr_only_failure_test.rs              |  86 +++
+ tests/windows_stack_reserve_test.rs            |  45 ++
+ 42 files changed, 2777 insertions(+), 185 deletions(-)
+
+Changes:
+
+.github/workflows/cd.yml
+@@ -114,7 +114,7 @@ jobs:
+           private-key: ${{ secrets.APP_PRIVATE_KEY }}
+           permission-contents: write
+           permission-pull-requests: write
+-      - uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1
++      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+         id: release
+         with:
+           token: ${{ steps.app-token.outputs.token }}
+  +1 -1
+
+.github/workflows/ci.yml
+@@ -57,7 +57,7 @@ jobs:
+     needs: fmt
+     runs-on: ubuntu-latest
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+       - uses: dtolnay/rust-toolchain@stable
+       - uses: Swatinem/rust-cache@v2
+       - run: cargo doc --no-deps
+@@ -73,7 +73,7 @@ jobs:
+     runs-on: ubuntu-latest
+     needs: clippy
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+       - uses: dtolnay/rust-toolchain@stable
+         with:
+           components: clippy, rustfmt
+@@ -91,7 +91,7 @@ jobs:
+     runs-on: ubuntu-latest
+     needs: clippy
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+       - uses: dtolnay/rust-toolchain@stable
+         with:
+           components: clippy
+@@ -112,18 +112,31 @@ jobs:
+           echo "Apache-2.0 edition links no BUSL crate."
+ 
+   test:
+-    name: test (${{ matrix.os }})
++    name: test (${{ matrix.os }}${{ matrix.target && format(', {0}', matrix.target) || '' }})
+     needs: clippy
+     runs-on: ${{ matrix.os }}
++    env:
++      # An explicit target on every leg keeps the run command the same. It also puts
++      # each leg in cross mode, where RUSTFLAGS no longer reach build scripts or proc-macros.
++      CARGO_BUILD_TARGET: ${{ matrix.target || 'host-tuple' }}
+     strategy:
+       fail-fast: false
+       matrix:
+-        os: [ubuntu-latest, windows-latest, macos-latest]
++        include:
++          - os: ubuntu-latest
++          - os: windows-latest
++          # Links with MinGW's ld, which link.exe's `/STACK:` spelling breaks (see build.rs).
++          # The runner's host stays msvc, so build.rs also runs with host != target.
++          - os: windows-latest
++            target: x86_64-pc-windows-gnu
++          - os: macos-latest
+     steps:
+       - uses: actions/checkout@v7
+         with:
+           fetch-depth: 0
+       - uses: dtolnay/rust-toolchain@stable
++        with:
++          targets: ${{ matrix.target }}
+       - uses: Swatinem/rust-cache@v2
+         # `--all` is `--workspace`: `rtk` + `engine`. `proxy/` is tested in
+         # its own job, since it is not a member.
+  +18 -5
+
+.github/workflows/release.yml
+@@ -138,7 +138,7 @@ jobs:
+           cd ../../..
+ 
+       - name: Upload rtk-oss artifact
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-oss-${{ matrix.target }}
+           path: rtk-oss-${{ matrix.target }}.${{ matrix.archive }}
+@@ -182,7 +182,7 @@ jobs:
+           cd ../../..
+ 
+       - name: Upload rtk-proxy artifact
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-proxy-${{ matrix.target }}
+           path: rtk-proxy-${{ matrix.target }}.${{ matrix.archive }}
+@@ -217,7 +217,7 @@ jobs:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Checkout
+-        uses: actions/checkout@v4
++        uses: actions/checkout@v7
+ 
+       - name: Install Rust
+         uses: dtolnay/rust-toolchain@stable
+@@ -232,7 +232,7 @@ jobs:
+           RTK_TELEMETRY_TOKEN: ${{ secrets.RTK_TELEMETRY_TOKEN }}
+ 
+       - name: Upload DEB
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-oss-deb
+           path: target/debian/*.deb
+@@ -243,7 +243,7 @@ jobs:
+     container: fedora:latest
+     steps:
+       - name: Checkout
+-        uses: actions/checkout@v4
++        uses: actions/checkout@v7
+ 
+       - name: Install dependencies
+         run: |
+@@ -262,7 +262,7 @@ jobs:
+         run: cargo generate-rpm --variant oss
+ 
+       - name: Upload RPM
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-oss-rpm
+           path: target/generate-rpm/*.rpm
+  +6 -6
+
+Cargo.lock
+@@ -259,6 +259,12 @@ version = "0.8.7"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+ 
++[[package]]
++name = "core_detect"
++version = "1.0.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48"
++
+ [[package]]
+ name = "cpufeatures"
+ version = "0.2.17"
+@@ -421,19 +427,18 @@ checksum = "252afb9ae5eaa683babdc6a068b3f5726eb19e05070c731f9b2a23a7c3e8ed34"
+ 
+ [[package]]
+ name = "encoding_rs"
+-version = "0.8.35"
++version = "0.8.42"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "75030f3c4f45dafd7586dd6780965a8c7e8e285a5ecb86713e63a79c5b2766f3"
++checksum = "8e985e0451871ad22fb8d2b6b076e2028a502a0d3950998c2c5c0a4f9b5d9679"
+ dependencies = [
+  "cfg-if",
++ "core_detect",
++ "multiversion_no_op",
++ "rustversion",
++ "scopeguard",
++ "simdutf8",
+ ]
+ 
+-[[package]]
+-name = "env_home"
+-version = "0.1.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c7f84e12ccf0a7ddc17a6c41c93326024c42920d7ee630d04950e6926645c0fe"
+-
+ [[package]]
+ name = "equivalent"
+ version = "1.0.2"
+@@ -739,9 +744,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "ignore"
+-version = "0.4.25"
++version = "0.4.32"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d3d782a365a015e0f5c04902246139249abf769125006fbe7649e2ee88169b4a"
++checksum = "0b17771570a2b94107741a7b033f19132c2eee21d59d21b24d2ced26500bd66e"
+ dependencies = [
+  "crossbeam-deque",
+  "globset",
+@@ -943,6 +948,12 @@ dependencies = [
+  "windows-sys 0.61.2",
+ ]
+ 
++[[package]]
++name = "multiversion_no_op"
++version = "1.0.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "743fb55ba31b18fb1ecef6bdc9aa2743314978ac084044301a7eee33fb99a20d"
++
+ [[package]]
+ name = "new_debug_unreachable"
+ version = "1.0.6"
+@@ -1272,7 +1283,7 @@ dependencies = [
+  "ureq",
+  "walkdir",
+  "which",
+- "windows-sys 0.59.0",
++ "windows-sys 0.61.2",
+ ]
+ 
+ [[package]]
+@@ -1327,7 +1338,7 @@ dependencies = [
+  "libc",
+  "linux-raw-sys 0.4.15",
+- "windows-sys 0.59.0",
++ "windows-sys 0.52.0",
+ ]
+ 
+ [[package]]
+@@ -1413,9 +1424,9 @@ checksum = "d767eb0aabc880b29956c35734170f26ed551a859dbd361d140cdbeca61ab1e2"
+-version = "1.0.228"
++version = "1.0.229"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e"
++checksum = "4148590afebada386688f18773da617792bf2ef03ffc1e4cbd2b1d45b023e0ba"
+ dependencies = [
+  "serde_core",
+  "serde_derive",
+@@ -1423,22 +1434,22 @@ dependencies = [
+-version = "1.0.228"
++version = "1.0.229"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad"
++checksum = "67dca2c9c51e58a4791a4b1ed58308b39c64224d349a935ab5039aa360942a48"
+ dependencies = [
+  "serde_derive",
+ ]
+ 
+ [[package]]
+ name = "serde_derive"
+-version = "1.0.228"
++version = "1.0.229"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79"
++checksum = "e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+- "syn 2.0.117",
++ "syn 3.0.5",
+ ]
+ 
+ [[package]]
+@@ -1518,6 +1529,12 @@ version = "0.3.8"
++[[package]]
++name = "simdutf8"
++version = "0.1.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e3a9fe34e3e7a50316060351f37187a3f546bce95496156754b601a5fa71b76e"
++
+ [[package]]
+ name = "siphasher"
+ version = "1.0.3"
+@@ -1998,13 +2015,11 @@ dependencies = [
+-version = "8.0.1"
++version = "8.0.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3a824aeba0fbb27264f815ada4cff43d65b1741b7a4ed7629ff9089148c4a4e0"
++checksum = "bae2f2b2b816647a1cab1acc91f5bd20812d53cb344382635ec2181940c8034f"
+ dependencies = [
+- "env_home",
+- "rustix 1.1.4",
+- "winsafe",
++ "libc",
+ ]
+ 
+ [[package]]
+@@ -2106,15 +2121,6 @@ dependencies = [
+-[[package]]
+-name = "windows-sys"
+-version = "0.59.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "1e38bc4d79ed67fd075bcc251a1c39b32a1776bbe92e5bef1f0bf1f8c531853b"
+-dependencies = [
+- "windows-targets",
+-]
+-
+ [[package]]
+ name = "windows-sys"
+ version = "0.61.2"
+@@ -2197,12 +2203,6 @@ dependencies = [
+-[[package]]
+-name = "winsafe"
+-version = "0.0.19"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d135d17ab770252ad95e9a872d365cf3090e3be864a34ab46f48555993efc904"
+-
+ [[package]]
+ name = "wit-bindgen"
+ version = "0.51.0"
+  +39 -39
+
+Cargo.toml
+@@ -93,7 +93,7 @@ crossterm = "0.28"
+-windows-sys = { version = "0.59", features = [
++windows-sys = { version = "0.61", features = [
+     "Win32_System_Console",
+     "Win32_Globalization",
+ ] }
+  +1 -1
+
+build.rs
+@@ -2,15 +2,35 @@ use std::collections::HashSet;
+-fn main() {
+-    #[cfg(windows)]
+-    {
+-        // Clap + the full command graph can exceed the default 1 MiB Windows
+-        // main-thread stack during process startup. Reserve a larger stack for
+-        // the CLI binary so `rtk.exe --version`, `--help`, and hook entry
+-        // points start reliably without requiring ad-hoc RUSTFLAGS.
+-        println!("cargo:rustc-link-arg=/STACK:8388608");
++/// Reserve a larger main-thread stack for Windows targets.
++///
++/// Clap + the full command graph can exceed the default 1 MiB Windows stack
++/// during process startup, so `rtk.exe --version`, `--help`, and the hook entry
++/// points need the headroom to start reliably without ad-hoc RUSTFLAGS.
++///
++/// Two things here are deliberately keyed off the **target**, not the host:
++/// `CARGO_CFG_TARGET_OS` (a `#[cfg(windows)]` here would describe the machine
++/// running the build, so cross-compiling to Windows from Linux would silently
++/// skip the flag), and the flag syntax itself — `link.exe` takes `/STACK:`
++/// while the MinGW `ld` behind `x86_64-pc-windows-gnu` only understands
++/// `--stack`, and feeding it `/STACK:` makes it look for a file by that name.
++/// Only `msvc` needs its own spelling: `gnu` (gnullvm reports it too) links
++/// through a gcc or clang driver that takes `-Wl,--stack`, and that is also what
++/// an environment the match does not name gets.
++fn set_windows_stack_size() {
++    if std::env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {
++        return;
+     }
++    const STACK_BYTES: usize = 8 * 1024 * 1024;
++    let arg = match std::env::var("CARGO_CFG_TARGET_ENV").as_deref() {
++        Ok("msvc") => format!("/STACK:{STACK_BYTES}"),
++        _ => format!("-Wl,--stack,{STACK_BYTES}"),
++    };
++    println!("cargo:rustc-link-arg={arg}");
++}
++
++fn main() {
++    set_windows_stack_size();
+ 
+     check_cmds_modules_declared();
+ 
+  +28 -8
+
+docs/TELEMETRY.md
+@@ -189,3 +189,5 @@ When adding new fields:
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/contributing/ARCHITECTURE.md
+@@ -985,3 +985,5 @@ strip = true           # Remove debug symbols
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/contributing/CODING_PRACTICES.md
+@@ -184,3 +184,5 @@ RTK executes shell commands on behalf of the user, so security is a first-class
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/contributing/TECHNICAL.md
+@@ -442,3 +442,5 @@ tests/
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/guide/analytics/discover.md
+@@ -58,3 +58,5 @@ Average coverage: 95.0%
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/guide/analytics/gain.md
+@@ -328,3 +328,5 @@ enc = tiktoken.get_encoding('cl100k_base')
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/guide/getting-started/configuration.md
+@@ -223,3 +223,5 @@ rtk untrust    # revokes trust
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/guide/getting-started/installation.md
+@@ -159,3 +159,5 @@ cargo uninstall rtk         # remove binary (if installed via Cargo)
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/guide/getting-started/quick-start.md
+@@ -122,3 +122,5 @@ rtk bypass make install
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/guide/getting-started/supported-agents.md
+@@ -196,7 +196,7 @@ Plugin in the `openclaw/` directory. Uses the `before_tool_call` hook, delegates
+-A command matching a `permissions.deny` rule in those same Claude Code settings files is still refused, and the plugin blocks the tool call — naming the host only relaxes a *default* ask. As in Claude Code, a rule matches the command as written rather than every way of invoking the program (`Bash(git push *)` does not stop `git -C . push`), so a deny rule is not a security boundary. A command matching a `permissions.ask` rule you wrote still prompts when RTK rewrites it, because RTK keeps returning exit 3 for it. Commands containing a command substitution or a redirect to a file are never rewritten, on any host.
++A command matching a `permissions.deny` rule in those same Claude Code settings files is still refused, and the plugin blocks the tool call — naming the host only relaxes a *default* ask. As in Claude Code, a deny or ask rule matches the command as written and the command behind any leading assignment or wrapper (`HUSKY=0`, `timeout 30`, `nohup`, `command`, ...), each layer in turn, but not every way of invoking the program (`Bash(git push *)` does not stop `git -C . push` or `env -i git push`), so a deny rule is not a security boundary. Allow rules match the command as written. A command matching a `permissions.ask` rule you wrote still prompts when RTK rewrites it, because RTK keeps returning exit 3 for it. Commands containing a command substitution or a redirect to a file are never rewritten, on any host.
+ 
+ The exec tool's own checks see the rewritten command. OpenClaw carries hook adjustments forward into the parameters passed to the exec tool, so `tools.exec.mode`, `tools.exec.security`, `tools.exec.ask` and the exec-approvals allowlist are all matched against `rtk git push`, not `git push`; write those rules against the `rtk` form. That was already true before the permission change. A trusted tool policy (`api.registerTrustedToolPolicy(...)`) is the exception: OpenClaw runs trusted policies before ordinary `before_tool_call` hooks, so one of those still sees the original command.
+ 
+@@ -357,3 +357,5 @@ Or exclude commands permanently in `~/.config/rtk/config.toml`:
++
++<!-- benchmark scratch note -->
+  +3 -1
+
+docs/guide/index.md
+@@ -79,3 +79,5 @@ Two optional layers sit on top of the hooks. Neither changes anything until you
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+docs/guide/pipelines/commands.md
+@@ -264,3 +264,5 @@ The continuous counterpart lives in `rtk gain`: a per-mechanism efficiency secti
++
++<!-- benchmark scratch note -->
+  +2 -0
+
+src/cmds/dotnet/dotnet_cmd.rs
+@@ -39,6 +39,9 @@ pub fn run_restore(args: &[String], verbose: u8) -> Result<i32> {
++    if let Some(forwarded) = help_forward("format", args) {
++        return run_passthrough(&forwarded, verbose);
++    }
+     let tokens = tokenize_dotnet_args(args);
+     let timer = tracking::TimedExecution::start();
+     let (report_path, cleanup_report_path) = resolve_format_report_path(&tokens);
+@@ -74,6 +77,19 @@ pub fn run_format(args: &[String], verbose: u8) -> Result<i32> {
++/// The subcommand RTK routed on, then the caller's own arguments: what the child would
++/// have seen without the binlog injection.
++fn help_forward(subcommand: &str, args: &[String]) -> Option<Vec<OsString>> {
++    crate::core::runner::requests_help_args("dotnet", args)
++        .then(|| forwarded_dotnet_args(subcommand, args))
++}
++
++fn forwarded_dotnet_args(subcommand: &str, args: &[String]) -> Vec<OsString> {
++    let mut out = vec![OsString::from(subcommand)];
++    out.extend(args.iter().map(OsString::from));
++    out
++}
++
+ pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+     if args.is_empty() {
+         anyhow::bail!("dotnet: no subcommand specified");
+@@ -109,6 +125,12 @@ pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
++    // Forwarded clean rather than left to the guard in stream::capture: by then RTK has
++    // injected `-bl:<tmp>.binlog`, and an injected flag can change what a tool prints for
++    // help -- git's `--no-pager` turns its man page into a one-screen usage (#4198).
++    if let Some(forwarded) = help_forward(subcommand, args) {
++        return run_passthrough(&forwarded, verbose);
++    }
+     let tokens = tokenize_dotnet_args(args);
+     let timer = tracking::TimedExecution::start();
+     let binlog_path = build_binlog_path(subcommand);
+@@ -1458,7 +1480,68 @@ fn format_restore_output(
++    #[test]
++    fn dotnet_routes_a_usage_request_to_the_unfiltered_path() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        let route = |sub: &str, a: &[&str]| {
++            super::help_forward(sub, &owned(a)).map(|v| {
++                v.iter()
++                    .map(|o| o.to_string_lossy().into_owned())
++                    .collect::<Vec<_>>()
++            })
++        };
++        assert_eq!(
++            route("build", &["--help"]),
++            Some(vec!["build".into(), "--help".into()])
++        );
++        assert_eq!(
++            route("format", &["-?"]),
++            Some(vec!["format".into(), "-?".into()])
++        );
++        assert_eq!(route("test", &["/?"]).map(|v| v.len()), Some(2));
++        assert_eq!(route("build", &["-c", "Release"]), None);
++        assert_eq!(route("test", &[]), None);
++    }
++
+     use super::*;
++
++    /// dotnet is not installed on every runner, so the argv the help guard forwards is
++    /// pinned here rather than only through the integration test, which skips absent tools.
++    #[test]
++    fn forwarded_dotnet_args_keeps_the_subcommand_rtk_routed_on() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        let argv = |sub: &str, args: &[&str]| -> Vec<String> {
++            forwarded_dotnet_args(sub, &owned(args))
++                .iter()
++                .map(|a| a.to_string_lossy().into_owned())
++                .collect()
++        };
++        assert_eq!(argv("format", &["--help"]), vec!["format", "--help"]);
++        assert_eq!(argv("build", &["-?"]), vec!["build", "-?"]);
++        assert_eq!(argv("test", &["/?"]), vec!["test", "/?"]);
++    }
++
++    /// The MSBuild spellings, which a POSIX scan reads as a cluster or a path.
++    #[test]
++    fn dotnet_help_is_recognised_in_every_spelling() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        for form in [
++            vec!["build", "--help"],
++            vec!["build", "-h"],
++            vec!["build", "-?"],
++            vec!["build", "/?"],
++            vec!["test", "-?"],
++        ] {
++            assert!(
++                crate::core::runner::requests_help_args("dotnet", &owned(&form)),
++                "{form:?}"
++            );
++        }
++        assert!(!crate::core::runner::requests_help_args(
++            "dotnet",
++            &owned(&["build", "-c", "Release"])
++        ));
++    }
+     use crate::core::test_isolation;
+     use crate::dotnet_format_report;
+     use std::fs;
+  +83 -0
+
+src/cmds/git/git_cmd.rs
+@@ -7,7 +7,7 @@ use crate::core::runner::{self, RunOptions};
+-    exec_capture_stdin,
++    exec_capture_stdin, exec_capture_unguarded,
+ };
+ use crate::core::tracking;
+ use crate::core::truncate::{CAP_LIST, CAP_WARNINGS};
+@@ -34,6 +34,46 @@ pub enum GitCommand {
++impl GitCommand {
++    /// The word git expects, for rebuilding the argv clap took apart.
++    fn git_name(&self) -> &'static str {
++        match self {
++            GitCommand::Diff => "diff",
++            GitCommand::Log => "log",
++            GitCommand::Status => "status",
++            GitCommand::Show => "show",
++            GitCommand::Add => "add",
++            GitCommand::Commit => "commit",
++            GitCommand::Checkout => "checkout",
++            GitCommand::Push => "push",
++            GitCommand::Pull => "pull",
++            GitCommand::Branch => "branch",
++            GitCommand::Fetch => "fetch",
++            GitCommand::Stash { .. } => "stash",
++            GitCommand::Worktree => "worktree",
++        }
++    }
++}
++
++/// What git would have seen: the caller's own globals, the subcommand clap matched, the
++/// stash subcommand clap carved out of the trailing args, then the rest.
++fn help_passthrough_argv(
++    cmd: &GitCommand,
++    args: &[String],
++    global_args: &[String],
++) -> Vec<OsString> {
+
+... (more changes truncated)
+  +29 -1
+[full diff: rtk git diff --no-compact]

@@ -1,0 +1,22 @@
+* develop...origin/develop
+M  docs/TELEMETRY.md
+M  docs/contributing/ARCHITECTURE.md
+ M docs/contributing/CODING_PRACTICES.md
+ M docs/contributing/TECHNICAL.md
+ M docs/guide/analytics/discover.md
+ M docs/guide/analytics/gain.md
+ M docs/guide/getting-started/configuration.md
+ M docs/guide/getting-started/installation.md
+ M docs/guide/getting-started/quick-start.md
+ M docs/guide/getting-started/supported-agents.md
+ M docs/guide/index.md
+ M docs/guide/pipelines/commands.md
+?? bench_scratch/
+?? bench_untracked_1.txt
+?? bench_untracked_2.txt
+?? bench_untracked_3.txt
+?? bench_untracked_4.txt
+?? bench_untracked_5.txt
+?? bench_untracked_6.txt
+?? bench_untracked_7.txt
+?? bench_untracked_8.txt

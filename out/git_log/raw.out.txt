@@ -1,0 +1,557 @@
+commit f16becacd2f40616839333b3e0e281e40a0bc823
+Merge: 5eb0509 b7d9f5d
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 19:37:26 2026 +0200
+
+    Merge pull request #4203 from Protocol-zero-0/chore/rewrite-exit-code-regression-test
+    
+    test(hook): pin exit codes across rtk rewrite (#3492)
+
+commit b7d9f5d00fc1ac94b9f477e77c6fbe5170b9ddbb
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 02:08:45 2026 +0200
+
+    test(hook): probe the ls exit code, cover a clean git diff, isolate the python probe
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 5eb0509690a6f0110bb9bdd453fcf75c480e0d05
+Merge: 0508e11 8850505
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:58:08 2026 +0200
+
+    Merge pull request #3613 from rhishi99/fix/build-mingw-stack-arg
+    
+    fix(build): send the MinGW linker --stack, not MSVC's /STACK:
+
+commit 0508e11297c1bb55677b1e74261910346e9d1654
+Merge: 780151e 01af0d9
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:49:28 2026 +0200
+
+    Merge pull request #4575 from rtk-ai/dependabot/github_actions/develop/googleapis/release-please-action-5.0.0
+    
+    chore(deps): bump googleapis/release-please-action from 4.4.1 to 5.0.0
+
+commit 780151ee1f58b9aaa26901f42462342186b0abec
+Merge: 18c0492 51547ba
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:48:45 2026 +0200
+
+    Merge pull request #4574 from rtk-ai/dependabot/github_actions/develop/actions/checkout-7
+    
+    chore(deps): bump actions/checkout from 4 to 7
+
+commit 18c049240776414dd8daa4619ade2260927340c6
+Merge: 4701ff7 07b5c1f
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:45:58 2026 +0200
+
+    Merge pull request #4573 from rtk-ai/dependabot/github_actions/develop/actions/upload-artifact-7
+    
+    chore(deps): bump actions/upload-artifact from 4 to 7
+
+commit 4701ff7826685adeedde663e4f375e9d915cfd7d
+Merge: 4f12b01 25cc7c7
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:44:55 2026 +0200
+
+    Merge pull request #4476 from rtk-ai/dependabot/cargo/develop/which-8.0.6
+    
+    chore(deps): bump which from 8.0.1 to 8.0.6
+
+commit 4f12b018fb4a39c911af25423d63b44ca61c465e
+Merge: 263cb43 51a659a
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:43:51 2026 +0200
+
+    Merge pull request #4348 from rtk-ai/fix/helper-flags
+    
+    fix(cli): hand -h, --help and help to the tool each subcommand wraps
+
+commit 25cc7c78d25359129ba841d32d607c37d12da21f
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Wed Oct 14 23:20:13 2026 +0000
+
+    chore(deps): bump which from 8.0.1 to 8.0.6
+    
+    Bumps [which](https://github.com/harryfei/which-rs) from 8.0.1 to 8.0.6.
+    - [Release notes](https://github.com/harryfei/which-rs/releases)
+    - [Changelog](https://github.com/harryfei/which-rs/blob/master/CHANGELOG.md)
+    - [Commits](https://github.com/harryfei/which-rs/compare/8.0.1...8.0.6)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: which
+      dependency-version: 8.0.6
+      dependency-type: direct:production
+      update-type: version-update:semver-patch
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 263cb43598d7dcbdaf94aa2383e543e5cbae91c3
+Merge: 2bcc599 17cf0cd
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:18:16 2026 +0200
+
+    Merge pull request #4475 from rtk-ai/dependabot/cargo/develop/windows-sys-0.61.2
+    
+    chore(deps): bump windows-sys from 0.59.0 to 0.61.2
+
+commit 2bcc59968e58b8a2450f6c346da0dfe0b483139b
+Merge: 26fc9f2 b465def
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 01:17:41 2026 +0200
+
+    Merge pull request #4284 from rtk-ai/fix/4281-gate-peel
+    
+    fix(permissions): match deny and ask rules past assignments and wrappers (#4281)
+
+commit 17cf0cd0b079e2cc655aea4f06697339a160b323
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Wed Oct 14 22:54:50 2026 +0000
+
+    chore(deps): bump windows-sys from 0.59.0 to 0.61.2
+    
+    Bumps [windows-sys](https://github.com/microsoft/windows-rs) from 0.59.0 to 0.61.2.
+    - [Release notes](https://github.com/microsoft/windows-rs/releases)
+    - [Commits](https://github.com/microsoft/windows-rs/commits)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: windows-sys
+      dependency-version: 0.61.2
+      dependency-type: direct:production
+      update-type: version-update:semver-minor
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 26fc9f26b1c3520876a925a6b39a87db776f5ffa
+Merge: 8cc08be 4790d64
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 00:53:06 2026 +0200
+
+    Merge pull request #4474 from rtk-ai/dependabot/cargo/develop/encoding_rs-0.8.42
+    
+    chore(deps): bump encoding_rs from 0.8.35 to 0.8.42
+
+commit 8cc08beadbf98a22232347ae9867ee4dc3bee8b2
+Merge: 4d239eb 1d2a6ba
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 00:46:09 2026 +0200
+
+    Merge pull request #4473 from rtk-ai/dependabot/cargo/develop/ignore-0.4.33
+    
+    chore(deps): bump ignore from 0.4.25 to 0.4.32
+
+commit 4d239eb9dfe921d5387d606a3a83de333c3c9083
+Merge: 5db646b 11d0c4d
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 00:45:33 2026 +0200
+
+    Merge pull request #4472 from rtk-ai/dependabot/cargo/develop/serde-1.0.229
+    
+    chore(deps): bump serde from 1.0.228 to 1.0.229
+
+commit b465deff87c8a35173fd5f80581b8354e8ae6aab
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Sat Sep 26 19:50:09 2026 +0200
+
+    fix(permissions): match deny and ask rules past assignments and wrappers (#4281)
+    
+    Claude Code matches a deny or ask rule past any leading assignment and past a
+    fixed set of wrappers — `timeout`, `time`, `nice`, `nohup`, `stdbuf`,
+    `command`, `builtin`, `noglob` and a bare `xargs` — so `Bash(git push *)` stops
+    `HUSKY=0 git push` and `timeout 30 git push` as well as `git push`. RTK's gate
+    matched the segment as written and nothing else, so every one of those forms
+    fell through to Default; under a host that treats Default as its own decision,
+    as #3909's OpenClaw does, they auto-apply.
+    
+    The rewrite already looked through the same prefixes: `timeout 30 git push`
+    became `timeout 30 rtk git push` while the gate did not recognise `git push`
+    inside it. That was two readings of which command a line runs, and the gap
+    between them is this bug. The deny and ask loops now also try every reading
+    `matching_readings` gives: the rewrite's own peels — its env peel, its keyword
+    prefixes, its wrapper table — applied one prefix at a time, each assignment and
+    each `env` word a prefix of its own, each intermediate command kept. Where both
+    look through a prefix, the gate and the rewrite now read the same command
+    behind it, and a rule may name any layer: `HUSKY=0 git push *` stops
+    `env HUSKY=0 git push`, and `nohup HUSKY=0 git push` too, where denying is
+    stricter than the shell, since nohup looks for a program named `HUSKY=0`. The
+    readings start after the split's leftover grammar is gone, since
+    `{ HUSKY=0 git push; }` reaches the gate as `{ HUSKY=0 git push`. They are
+    computed once per segment, not once per rule, and stop after 32 prefixes; past
+    that the command behind them is unread, so where a deny or ask rule exists the
+    verdict is at least Ask and an allow rule on the outer wrapper cannot answer for
+    it. With no deny or ask rule, none of this is read.
+    
+    Two wrappers the host strips were not in the rewrite's table, for a reason that
+    still holds: `stdbuf` exists to unbuffer the wrapped command's output, which
+    routing through rtk would buffer, and `xargs` runs whatever it is handed.
+    Recognising a command is not the same decision as rewriting it, so they sit in
+    a match-only table the rewrite never consults. `xargs` is peeled only in its
+    bare form, as the host does; any option makes the wrapper grammar give up.
+    
+    The line is drawn at the shell. `env`, `exec` and `nocorrect` are peeled too,
+    though the host's list stops short of them; each runs the next word as the
+    command. A program's own arguments are not: `git -C . push` stays `git`, as the
+    host documents, since reading past it would mean knowing every program's option
+    grammar.
+    
+    Allow is deliberately left as it was. The host matches allow past known-safe
+    variables only, and peeling a wrapper for it would let `timeout 30 <cmd>`
+    inherit `<cmd>`'s allow rule — so the peel can only make a verdict stricter.
+    
+    The gate reads prefixes with the rewrite's own peels, so it stops where they
+    stop; there it reads the command as before, so no verdict is looser than it
+    was. A line setting more than 32 variables before its command now prompts
+    where a deny or ask rule exists.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 5db646b340a04312a8a81e85ddad1e9834526184
+Merge: f53e603 362c6f7
+Author: Nicolas Le Cam <niko.lecam@gmail.com>
+Date:   Thu Oct 15 00:39:32 2026 +0200
+
+    Merge pull request #4148 from KuSh/fix/4117-followup-log-probe
+    
+    fix(git): only announce the log cap on a walk git ran, and count it right
+
+commit 01af0d981e2107bbe5f37a5c22c71a89f71de8a2
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Wed Oct 14 19:46:27 2026 +0000
+
+    chore(deps): bump googleapis/release-please-action from 4.4.1 to 5.0.0
+    
+    Bumps [googleapis/release-please-action](https://github.com/googleapis/release-please-action) from 4.4.1 to 5.0.0.
+    - [Release notes](https://github.com/googleapis/release-please-action/releases)
+    - [Changelog](https://github.com/googleapis/release-please-action/blob/main/CHANGELOG.md)
+    - [Commits](https://github.com/googleapis/release-please-action/compare/5c625bfb5d1ff62eadeeb3772007f7f66fdcf071...45996ed1f6d02564a971a2fa1b5860e934307cf7)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: googleapis/release-please-action
+      dependency-version: 5.0.0
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 51547bab2ea4cc44012e9bd9e32a49d6b9b871d2
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Wed Oct 14 19:46:01 2026 +0000
+
+    chore(deps): bump actions/checkout from 4 to 7
+    
+    Bumps [actions/checkout](https://github.com/actions/checkout) from 4 to 7.
+    - [Release notes](https://github.com/actions/checkout/releases)
+    - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+    - [Commits](https://github.com/actions/checkout/compare/v4...v7)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/checkout
+      dependency-version: '7'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 07b5c1fb71ef90c5c6651e4cfe5597f323dcbab8
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Wed Oct 14 19:43:58 2026 +0000
+
+    chore(deps): bump actions/upload-artifact from 4 to 7
+    
+    Bumps [actions/upload-artifact](https://github.com/actions/upload-artifact) from 4 to 7.
+    - [Release notes](https://github.com/actions/upload-artifact/releases)
+    - [Commits](https://github.com/actions/upload-artifact/compare/v4...v7)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/upload-artifact
+      dependency-version: '7'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 51a659aebe4814b360d73ff1e2117aeed9a7df40
+Merge: 151c759 4f51c44
+Author: Adrien EPPLING <adrieneppling@gmail.com>
+Date:   Wed Oct 14 18:02:03 2026 +0200
+
+    Merge remote-tracking branch 'origin/fix/helper-flags' into fix/helper-flags
+
+commit 151c7590706bcc15dbda1634fa482886ea25e841
+Merge: 4ef06a6 f53e603
+Author: Adrien EPPLING <adrieneppling@gmail.com>
+Date:   Wed Oct 14 18:01:00 2026 +0200
+
+    Merge branch 'develop' into fix/helper-flags
+    
+    develop moved the whole CLI out of `src/main.rs` into `src/lib.rs` behind
+    `rtk::entry()`, so the help guard work had to be ported onto the library:
+    `rtk_command`, `release_meta_flags`, `forwards_to_native_tool`,
+    `try_parse_cli_from` and the k8s alias helpers now live there, and
+    `run_cli` parses through `try_parse_cli_from` as before.
+    
+    Two resolutions worth naming:
+    
+    `RTK_META_COMMANDS` takes develop's five new entries (llm-proxy, pipeline,
+    methods, tasks, plugins) alongside `test` and `format`. Both of the latter
+    use trailing_var_arg, so the bad-flag loop skips them.
+    
+    `proxy` is now a clap alias on `Bypass` rather than a subcommand of its own,
+    so the help test looks a node up by name or alias instead of by name alone.
+    
+    Verified: 4296 tests pass, clippy clean, and 24 behaviour checks hold on the
+    merged tree. Wrapped tools answer their own `-h` (cargo, git, npm, go,
+    docker, kubectl, pytest, vitest), RTK's own commands keep RTK's help
+    (develop's five new ones included), and filtering is unchanged.
+    
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+
+commit f53e60337eacf9f300801c4622dc711bd56d8abb
+Merge: 3257b0a 4a583f8
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Wed Oct 14 12:38:40 2026 +0200
+
+    Merge pull request #4563 from rtk-ai/fix/proxy-bind-env
+    
+    fix(proxy): honour RTK_PROXY_BIND in `llm-proxy start` and the agent launchers
+
+commit 4a583f8fa05147bbba28078e03556869c6c396e3
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Wed Oct 14 11:03:16 2026 +0200
+
+    fix(proxy): honour RTK_PROXY_BIND in `llm-proxy start` and the agent launchers
+    
+    The daemon and `rtk llm-proxy status` read RTK_PROXY_BIND, but
+    `rtk llm-proxy start`, `rtk claude` (and the other launchers) and the
+    `rtk gain` hint still used 127.0.0.1:8080. With another service on 8080,
+    `start` failed and `rtk claude` waited 15 s, then ran the agent unproxied.
+    All three now use the configured address; an explicit `--bind` still wins.
+    
+    The SessionStart hook that `rtk init -g` registers now restarts the
+    daemon on the port the session's ANTHROPIC_BASE_URL points at, so it
+    cannot start it on a different port than Claude Code is calling.
+    
+    After `rtk llm-proxy start --bind <addr>`, the instructions now include
+    `export RTK_PROXY_BIND=<addr>`, without which `status` and `rtk claude`
+    look for the daemon on the default port.
+    
+    Fixes #4556
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 3257b0acb37bf9d6a6d8ad78110816bf80caff50
+Merge: 8157d4d 2d352df
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Wed Oct 14 10:55:50 2026 +0200
+
+    Merge pull request #4561 from rtk-ai/fix/gain-share-hint-oss
+    
+    fix(gain): only suggest `rtk pipeline share` where the command exists
+
+commit 2d352dfcf8f622e7c65f636b09ac1bda7de0a127
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Wed Oct 14 10:42:54 2026 +0200
+
+    fix(gain): only suggest `rtk pipeline share` where the command exists
+    
+    The Apache-2.0 edition is built without the pipeline engine, so it has no
+    `rtk pipeline` command, yet `rtk gain` and `rtk gain --watch` still told
+    its users to run `rtk pipeline share`. The hint now shows only in builds
+    that have the command, and the dashboard drops the empty panel.
+    
+    Fixes #4557
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 8157d4dcdc3c011f6251de2c972ff6ef8006df7b
+Merge: 799ee99 e81575a
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 21:43:06 2026 +0200
+
+    Merge pull request #4552 from rtk-ai/ci/proxy-musl-sqlite-vec
+    
+    ci(release): fix the rtk-proxy build on x86_64-unknown-linux-musl
+
+commit e81575aa28d45b189f3bb7b8351b889aa252442c
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 21:38:34 2026 +0200
+
+    ci(release): fix the rtk-proxy build on x86_64-unknown-linux-musl
+    
+    sqlite-vec 0.1.9, linked through icm-store, declares uint8_t, uint16_t and
+    uint64_t from the BSD u_int*_t names, which musl does not provide. Define
+    them to the C99 types for that target so the daemon compiles there like
+    on every other target.
+    
+    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+
+commit 11d0c4d57340fe45a0ae21902e2a0ffacdb27e2f
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Tue Oct 13 19:21:34 2026 +0000
+
+    chore(deps): bump serde from 1.0.228 to 1.0.229
+    
+    Bumps [serde](https://github.com/serde-rs/serde) from 1.0.228 to 1.0.229.
+    - [Release notes](https://github.com/serde-rs/serde/releases)
+    - [Commits](https://github.com/serde-rs/serde/compare/v1.0.228...v1.0.229)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: serde
+      dependency-version: 1.0.229
+      dependency-type: direct:production
+      update-type: version-update:semver-patch
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 1d2a6ba7b9b63e98f3577fdea2ac2b126ec38fe7
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Tue Oct 13 19:21:17 2026 +0000
+
+    chore(deps): bump ignore from 0.4.25 to 0.4.32
+    
+    Bumps [ignore](https://github.com/BurntSushi/ripgrep) from 0.4.25 to 0.4.32.
+    - [Release notes](https://github.com/BurntSushi/ripgrep/releases)
+    - [Changelog](https://github.com/BurntSushi/ripgrep/blob/master/CHANGELOG.md)
+    - [Commits](https://github.com/BurntSushi/ripgrep/compare/ignore-0.4.25...ignore-0.4.32)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: ignore
+      dependency-version: 0.4.33
+      dependency-type: direct:production
+      update-type: version-update:semver-patch
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 4790d64dcb9bafb4d40f4a7d521a3c2087ebc89b
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Tue Oct 13 19:21:16 2026 +0000
+
+    chore(deps): bump encoding_rs from 0.8.35 to 0.8.42
+    
+    Bumps [encoding_rs](https://github.com/hsivonen/encoding_rs) from 0.8.35 to 0.8.42.
+    - [Commits](https://github.com/hsivonen/encoding_rs/compare/v0.8.35...v0.8.42)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: encoding_rs
+      dependency-version: 0.8.42
+      dependency-type: direct:production
+      update-type: version-update:semver-patch
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 799ee990974d46f5507552113a39be36f37f41e6
+Merge: ffa5651 2b96061
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 21:18:29 2026 +0200
+
+    Merge pull request #4550 from rtk-ai/feat/v1.0
+    
+    feat!: RTK v1.0 — pipelines and LLM proxy
+
+commit 2b96061bf6795f5ea22327770fab933c392b0b16
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 21:01:20 2026 +0200
+
+    fix(hooks): pipeline hook rules act on Claude Code only; the shared hook core is develop's again
+    
+    decision.rs, rewrite_cmd.rs, hook_check.rs and the OpenCode, Pi, Hermes and
+    OpenClaw plugins are back to develop. Claude Code's hook consults the
+    pipeline from its own module (hook_cmd/claude_pipeline.rs, engine only)
+    before the 0.x flow: deny, route and answer block with their message, a
+    swap is only offered where develop would rewrite and always asks, and
+    with no pipeline file the hook is unchanged. `rtk rewrite` no longer
+    prints anything at exit 2.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 45d6ba7fb99bb232c2678b8de0b0565cd5f278ed
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 20:27:54 2026 +0200
+
+    fix(pipeline): route before an edit is refused; the hook load rejects tasks named after real commands; a blank message keeps a reason
+    
+    - `route` at hook.before_tool.edit is E005. The hand-over sent the edit to a
+      `generate` task, which rewrote the whole target from a spec and the
+      reference alone. A route at `any` no longer hands an Edit to `generate`.
+    - The hook-path load applies the same reserved-command check as `validate`
+      and `pipeline add`, so a `[task.make]` file is dropped there too instead
+      of routing a command to `rtk make`, which runs make.
+    - An empty or blank `message` on a deny or route falls back to the default
+      text, so no host ever receives an empty block reason.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit e61317a166111a75ff1d94ee40492c992a9fb8b9
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 20:00:54 2026 +0200
+
+    fix(release): one release and one v-tag for every crate
+    
+    release-please releases the root package only, with tags kept as
+    v<version>. The workspace members (engine, plugin, text) follow it as the
+    Rust strategy bumps them; proxy/ is listed as an extra file. A per-crate
+    setup would have published five releases with component tags, which the
+    installers, Homebrew and winget cannot resolve.
+    
+    Also: the secret scanner's sk- label names no vendor, and the editions
+    page uses the same install script URL as the README.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 07772084299adefd4c0592a43d97fb36d4e9bb3c
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 19:25:35 2026 +0200
+
+    chore: drop BREAKING_CHANGES.md and the release simulation script
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit a37906780bdb0b546691575e031f0d7750394805
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 19:13:59 2026 +0200
+
+    chore: contributor tooling
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 83d8201c21f2d29928de7f089ee74720fc2584a0
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 19:13:59 2026 +0200
+
+    chore: release config, CI, packaging
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit e8045ce5a20508cfb9d6ca1b97237042f90e9f79
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 19:13:58 2026 +0200
+
+    docs: v1 guide, pipelines, proxy
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 380a804b1f343eddec0710c375066e664aad8b75
+Author: aesoft <43991222+aeppling@users.noreply.github.com>
+Date:   Tue Oct 13 19:13:57 2026 +0200
+
+    feat(hooks): agent plugins honour pipeline block and route
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

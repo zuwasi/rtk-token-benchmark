@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+rtk-bin/
+rtk.zip
+repo/
+tokenizers/
+work/
+claude-tok/node_modules/
+out/claude_manifest.json
+amp/runs/
+amp/bench.log
+amp/bench*.log
+amp/amp_results.partial.json

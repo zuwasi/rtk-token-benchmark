@@ -1,0 +1,672 @@
+src\discover\rules.rs:13:    pub fn producer_safe(self) -> bool {
+src\discover\rules.rs:17:    pub fn final_safe(self) -> bool {
+src\parser\mod.rs:32:    pub fn unwrap(self) -> T {
+src\parser\mod.rs:42:    pub fn tier(&self) -> u8 {
+src\parser\mod.rs:52:    pub fn is_ok(&self) -> bool {
+src\parser\mod.rs:58:    pub fn map<U, F>(self, f: F) -> ParseResult<U>
+src\parser\mod.rs:71:    pub fn warnings(&self) -> Vec<String> {
+src\parser\mod.rs:104:pub fn truncate_passthrough(output: &str) -> String {
+src\parser\mod.rs:110:pub fn truncate_output(output: &str, max_chars: usize) -> String {
+src\parser\mod.rs:126:pub fn emit_degradation_warning(tool: &str, reason: &str) {
+src\parser\mod.rs:131:pub fn emit_passthrough_warning(tool: &str, reason: &str) {
+src\parser\mod.rs:145:pub fn extract_json_object(input: &str) -> Option<&str> {
+src\discover\report.rs:23:    pub fn as_str(&self) -> &'static str {
+src\discover\report.rs:60:    pub fn detect() -> Self {
+src\discover\report.rs:152:    pub fn total_saveable_tokens(&self) -> usize {
+src\discover\report.rs:159:    pub fn total_supported_count(&self) -> usize {
+src\discover\report.rs:165:pub fn format_text(report: &DiscoverReport, limit: usize, verbose: bool) -> String {
+src\discover\report.rs:334:pub fn format_json(report: &DiscoverReport) -> String {
+src\parser\formatter.rs:19:    pub fn from_verbosity(verbosity: u8) -> Self {
+src\discover\registry.rs:35:pub fn category_avg_tokens(category: &str, subcmd: &str) -> usize {
+src\discover\registry.rs:187:pub fn classify_command(cmd: &str) -> Classification {
+src\discover\registry.rs:355:pub fn has_heredoc(cmd: &str) -> bool {
+src\discover\registry.rs:361:pub fn split_command_chain(cmd: &str) -> Vec<&str> {
+src\discover\registry.rs:600:pub fn prefix_contains_rtk_disabled(prefix_part: &str) -> bool {
+src\discover\registry.rs:622:pub fn strip_disabled_prefix_for_analytics(cmd: &str) -> (&str, &str) {
+src\discover\registry.rs:675:pub fn cmd_has_rtk_disabled_prefix(cmd: &str) -> bool {
+src\discover\registry.rs:683:pub fn strip_disabled_prefix(cmd: &str) -> (&str, &str) {
+src\discover\registry.rs:768:pub fn rewrite_command(
+src\discover\provider.rs:162:    pub fn encode_project_path(path: &str) -> String {
+src\llm_proxy.rs:80:pub fn run(cmd: &LlmProxySubcommand) -> Result<()> {
+src\llm_proxy.rs:199:    pub fn cache_hit_ratio(&self) -> Option<f64> {
+src\llm_proxy.rs:211:    pub fn cache_effect_pct(&self) -> Option<f64> {
+src\llm_proxy.rs:224:    pub fn savings_by_method(&self) -> Vec<(&'static str, i64)> {
+src\llm_proxy.rs:240:pub fn read_gain_summary() -> Option<ProxyGainSummary> {
+src\llm_proxy.rs:402:pub fn read_gain_summary_as_pipeline() -> Option<ProxyPipelineRow> {
+src\llm_proxy.rs:425:    pub fn savings_by_method(&self) -> Vec<(&'static str, i64)> {
+src\llm_proxy.rs:440:pub fn savings_by_pipeline() -> Option<Vec<ProxyPipelineRow>> {
+src\llm_proxy.rs:534:pub fn is_rtk_proxy_at(addr: &str, timeout: Duration) -> bool {
+src\llm_proxy.rs:562:pub fn cli_name() -> String {
+src\llm_proxy.rs:578:pub fn daemon_bind() -> String {
+src\llm_proxy.rs:585:pub fn is_reachable() -> bool {
+src\llm_proxy.rs:593:pub fn no_data_hint() -> String {
+src\llm_proxy.rs:628:pub fn resolve_agent(name: &str) -> Option<&'static ProxyAgent> {
+src\llm_proxy.rs:663:pub fn run_agent(agent: &ProxyAgent, args: &[String]) -> Result<i32> {
+src\llm_proxy.rs:1290:pub fn approx_usd(v: f64) -> String {
+src\discover\mod.rs:329:pub fn run(
+src\lib.rs:2316:pub fn entry() -> i32 {
+src\discover\lexer.rs:38:pub fn tokenize(input: &str) -> Vec<ParsedToken> {
+src\discover\lexer.rs:45:pub fn tokenize_with_newlines(input: &str) -> Vec<ParsedToken> {
+src\discover\lexer.rs:501:pub fn contains_unattestable_construct(cmd: &str) -> bool {
+src\discover\lexer.rs:684:pub fn split_for_permissions(cmd: &str) -> Vec<&str> {
+src\discover\lexer.rs:688:pub fn split_for_wrappers(cmd: &str) -> Vec<&str> {
+src\discover\lexer.rs:776:pub fn split_on_operators(cmd: &str, stop_at_pipe: bool) -> Vec<&str> {
+src\discover\lexer.rs:818:pub fn strip_quotes(s: &str) -> String {
+src\discover\lexer.rs:878:pub fn shell_split(input: &str) -> Vec<String> {
+src\hooks\hook_check.rs:26:pub fn status() -> HookStatus {
+src\hooks\hook_check.rs:89:pub fn maybe_warn() {
+src\hooks\hook_check.rs:137:pub fn parse_hook_version(content: &str) -> u8 {
+src\hooks\hook_cmd.rs:69:pub fn run_copilot() -> Result<()> {
+src\hooks\hook_cmd.rs:376:pub fn run_gemini() -> Result<()> {
+src\hooks\hook_cmd.rs:461:pub fn run_antigravity() -> Result<()> {
+src\hooks\hook_cmd.rs:527:pub fn run_vibe() -> Result<()> {
+src\hooks\hook_cmd.rs:767:pub fn run_claude() -> Result<()> {
+src\hooks\hook_cmd.rs:888:pub fn run_trae() -> Result<()> {
+src\hooks\hook_cmd.rs:1009:pub fn run_codex() -> Result<()> {
+src\hooks\hook_cmd.rs:1060:pub fn run_cursor() -> Result<()> {
+src\hooks\hook_cmd.rs:1213:pub fn run_opencode(cmd: &str, agent: Option<&str>) -> Result<()> {
+src\hooks\hook_cmd.rs:1270:pub fn run_droid() -> Result<()> {
+src\hooks\integrity.rs:42:pub fn compute_hash(path: &Path) -> Result<String> {
+src\hooks\integrity.rs:49:pub fn compute_hash_bytes(content: &[u8]) -> String {
+src\hooks\integrity.rs:64:pub fn hash_path_for(hook_path: &Path) -> PathBuf {
+src\hooks\integrity.rs:79:pub fn store_hash(hook_path: &Path) -> Result<()> {
+src\hooks\integrity.rs:111:pub fn remove_hash(hook_path: &Path) -> Result<bool> {
+src\hooks\integrity.rs:137:pub fn verify_hook() -> Result<IntegrityStatus> {
+src\hooks\integrity.rs:143:pub fn verify_hook_at(hook_path: &Path) -> Result<IntegrityStatus> {
+src\hooks\integrity.rs:197:pub fn resolve_hook_path() -> Result<PathBuf> {
+src\hooks\integrity.rs:202:pub fn run_verify(verbose: u8) -> Result<()> {
+src\hooks\integrity.rs:321:pub fn runtime_check() -> Result<()> {
+src\hooks\permissions.rs:39:pub fn check_command(cmd: &str) -> PermissionVerdict {
+src\hooks\permissions.rs:57:pub fn check_command_for(cmd: &str, host: Host) -> PermissionVerdict {
+src\hooks\permissions.rs:61:pub fn check_command_for_agent(cmd: &str, host: Host, agent: Option<&str>) -> PermissionVerdict {
+src\hooks\mod.rs:41:pub fn is_claude_hook_command(command: &str) -> bool {
+src\hooks\posthook.rs:65:pub fn run(event: &Value) {
+src\hooks\rewrite_cmd.rs:90:pub fn run(cmd: &str) -> anyhow::Result<()> {
+src\hooks\session_start.rs:24:pub fn ensure_proxy() -> Option<String> {
+src\hooks\trust.rs:99:pub fn check_trust(filter_path: &Path) -> Result<TrustStatus> {
+src\hooks\trust.rs:105:pub fn check_trust_with_content(filter_path: &Path) -> Result<(TrustStatus, Option<String>)> {
+src\hooks\trust.rs:169:pub fn trust_filter_with_hash(filter_path: &Path, hash: &str) -> Result<()> {
+src\hooks\trust.rs:185:pub fn untrust_filter(filter_path: &Path) -> Result<bool> {
+src\hooks\trust.rs:196:pub fn list_trusted() -> Result<HashMap<String, TrustEntry>> {
+src\hooks\trust.rs:201:pub fn gated_filter_paths() -> Vec<PathBuf> {
+src\hooks\trust.rs:208:pub fn gated_filter_paths_labeled() -> Vec<(&'static str, PathBuf)> {
+src\hooks\trust.rs:216:pub fn gated_pipeline_paths() -> Vec<PathBuf> {
+src\hooks\trust.rs:231:pub fn untrusted_active_filter_count() -> usize {
+src\hooks\trust.rs:254:pub fn run_trust(list: bool, yes: bool) -> Result<()> {
+src\hooks\trust.rs:392:pub fn print_filter_notice(path: &Path, scope: &str, filters: &[(String, String)]) {
+src\hooks\trust.rs:406:pub fn confirm_enable_at_tty() -> Result<bool> {
+src\hooks\trust.rs:421:pub fn run_untrust() -> Result<()> {
+src\hooks\verify_cmd.rs:11:pub fn run(filter: Option<String>, require_all: bool) -> Result<()> {
+src\hooks\init\antigravity.rs:37:pub fn run_antigravity_mode(global: bool, ctx: InitContext) -> Result<()> {
+src\hooks\init\antigravity.rs:48:pub fn run_antigravity_mode_at(base_dir: &Path, global: bool, ctx: InitContext) -> Result<()> {
+src\hooks\init\antigravity.rs:128:pub fn uninstall_antigravity_mode(global: bool, ctx: InitContext) -> Result<()> {
+src\hooks\init\antigravity.rs:160:pub fn uninstall_antigravity_mode_at(
+src\learn\report.rs:9:pub fn format_console_report(
+src\learn\report.rs:54:pub fn write_rules_file(rules: &[CorrectionRule], path: &str) -> Result<()> {
+src\hooks\init\claude.rs:524:pub fn claude_hook_gaps() -> Vec<String> {
+src\hooks\init\droid.rs:142:pub fn run_droid_mode(global: bool, ctx: InitContext) -> Result<()> {
+src\hooks\init\droid.rs:307:pub fn uninstall_droid(global: bool, ctx: InitContext) -> Result<()> {
+src\hooks\init\gemini.rs:22:pub fn run_gemini(
+src\hooks\init\copilot.rs:67:pub fn run_copilot(ctx: InitContext) -> Result<()> {
+src\hooks\init\copilot.rs:116:pub fn uninstall_copilot(ctx: InitContext) -> Result<()> {
+src\hooks\init\copilot.rs:201:pub fn run_copilot_global(ctx: InitContext) -> Result<()> {
+src\hooks\init\copilot.rs:245:pub fn uninstall_copilot_global(ctx: InitContext) -> Result<()> {
+src\hooks\init\hermes.rs:17:pub fn run_hermes_mode(ctx: InitContext) -> Result<()> {
+src\hooks\init\hermes.rs:73:pub fn uninstall_hermes(ctx: InitContext) -> Result<()> {
+src\hooks\init\instructions_agents.rs:123:pub fn run_kilocode_mode(ctx: InitContext) -> Result<()> {
+src\hooks\init\instructions_agents.rs:189:pub fn run_kimi_mode(ctx: InitContext) -> Result<()> {
+src\hooks\init\mod.rs:429:pub fn run(
+src\hooks\init\mod.rs:1288:pub fn save_telemetry_consent(accepted: bool) -> Result<()> {
+src\hooks\init\mod.rs:1380:pub fn uninstall(
+src\hooks\init\mod.rs:1395:pub fn uninstall_with_patch_mode(
+src\hooks\init\mod.rs:1890:pub fn finalize_filter_trust(global: bool, dry_run: bool, trust: FilterTrust) -> Result<()> {
+src\hooks\init\mod.rs:1971:pub fn resolve_claude_dir() -> Result<PathBuf> {
+src\hooks\init\mod.rs:1991:pub fn show_config(codex: bool, omp: bool) -> Result<()> {
+src\hooks\hook_audit_cmd.rs:76:pub fn run(since_days: u64, verbose: u8) -> Result<()> {
+src\hooks\init\trae.rs:231:pub fn run_trae_mode(global: bool, ctx: InitContext) -> Result<()> {
+src\hooks\init\trae.rs:321:pub fn uninstall_trae_mode(global: bool, ctx: InitContext) -> Result<()> {
+src\hooks\init\vibe.rs:22:pub fn run_vibe_mode(
+src\hooks\init\vibe.rs:222:pub fn uninstall_vibe(ctx: InitContext) -> Result<()> {
+src\hooks\constants.rs:21:pub fn claude_tools_for_subject(subject: rtk_engine::block::Subject) -> &'static [&'static str] {
+src\hooks\constants.rs:67:pub fn claude_matcher(subjects: &[rtk_engine::block::Subject]) -> Option<String> {
+src\hooks\init\pi.rs:609:pub fn run_pi_mode_with_patch_mode(
+src\hooks\init\pi.rs:720:pub fn run_omp_mode_with_patch_mode(
+src\learn\mod.rs:12:pub fn run(
+src\learn\detector.rs:19:    pub fn as_str(&self) -> &str {
+src\learn\detector.rs:85:pub fn is_command_error(is_error: bool, output: &str) -> bool {
+src\learn\detector.rs:106:pub fn classify_error(output: &str) -> ErrorType {
+src\learn\detector.rs:133:pub fn extract_base_command(cmd: &str) -> String {
+src\learn\detector.rs:154:pub fn command_similarity(a: &str, b: &str) -> f64 {
+src\learn\detector.rs:222:pub fn find_corrections(commands: &[CommandExecution]) -> Vec<CorrectionPair> {
+src\learn\detector.rs:312:pub fn deduplicate_corrections(pairs: Vec<CorrectionPair>) -> Vec<CorrectionRule> {
+src\example_plugins.rs:40:pub fn register_all() {
+src\cmds\cloud\psql_cmd.rs:28:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\analytics\session_cmd.rs:62:pub fn run(_verbose: u8) -> Result<()> {
+src\core\guard.rs:21:pub fn never_worse<'a>(raw: &'a str, filtered: &'a str) -> &'a str {
+src\cmds\cloud\wget_cmd.rs:9:pub fn run(url: &str, args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\cloud\wget_cmd.rs:66:pub fn run_stdout(url: &str, args: &[String], verbose: u8) -> Result<i32> {
+src\core\filter.rs:60:    pub fn from_extension(ext: &str) -> Self {
+src\core\filter.rs:80:    pub fn comment_patterns(&self) -> CommentPatterns {
+src\core\filter.rs:430:pub fn get_filter(level: FilterLevel) -> Box<dyn FilterStrategy> {
+src\core\pipeline_cmd.rs:22:pub fn run_show(name: Option<&str>) -> Result<i32> {
+src\core\pipeline_cmd.rs:173:pub fn run_validate() -> Result<i32> {
+src\core\pipeline_cmd.rs:186:pub fn print_hook_gaps() {
+src\core\pipeline_cmd.rs:198:pub fn print_auth_guidance(resolved: &rtk_engine::pipeline::Resolved) {
+src\core\pipeline_cmd.rs:556:pub fn run_add(
+src\core\pipeline_cmd.rs:857:pub fn run_promote(name: &str, discard: bool, force: bool) -> Result<i32> {
+src\core\pipeline_cmd.rs:925:pub fn run_eval(name: &str, start: bool, stop: bool) -> Result<i32> {
+src\core\pipeline_cmd.rs:1006:pub fn run_test() -> Result<i32> {
+src\core\pipeline_cmd.rs:1059:    pub fn card_md(&self) -> String {
+src\core\pipeline_cmd.rs:1069:    pub fn print_terminal(&self) {
+src\core\pipeline_cmd.rs:1081:    pub fn headline(&self) -> Option<String> {
+src\core\pipeline_cmd.rs:1195:pub fn run_share(name: Option<&str>, force_md: bool, gist: bool, force: bool) -> Result<i32> {
+src\core\pipeline_cmd.rs:1663:pub fn run_status() -> Result<i32> {
+src\core\pipeline_cmd.rs:1763:pub fn run_explain(
+src\core\pipeline_cmd.rs:1928:pub fn run_log_toggle(on: bool) -> Result<i32> {
+src\core\pipeline_cmd.rs:1945:pub fn run_log_show(limit: usize, rule: Option<&str>) -> Result<i32> {
+src\core\pipeline_cmd.rs:1960:pub fn run_explain_last() -> Result<i32> {
+src\core\pipeline_cmd.rs:1998:pub fn run_bench(file: &std::path::Path) -> Result<i32> {
+src\core\pipeline_cmd.rs:2104:pub fn run_methods_list() -> Result<i32> {
+src\cmds\system\ctest_cmd.rs:73:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\system\ast_grep_cmd.rs:277:pub fn run(args: &[String]) -> Result<i32> {
+src\core\pipeline_config.rs:16:pub fn directive_text(directive: &ResolvedDirective) -> Option<String> {
+src\core\pipeline_config.rs:91:pub fn is_reserved_command_name(name: &str) -> bool {
+src\core\pipeline_config.rs:99:pub fn user_pipeline_path() -> Option<PathBuf> {
+src\core\pipeline_config.rs:103:pub fn user_pipelines_dir() -> Option<PathBuf> {
+src\core\pipeline_config.rs:107:pub fn project_pipeline_path() -> PathBuf {
+src\core\pipeline_config.rs:111:pub fn project_pipelines_dir() -> PathBuf {
+src\core\pipeline_config.rs:131:pub fn load_paths() -> Vec<(Scope, PathBuf)> {
+src\core\pipeline_config.rs:155:pub fn any_user_pipeline_files() -> bool {
+src\core\pipeline_config.rs:159:pub fn load() -> LoadedPipeline {
+src\core\pipeline_config.rs:171:pub fn load_with_ctx(ctx: &ValidateCtx) -> LoadedPipeline {
+src\core\pipeline_config.rs:179:pub fn load_user_scope() -> LoadedPipeline {
+src\core\pipeline_config.rs:318:pub fn eval_state_path() -> Option<PathBuf> {
+src\core\pipeline_config.rs:325:pub fn installs_ledger_path() -> Option<PathBuf> {
+src\core\pipeline_config.rs:331:pub fn shadow_pipelines_dir() -> Option<PathBuf> {
+src\core\pipeline_config.rs:335:pub fn eval_candidate() -> Option<String> {
+src\core\pipeline_config.rs:344:pub fn set_eval_candidate(name: Option<&str>) -> std::io::Result<()> {
+src\core\pipeline_config.rs:362:pub fn load_eval_candidate() -> Option<(String, LoadedPipeline)> {
+src\core\pipeline_config.rs:379:pub fn credential_commands(text: &str, label: &str) -> Vec<(String, String)> {
+src\core\pipeline_config.rs:396:pub fn declared_name(text: &str, label: &str) -> Option<String> {
+src\core\pipeline_config.rs:400:pub fn load_candidate(text: &str, label: &str) -> LoadedPipeline {
+src\core\pipeline_config.rs:450:pub fn set_call_purpose(purpose: &str) {
+src\core\pipeline_config.rs:456:pub fn call_state(facts: &rtk_engine::pipeline::Facts, file_head: Option<&str>) -> String {
+src\core\pipeline_config.rs:477:pub fn insert_call_context(
+src\core\pipeline_config.rs:534:pub fn before_shell_decision(command: &str) -> ShellHookDecision {
+src\core\pipeline_config.rs:555:pub fn subject_facts(
+src\core\pipeline_config.rs:640:pub fn before_tool_decision(
+src\core\pipeline_config.rs:728:pub fn read_facts(path: &std::path::Path, whole_file: bool) -> rtk_engine::pipeline::Facts {
+src\core\pipeline_config.rs:762:pub fn before_read_decision(path: &std::path::Path, whole_file: bool) -> Option<ReadHookDecision> {
+src\core\pipeline_config.rs:844:pub fn status_path() -> Option<PathBuf> {
+src\core\pipeline_config.rs:851:pub fn write_status(loaded: &LoadedPipeline) {
+src\core\pipeline_config.rs:881:pub fn read_status() -> Option<serde_json::Value> {
+src\core\pipeline_config.rs:889:pub fn trust_summary(content: &str) -> Result<Vec<String>, String> {
+src\cmds\system\deps.rs:16:pub fn run(path: &Path, verbose: u8) -> Result<()> {
+src\core\pipeline_log.rs:41:pub fn log_path() -> Option<PathBuf> {
+src\core\pipeline_log.rs:49:pub fn enabled() -> bool {
+src\core\pipeline_log.rs:53:pub fn set_enabled(on: bool) -> std::io::Result<()> {
+src\core\pipeline_log.rs:71:pub fn now_ts() -> String {
+src\core\pipeline_log.rs:77:pub fn append(entry: &LogEntry) {
+src\core\pipeline_log.rs:109:pub fn queue(entry: LogEntry) {
+src\core\pipeline_log.rs:116:pub fn flush() {
+src\core\pipeline_log.rs:123:pub fn read_last(limit: usize, rule: Option<&str>) -> Vec<LogEntry> {
+src\core\pipeline_log.rs:141:pub fn render(entry: &LogEntry) -> String {
+src\core\pipeline_config_oss.rs:28:pub fn any_user_pipeline_files() -> bool {
+src\core\pipeline_config_oss.rs:32:pub fn user_pipeline_path() -> Option<PathBuf> {
+src\core\pipeline_config_oss.rs:36:pub fn set_call_purpose(_purpose: &str) {}
+src\core\pipeline_config_oss.rs:38:pub fn before_shell_decision(_command: &str) -> ShellHookDecision {
+src\core\pipeline_config_oss.rs:42:pub fn before_tool_decision(_subject: (), _facts: ()) -> ShellHookDecision {
+src\core\pipeline_config_oss.rs:46:pub fn before_read_decision(_path: &Path, _whole_file: bool) -> Option<ReadHookDecision> {
+src\core\pipeline_config_oss.rs:50:pub fn read_status() -> Option<serde_json::Value> {
+src\core\pipeline_config_oss.rs:54:pub fn project_pipeline_path() -> PathBuf {
+src\core\pipeline_config_oss.rs:58:pub fn project_pipelines_dir() -> PathBuf {
+src\core\pipeline_config_oss.rs:62:pub fn trust_summary(_content: &str) -> Result<Vec<String>, String> {
+src\core\pipeline_remote.rs:18:    pub fn canonical(&self) -> String {
+src\core\pipeline_remote.rs:26:pub fn parse_github_source(source: &str) -> Option<GithubSource> {
+src\core\pipeline_remote.rs:64:pub fn fetch_github_pipeline(src: &GithubSource) -> Result<PinnedFetch> {
+src\core\pipeline_remote.rs:187:pub fn record_install(name: &str, source: &str, sha: Option<&str>) {
+src\core\pipeline_remote.rs:200:pub fn record_publish(name: &str, install_source: &str) {
+src\core\pipeline_remote.rs:204:pub fn published_source(name: &str) -> Option<String> {
+src\core\pipeline_remote.rs:213:pub fn install_origin(name: &str) -> Option<InstallOrigin> {
+src\core\pipeline_remote.rs:225:pub fn short_sha(sha: &str) -> &str {
+src\core\pipeline_remote.rs:232:pub fn line_diff(old: &str, new: &str) -> String {
+src\core\pipeline_remote.rs:289:pub fn base64(data: &[u8]) -> String {
+src\core\pipeline_remote.rs:315:pub fn repo_slug(name: &str) -> String {
+src\core\pipeline_remote.rs:590:pub fn run_publish(name: Option<&str>, force: bool) -> Result<i32> {
+src\core\pipeline_remote.rs:945:pub fn run_search(query: Option<&str>) -> Result<i32> {
+src\cmds\system\env_cmd.rs:11:pub fn run(filter: Option<&str>, verbose: u8) -> Result<()> {
+src\cmds\system\find_cmd.rs:333:pub fn run_from_args(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\system\find_cmd.rs:420:pub fn run(
+src\cmds\system\format_cmd.rs:60:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\system\json_cmd.rs:42:pub fn run(file: &Path, max_depth: usize, schema_only: bool, verbose: u8) -> Result<()> {
+src\cmds\system\json_cmd.rs:60:pub fn run_stdin(max_depth: usize, schema_only: bool, verbose: u8) -> Result<()> {
+src\cmds\system\json_cmd.rs:110:pub fn filter_json_compact(json_str: &str, max_depth: usize) -> Result<String> {
+src\cmds\system\json_cmd.rs:201:pub fn filter_json_string(json_str: &str, max_depth: usize) -> Result<String> {
+src\core\plugins_cmd.rs:61:pub fn run_new(name: &str) -> Result<i32> {
+src\core\plugins_cmd.rs:139:pub fn run_list() -> Result<i32> {
+src\core\plugins_cmd.rs:184:pub fn run_build() -> Result<i32> {
+src\core\retriever.rs:357:pub fn stats_snapshot() -> Result<Vec<RecallStat>> {
+src\core\retriever.rs:362:pub fn reset_stats() -> Result<()> {
+src\core\retriever.rs:382:pub fn record_tee_elision(cfg: &RetrieverConfig, slug: &str) {
+src\core\retriever.rs:437:pub fn record_tee_recall(slug: &str, path: &str) {
+src\core\retriever.rs:468:pub fn trim_family(cfg: &RetrieverConfig, prefix: &str, keep: usize) {
+src\core\retriever.rs:481:pub fn store(
+src\core\retriever.rs:646:pub fn run_recall(args: RecallArgs) -> Result<i32> {
+src\cmds\system\local_llm.rs:11:pub fn run(file: &Path, _model: &str, _force_download: bool, verbose: u8) -> Result<()> {
+src\cmds\system\local_llm.rs:293:pub fn load_config() -> Result<Config> {
+src\core\shell.rs:98:pub fn spawn_failure(program: &str, error: &anyhow::Error) -> Option<Unrunnable> {
+src\core\shell.rs:132:pub fn direct_command(args: &[String]) -> Result<Launch> {
+src\core\shell.rs:160:pub fn shell_command(script: &str, shell: Option<&str>) -> Result<Launch> {
+src\core\shell.rs:182:pub fn command_from_args(args: &[String], shell: Option<&str>) -> Result<Launch> {
+src\core\shell.rs:198:pub fn program_name<'a>(args: &'a [String], shell: Option<&'a str>) -> &'a str {
+src\core\shell.rs:215:pub fn display_args<S: AsRef<str>>(args: &[S]) -> String {
+src\core\shell.rs:224:pub fn with_args(prefix: &str, rendered: &str) -> String {
+src\core\shell.rs:234:pub fn display_command<S: AsRef<str>>(argv: &[S]) -> String {
+src\core\shell.rs:258:pub fn quote_word(word: &str) -> Cow<'_, str> {
+src\core\shell.rs:279:pub fn quote_program(word: &str) -> Cow<'_, str> {
+src\core\runner.rs:18:pub fn emit_guarded(filtered: &str, hint: Option<&str>, raw: &str) -> String {
+src\core\runner.rs:56:pub fn with_hint<'a>(filtered: &'a str, hint: Option<&str>) -> Cow<'a, str> {
+src\core\runner.rs:75:pub fn print_with_hint(
+src\core\runner.rs:224:    pub fn with_tee(label: &'a str) -> Self {
+src\core\runner.rs:231:    pub fn unguarded_help(mut self) -> Self {
+src\core\runner.rs:236:    pub fn stdout_only() -> Self {
+src\core\runner.rs:243:    pub fn tee(mut self, label: &'a str) -> Self {
+src\core\runner.rs:248:    pub fn early_exit_on_failure(mut self) -> Self {
+src\core\runner.rs:253:    pub fn no_trailing_newline(mut self) -> Self {
+src\core\runner.rs:258:    pub fn inherit_stdin(mut self) -> Self {
+src\core\runner.rs:263:    pub fn clean_outputs(mut self, outputs: &'a [&'a str]) -> Self {
+src\core\runner.rs:553:pub fn requests_help(cmd: &Command) -> bool {
+src\core\runner.rs:566:pub fn requests_help_args(tool: &str, args: &[String]) -> bool {
+src\core\runner.rs:574:pub fn run(
+src\core\runner.rs:650:pub fn run_filtered<F>(
+src\core\runner.rs:669:pub fn run_filtered_with_exit<F>(
+src\core\runner.rs:688:pub fn run_passthrough(tool: &str, args: &[std::ffi::OsString], verbose: u8) -> Result<i32> {
+src\core\runner.rs:704:pub fn run_streamed(
+src\core\runner.rs:824:pub fn run_err_cmd(
+src\core\runner.rs:850:pub fn run_err_unrunnable(
+src\core\runner.rs:864:pub fn run_test_unrunnable(
+src\core\runner.rs:918:    pub fn detect(command: &str) -> Self {
+src\core\runner.rs:943:pub fn is_watch_mode(args: &[String]) -> bool {
+src\core\runner.rs:950:pub fn run_test_cmd(
+src\cmds\system\log_cmd.rs:26:pub fn run_file(file: &Path, verbose: u8) -> Result<()> {
+src\cmds\system\log_cmd.rs:42:pub fn run_stdin(_verbose: u8) -> Result<()> {
+src\cmds\system\log_cmd.rs:62:pub fn run_stdin_str(content: &str) -> String {
+src\cmds\system\ls.rs:298:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\core\stream.rs:71:    pub fn new(handler: H) -> Self {
+src\core\stream.rs:149:    pub fn new(handler: H) -> Self {
+src\core\stream.rs:182:    pub fn new(tool_name: &str, start_pattern: &str) -> Self {
+src\core\stream.rs:193:    pub fn skip_prefix(mut self, prefix: &str) -> Self {
+src\core\stream.rs:198:    pub fn skip_prefixes(mut self, prefixes: &[&str]) -> Self {
+src\core\stream.rs:266:    pub fn success(&self) -> bool {
+src\core\stream.rs:326:    pub fn relayed() -> Option<libc::c_int> {
+src\core\stream.rs:336:        pub fn install(pid: u32) -> Self {
+src\core\stream.rs:385:        pub fn install(_pid: u32) -> Self {
+src\core\stream.rs:393:pub fn die_by_relayed_signal() {
+src\core\stream.rs:406:pub fn die_by_relayed_signal() {}
+src\core\stream.rs:408:pub fn status_to_exit_code(status: std::process::ExitStatus) -> i32 {
+src\core\stream.rs:425:pub fn run_streaming(
+src\core\stream.rs:701:    pub fn success(&self) -> bool {
+src\core\stream.rs:705:    pub fn combined(&self) -> String {
+src\core\stream.rs:710:pub fn exec_capture(cmd: &mut Command) -> Result<CaptureResult> {
+src\core\stream.rs:719:pub fn exec_capture_stdin(cmd: &mut Command) -> Result<CaptureResult> {
+src\core\stream.rs:728:pub fn exec_capture_unguarded(cmd: &mut Command) -> Result<CaptureResult> {
+src\core\stream.rs:793:    pub fn success(&self) -> bool {
+src\core\stream.rs:799:pub fn exec_capture_bytes(cmd: &mut Command) -> Result<CaptureBytes> {
+src\core\stream.rs:885:        pub fn new(f: F) -> Self {
+src\core\stream.rs:1195:    pub fn run_block_filter(filter: &mut dyn StreamFilter, input: &str, exit_code: i32) -> String {
+src\core\display_helpers.rs:10:pub fn format_duration(ms: u64) -> String {
+src\core\display_helpers.rs:62:pub fn print_period_table<T: PeriodStats>(data: &[T]) {
+src\core\task_cmd.rs:19:pub fn tasks_unavailable() -> bool {
+src\core\task_cmd.rs:23:pub fn resolve_task(name: &str) -> Option<ResolvedTask> {
+src\core\task_cmd.rs:40:pub fn run_tasks_list() -> Result<i32> {
+src\core\task_cmd.rs:199:pub fn run_task(name: &str, args: &[String]) -> Result<i32> {
+src\core\task_cmd.rs:764:pub fn digest_output(task_name: &str, output: &str, label: &str) -> Option<String> {
+src\core\task_cmd.rs:778:pub fn context_question(context: &crate::core::call_context::CallContext) -> Option<String> {
+src\core\task_cmd.rs:849:pub fn answer_call(task_name: &str, facts: &rtk_engine::pipeline::Facts) -> Option<String> {
+src\core\task_cmd.rs:887:pub fn swap_command(task_name: &str, command: &str) -> Option<String> {
+src\core\tee.rs:61:pub fn tee_and_hint(raw: &str, command_slug: &str, exit_code: i32) -> Option<String> {
+src\core\tee.rs:69:pub fn force_tee_hint(content: &str, command_slug: &str) -> Option<String> {
+src\core\tee.rs:82:pub fn force_tee_tail_hint(
+src\core\tee.rs:126:pub fn posthook_tee_hint(config: &Config, raw: &str, command_slug: &str) -> Option<String> {
+src\core\tee.rs:170:pub fn posthook_recall_dir(config: &Config) -> Option<std::path::PathBuf> {
+src\core\tee_file.rs:63:pub fn legacy_tee_migration_pending() -> bool {
+src\core\tee_file.rs:80:pub fn legacy_tee_config_in_use() -> bool {
+src\core\tee_file.rs:88:pub fn legacy_tee_fields_merged_in_use() -> bool {
+src\core\tee_file.rs:268:pub fn tee_and_hint(cfg: &RetrieverConfig, raw: &str, slug: &str) -> Option<String> {
+src\core\tee_file.rs:273:pub fn force_tee_hint(cfg: &RetrieverConfig, content: &str, slug: &str) -> Option<String> {
+src\core\tee_file.rs:278:pub fn force_tee_tail_hint(
+src\cmds\system\read.rs:12:pub fn run(
+src\cmds\system\read.rs:141:pub fn run_stdin(
+src\cmds\system\pipe_cmd.rs:12:pub fn resolve_filter(name: &str) -> Option<fn(&str) -> String> {
+src\cmds\system\pipe_cmd.rs:173:pub fn auto_detect_filter(input: &str) -> fn(&str) -> String {
+src\cmds\system\pipe_cmd.rs:256:pub fn run(filter_name: Option<&str>, passthrough: bool) -> Result<()> {
+src\cmds\system\pipe_cmd.rs:349:        let input = "src/main.rs:42:fn main() {\nsrc/lib.rs:10:pub fn helper() {}\n";
+src\cmds\system\pipe_cmd.rs:431:        let input = "src/main.rs:42:fn main() {\nsrc/lib.rs:10:pub fn helper() {}\n";
+src\cmds\system\pipe_cmd.rs:558:        let input = "src/main.rs:42:fn main() {\nsrc/lib.rs:10:pub fn helper() {}\nsrc/a.rs:1:x\n";
+src\cmds\system\search.rs:403:    pub fn label(self) -> &'static str {
+src\cmds\system\search.rs:680:pub fn run(
+src\cmds\system\summary.rs:15:pub fn run(command: &[String], shell: Option<&str>, verbose: u8) -> Result<i32> {
+src\cmds\system\tree.rs:15:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\system\wc_cmd.rs:15:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\cloud\curl_cmd.rs:25:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\core\config.rs:52:    pub fn as_str(self) -> &'static str {
+src\core\config.rs:247:pub fn limits() -> LimitsConfig {
+src\core\config.rs:263:pub fn hook_rewrite_params() -> (Vec<String>, Vec<String>) {
+src\core\config.rs:304:pub fn hook_warning_suppressed() -> bool {
+src\core\config.rs:330:    pub fn load() -> Result<Self> {
+src\core\config.rs:387:    pub fn save(&self) -> Result<()> {
+src\core\config.rs:399:    pub fn create_default() -> Result<PathBuf> {
+src\core\config.rs:474:pub fn set_recall_mode(mode: crate::core::retriever::RecoveryMode) -> Result<PathBuf> {
+src\core\config.rs:489:pub fn show_recall_mode() -> Result<()> {
+src\core\config.rs:515:pub fn show_config() -> Result<()> {
+src\cmds\rust\cargo_cmd.rs:26:pub fn run(cmd: CargoCommand, args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\rust\cargo_cmd.rs:1457:pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\rust\cargo_cmd.rs:1876:16| pub fn run(a: i32, b: i32, c: i32, d: i32, e: i32, f: i32, g: i32, h: i32) {}
+src\cmds\scala\sbt_cmd.rs:114:pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\scala\sbt_cmd.rs:118:pub fn run_compile(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\scala\sbt_cmd.rs:122:pub fn run_run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\scala\sbt_cmd.rs:126:pub fn run_other(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\ruby\rake_cmd.rs:54:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\rust\runner.rs:13:pub fn run_err(command: &[String], shell: Option<&str>, verbose: u8) -> Result<i32> {
+src\cmds\rust\runner.rs:34:pub fn run_test(command: &[String], shell: Option<&str>, verbose: u8) -> Result<i32> {
+src\cmds\ruby\rspec_cmd.rs:72:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\ruby\rubocop_cmd.rs:54:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\analytics\gain_tui.rs:43:pub fn run(project_scope: Option<&str>) -> Result<()> {
+src\core\classify.rs:39:pub fn insert_classifier_facts(
+src\cmds\README.md:103:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\README.md:130:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\README.md:196:pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\README.md:204:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\README.md:292:   - Write `pub fn run(...) -> Result<i32>` using `runner::run_filtered()` — build the `Command`, choose `RunOptions`, delegate
+src\cmds\cloud\container.rs:26:pub fn run(cmd: ContainerCmd, args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:366:pub fn k8s_pods(tool: &str, args: &[String], _verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:454:pub fn k8s_services(tool: &str, args: &[String], _verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:520:pub fn k8s_logs(tool: &str, args: &[String], _verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:553:pub fn format_compose_ps(raw: &str) -> String {
+src\cmds\cloud\container.rs:614:pub fn format_compose_logs(raw: &str) -> String {
+src\cmds\cloud\container.rs:626:pub fn format_compose_build(raw: &str) -> String {
+src\cmds\cloud\container.rs:700:pub fn run_docker_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:705:pub fn run_compose_ps(all: bool, verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:756:pub fn run_compose_logs(service: Option<&str>, tail: u32, verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:779:pub fn run_compose_build(service: Option<&str>, verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:798:pub fn run_compose_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:804:pub fn run_kubectl_get(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:845:pub fn run_kubectl_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:849:pub fn run_oc_get(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\cloud\container.rs:853:pub fn run_oc_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\analytics\gain.rs:101:pub fn run_reset(yes: bool) -> Result<bool> {
+src\analytics\gain.rs:118:pub fn run_attribution(
+src\analytics\gain.rs:328:pub fn subject_slice_label(subject: &str) -> &str {
+src\analytics\gain.rs:341:pub fn hook_slices_for(
+src\analytics\gain.rs:368:pub fn run_pipeline_detail(name: &str) -> Result<()> {
+src\analytics\gain.rs:597:pub fn run(
+src\cmds\cloud\aws_cmd.rs:49:pub fn run(subcommand: &str, args: &[String], verbose: u8) -> Result<i32> {
+src\core\call_context.rs:28:pub fn set_source(event: &Value) {
+src\core\call_context.rs:42:pub fn get() -> &'static CallContext {
+src\core\call_context.rs:90:pub fn from_transcript(tail: &str) -> CallContext {
+src\analytics\cc_economics.rs:182:pub fn run(
+src\cmds\php\artisan_cmd.rs:15:pub fn filter_artisan_output(output: &str) -> String {
+src\cmds\php\artisan_cmd.rs:24:pub fn filter_artisan_test_output(output: &str, runner: PhpTestRunner) -> String {
+src\cmds\python\mypy_cmd.rs:11:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\python\mypy_cmd.rs:55:pub fn filter_mypy_output(output: &str) -> String {
+src\cmds\php\ecs_cmd.rs:8:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\python\pip_cmd.rs:20:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\python\pytest_cmd.rs:21:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\php\pest_cmd.rs:9:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\jvm\mvn_cmd.rs:231:pub fn detect_phase(args: &[String]) -> MvnPhase {
+src\cmds\jvm\mvn_cmd.rs:1393:pub fn filter_surefire(raw: &str, daemon: bool) -> String {
+src\cmds\jvm\mvn_cmd.rs:1506:pub fn filter_compile(raw: &str, daemon: bool) -> String {
+src\cmds\jvm\mvn_cmd.rs:1642:pub fn filter_package(raw: &str, daemon: bool) -> String {
+src\cmds\jvm\mvn_cmd.rs:1797:pub fn filter_quiet(raw: &str, daemon: bool) -> String {
+src\cmds\jvm\mvn_cmd.rs:1919:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\jvm\mvn_cmd.rs:1926:pub fn run_daemon(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\php\paratest_cmd.rs:9:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\python\ruff_cmd.rs:51:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\python\ruff_cmd.rs:132:pub fn filter_ruff_check_json(output: &str) -> String {
+src\cmds\python\ruff_cmd.rs:270:pub fn filter_ruff_format(output: &str) -> String {
+src\cmds\jvm\gradlew_cmd.rs:121:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\core\arg_tokenizer.rs:67:    pub fn value(&self, tokens: &[Token<'a>]) -> Option<&'a str> {
+src\core\arg_tokenizer.rs:85:    pub fn is_free_positional(&self) -> bool {
+src\core\arg_tokenizer.rs:95:pub fn is_digit_run(text: &str) -> bool {
+src\core\arg_tokenizer.rs:110:pub fn dashdash_index(tokens: &[Token<'_>]) -> Option<usize> {
+src\core\arg_tokenizer.rs:119:pub fn before_dashdash<'t, 'a>(tokens: &'t [Token<'a>]) -> &'t [Token<'a>] {
+src\core\arg_tokenizer.rs:134:pub fn injection_point(tokens: &[Token<'_>], args_len: usize) -> usize {
+src\core\arg_tokenizer.rs:141:pub fn has_dashdash(tokens: &[Token<'_>]) -> bool {
+src\core\arg_tokenizer.rs:149:pub fn has_flag(tokens: &[Token<'_>], dialect: Dialect, name: &str) -> bool {
+src\core\arg_tokenizer.rs:161:pub fn has_double_dash_flag(tokens: &[Token<'_>], dialect: Dialect, name: &str) -> bool {
+src\core\arg_tokenizer.rs:168:pub fn double_dash_flag_value<'a>(
+src\core\arg_tokenizer.rs:183:pub fn double_dash_flag_values<'a, 't>(
+src\core\arg_tokenizer.rs:391:pub fn tokenize<'a, T: AsRef<str>>(args: &'a [T]) -> Vec<Token<'a>> {
+src\core\arg_tokenizer.rs:402:pub fn tokenize_grammar<'a, T: AsRef<str>>(
+src\cmds\php\phpstan_cmd.rs:51:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\analytics\ccusage.rs:129:pub fn fetch(granularity: Granularity) -> Result<Option<Vec<CcusagePeriod>>> {
+src\cmds\python\sqlfluff_cmd.rs:67:pub fn plan(args: &[String]) -> Invocation {
+src\cmds\python\sqlfluff_cmd.rs:120:    pub fn render(&self, stdout: &str, exit_code: i32) -> String {
+src\cmds\python\sqlfluff_cmd.rs:129:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\python\sqlfluff_cmd.rs:158:pub fn filter_sqlfluff_lint_json(output: &str) -> String {
+src\cmds\php\phpt_cmd.rs:102:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\diff_cmd.rs:44:pub fn run(file1: &Path, file2: &Path, verbose: u8) -> Result<i32> {
+src\cmds\git\diff_cmd.rs:494:pub fn run_stdin(_verbose: u8) -> Result<()> {
+src\cmds\php\phpunit_cmd.rs:23:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\gh_cmd.rs:265:pub fn run(subcommand: &str, args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\bun_cmd.rs:32:pub fn filter_bun_pkg(output: &str) -> String {
+src\cmds\js\bun_cmd.rs:69:pub fn filter_bun_pm_ls_json(raw: &str) -> Option<String> {
+src\cmds\js\bun_cmd.rs:137:pub fn filter_bun_pm_ls_text(raw: &str) -> String {
+src\cmds\js\bun_cmd.rs:153:pub fn run_pkg(subcmd: &str, args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\bun_cmd.rs:172:pub fn run_pm_ls(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\bun_cmd.rs:203:pub fn run_build(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\bun_cmd.rs:213:pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\bun_cmd.rs:238:pub fn run_bunx(args: &[String], verbose: u8, skip_env: bool) -> Result<i32> {
+src\cmds\js\bun_cmd.rs:248:pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\php\php_cmd.rs:10:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\go\golangci_cmd.rs:197:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\dotnet\dotnet_cmd.rs:28:pub fn run_build(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\dotnet\dotnet_cmd.rs:32:pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\dotnet\dotnet_cmd.rs:36:pub fn run_restore(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\dotnet\dotnet_cmd.rs:40:pub fn run_format(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\dotnet\dotnet_cmd.rs:93:pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\php\pint_cmd.rs:38:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\glab_cmd.rs:315:pub fn run(
+src\cmds\dotnet\dotnet_format_report.rs:47:pub fn parse_format_report(path: &Path) -> Result<FormatSummary> {
+src\cmds\dotnet\dotnet_trx.rs:94:pub fn parse_trx_file(path: &Path) -> Option<TestSummary> {
+src\cmds\dotnet\dotnet_trx.rs:99:pub fn parse_trx_file_since(path: &Path, since: SystemTime) -> Option<TestSummary> {
+src\cmds\dotnet\dotnet_trx.rs:108:pub fn parse_trx_files_in_dir(dir: &Path) -> Option<TestSummary> {
+src\cmds\dotnet\dotnet_trx.rs:112:pub fn parse_trx_files_in_dir_since(dir: &Path, since: Option<SystemTime>) -> Option<TestSummary> {
+src\cmds\dotnet\dotnet_trx.rs:179:pub fn find_recent_trx_in_testresults() -> Option<PathBuf> {
+src\cmds\js\next_cmd.rs:11:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\npm_cmd.rs:96:pub fn run(args: &[String], verbose: u8, skip_env: bool) -> Result<i32> {
+src\cmds\js\npm_cmd.rs:122:pub fn exec(args: &[String], verbose: u8, skip_env: bool) -> Result<i32> {
+src\cmds\js\npm_cmd.rs:131:pub fn exec_with(runner: &str, args: &[String], verbose: u8, skip_env: bool) -> Result<i32> {
+src\cmds\git\gt_cmd.rs:86:pub fn run_log(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\gt_cmd.rs:106:pub fn run_submit(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\gt_cmd.rs:110:pub fn run_sync(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\gt_cmd.rs:114:pub fn run_restack(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\gt_cmd.rs:118:pub fn run_create(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\gt_cmd.rs:122:pub fn run_branch(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\gt_cmd.rs:126:pub fn run_other(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\js\lint_cmd.rs:103:pub fn run(runner: Option<&str>, args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\go\go_cmd.rs:56:pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\go\go_cmd.rs:96:pub fn run_build(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\go\go_cmd.rs:120:pub fn run_vet(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\go\go_cmd.rs:144:pub fn run_other(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\js\playwright_cmd.rs:239:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\git\git_cmd.rs:135:pub fn run(
+src\cmds\git\git_cmd.rs:3800:pub fn run_passthrough(args: &[OsString], global_args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\dotnet\binlog.rs:182:pub fn parse_build(binlog_path: &Path) -> Result<BuildSummary> {
+src\cmds\dotnet\binlog.rs:257:pub fn parse_test(binlog_path: &Path) -> Result<TestSummary> {
+src\cmds\dotnet\binlog.rs:269:pub fn parse_restore(binlog_path: &Path) -> Result<RestoreSummary> {
+src\cmds\dotnet\binlog.rs:638:pub fn scrub_sensitive_env_vars(input: &str) -> String {
+src\cmds\dotnet\binlog.rs:644:pub fn parse_build_from_text(text: &str) -> BuildSummary {
+src\cmds\dotnet\binlog.rs:854:pub fn parse_test_from_text(text: &str) -> TestSummary {
+src\cmds\dotnet\binlog.rs:975:pub fn parse_restore_from_text(text: &str) -> RestoreSummary {
+src\cmds\dotnet\binlog.rs:989:pub fn parse_restore_issues_from_text(text: &str) -> (Vec<BinlogIssue>, Vec<BinlogIssue>) {
+src\cmds\js\deno_cmd.rs:9:pub fn filter_deno_output(output: &str) -> String {
+src\cmds\js\deno_cmd.rs:64:pub fn run_lint(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\deno_cmd.rs:68:pub fn run_check(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\deno_cmd.rs:73:pub fn run_compile(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\deno_cmd.rs:81:pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\deno_cmd.rs:101:pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\js\prettier_cmd.rs:9:pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\prettier_cmd.rs:30:pub fn filter_prettier_output(output: &str) -> String {
+src\cmds\php\test_output.rs:23:pub fn filter_test_runner_output(output: &str) -> String {
+src\cmds\js\pnpm_cmd.rs:373:pub fn run(cmd: PnpmCommand, args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\pnpm_cmd.rs:560:pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+src\cmds\js\prisma_cmd.rs:24:pub fn run(cmd: PrismaCommand, args: &[String], verbose: u8) -> Result<i32> {
+src\core\args_utils.rs:9:pub fn restore_double_dash(parsed_args: &[String]) -> Vec<String> {
+src\core\args_utils.rs:25:pub fn restore_double_dash_with_raw(parsed_args: &[String], raw_args: &[String]) -> Vec<String> {
+src\cmds\php\utils.rs:11:pub fn php_tool_command(tool: &str) -> Command {
+src\cmds\php\utils.rs:32:pub fn strip_ansi_and_controls(input: &str) -> String {
+src\cmds\php\utils.rs:44:pub fn detect_php_test_runner() -> PhpTestRunner {
+src\core\telemetry.rs:27:pub fn endpoint_url() -> Option<&'static str> {
+src\core\telemetry.rs:33:pub fn maybe_ping() {
+src\core\telemetry.rs:171:pub fn generate_device_hash() -> String {
+src\core\telemetry.rs:222:pub fn salt_file_path() -> PathBuf {
+src\core\telemetry.rs:552:pub fn telemetry_marker_path() -> PathBuf {
+src\core\arg_tokenizer\frozen.rs:29:    pub fn value(&self, tokens: &[Token<'a>]) -> Option<&'a str> {
+src\core\arg_tokenizer\frozen.rs:45:    pub fn is_free_positional(&self) -> bool {
+src\core\arg_tokenizer\frozen.rs:50:pub fn is_digit_run(text: &str) -> bool {
+src\core\arg_tokenizer\frozen.rs:61:pub fn dashdash_index(tokens: &[Token<'_>]) -> Option<usize> {
+src\core\arg_tokenizer\frozen.rs:65:pub fn before_dashdash<'t, 'a>(tokens: &'t [Token<'a>]) -> &'t [Token<'a>] {
+src\core\arg_tokenizer\frozen.rs:72:pub fn injection_point(tokens: &[Token<'_>], args_len: usize) -> usize {
+src\core\arg_tokenizer\frozen.rs:78:pub fn has_dashdash(tokens: &[Token<'_>]) -> bool {
+src\core\arg_tokenizer\frozen.rs:82:pub fn has_flag(tokens: &[Token<'_>], dialect: Dialect, name: &str) -> bool {
+src\core\arg_tokenizer\frozen.rs:88:pub fn has_double_dash_flag(tokens: &[Token<'_>], dialect: Dialect, name: &str) -> bool {
+src\core\arg_tokenizer\frozen.rs:92:pub fn double_dash_flag_value<'a>(
+src\core\arg_tokenizer\frozen.rs:103:pub fn double_dash_flag_values<'a, 't>(
+src\core\arg_tokenizer\frozen.rs:166:pub fn tokenize<'a, T: AsRef<str>>(args: &'a [T]) -> Vec<Token<'a>> {
+src\core\arg_tokenizer\frozen.rs:170:pub fn tokenize_grammar<'a, T: AsRef<str>>(
+src\cmds\js\tsc_cmd.rs:82:pub fn run(runner: Option<&str>, args: &[String], verbose: u8) -> Result<i32> {
+src\core\telemetry_cmd.rs:81:pub fn run(command: &TelemetrySubcommand) -> Result<()> {
+src\core\telemetry_cmd.rs:97:pub fn telemetry_disabled_by_env() -> bool {
+src\cmds\js\vitest_cmd.rs:201:pub fn run_vitest(args: &[String], verbose: u8) -> Result<i32> {
+src\cmds\js\vitest_cmd.rs:205:pub fn run_jest(args: &[String], verbose: u8) -> Result<i32> {
+src\core\toml_filter.rs:320:pub fn is_rtk_reserved_command(name: &str) -> bool {
+src\core\toml_filter.rs:418:pub fn toml_disabled() -> bool {
+src\core\toml_filter.rs:422:pub fn active_filter_summaries(content: &str) -> Vec<(String, String)> {
+src\core\toml_filter.rs:433:pub fn filter_parse_error(content: &str) -> Option<String> {
+src\core\toml_filter.rs:475:pub fn is_filtered_command_word(word: &str) -> bool {
+src\core\toml_filter.rs:479:pub fn command_matches_filter(command: &str) -> bool {
+src\core\toml_filter.rs:590:pub fn find_filter_in<'a>(
+src\core\toml_filter.rs:608:pub fn apply_filter(filter: &CompiledFilter, stdout: &str) -> String {
+src\core\toml_filter.rs:624:pub fn apply_filter_with_info(filter: &CompiledFilter, stdout: &str) -> (String, Lossiness) {
+src\core\toml_filter.rs:770:pub fn run_filter_tests(filter_name_opt: Option<&str>) -> VerifyResults {
+src\core\toml_filter.rs:895:pub fn find_matching_filter(command: &str) -> Option<&'static CompiledFilter> {
+src\core\test_isolation\mod.rs:25:pub fn root() -> PathBuf {
+src\core\test_isolation\mod.rs:34:pub fn with_root<R>(dir: &Path, f: impl FnOnce() -> R) -> R {
+src\core\test_isolation\mod.rs:64:pub fn enter(dir: &Path) -> Entered {
+src\core\test_isolation\mod.rs:81:pub fn entered() -> Option<PathBuf> {
+src\core\test_isolation\mod.rs:93:pub fn with_agent_dir<R>(tmp: &Path, var: &str, dir: &Path, f: impl FnOnce() -> R) -> R {
+src\core\test_isolation\mod.rs:102:pub fn in_scratch(path: &Path) -> bool {
+src\core\test_isolation\mod.rs:115:pub fn project() -> PathBuf {
+src\core\test_isolation\mod.rs:122:pub fn db_path() -> PathBuf {
+src\core\test_isolation\mod.rs:157:pub fn rtk_binary_is_built() -> bool {
+src\core\test_isolation\mod.rs:225:pub fn rtk_command() -> Command {
+src\core\test_isolation\scratch.rs:29:pub fn isolate_rtk(cmd: &mut Command) {
+src\core\test_isolation\scratch.rs:37:pub fn isolate_environment(cmd: &mut Command) {
+src\core\test_isolation\scratch.rs:50:pub fn isolate_rtk_in(cmd: &mut Command, root: &Path) {
+src\core\test_isolation\scratch.rs:117:pub fn scratch_dir() -> &'static Path {
+src\core\test_isolation\scratch.rs:270:pub fn isolate_git(cmd: &mut Command) {
+src\core\test_isolation\scratch.rs:280:pub fn isolate_git_config(cmd: &mut Command) {
+src\core\test_isolation\scratch.rs:321:pub fn tempdir() -> tempfile::TempDir {
+src\core\test_isolation\scratch.rs:332:pub fn temp_git_repo() -> tempfile::TempDir {
+src\core\tracking.rs:137:    pub fn is_covered(self) -> bool {
+src\core\tracking.rs:201:    pub fn saved(&self) -> i64 {
+src\core\tracking.rs:214:pub fn pipeline_slice_key(pipeline: &str, subject: &str) -> String {
+src\core\tracking.rs:220:pub fn split_pipeline_slice(name: &str) -> Option<(&str, &str)> {
+src\core\tracking.rs:714:    pub fn new() -> Result<Self> {
+src\core\tracking.rs:726:    pub fn new_in_memory() -> Result<Self> {
+src\core\tracking.rs:754:    pub fn record(
+src\core\tracking.rs:799:    pub fn classifier_cache_get(&self, key: &str) -> Result<Option<String>> {
+src\core\tracking.rs:812:    pub fn classifier_cache_put(&self, key: &str, answer: &str) -> Result<()> {
+src\core\tracking.rs:821:    pub fn record_attribution(
+src\core\tracking.rs:844:    pub fn attribution(&self, kind: &str, days: u32) -> Result<Vec<AttributionRow>> {
+src\core\tracking.rs:848:    pub fn attribution_site(
+src\core\tracking.rs:909:    pub fn reset_all(&self) -> Result<()> {
+src\core\tracking.rs:925:    pub fn record_parse_failure(
+src\core\tracking.rs:958:    pub fn record_hook_decision(
+src\core\tracking.rs:1027:    pub fn hook_decisions_since(
+src\core\tracking.rs:1068:    pub fn earliest_hook_decision_timestamp(&self) -> Result<Option<DateTime<Utc>>> {
+src\core\tracking.rs:1082:    pub fn get_parse_failure_summary(&self) -> Result<ParseFailureSummary> {
+src\core\tracking.rs:1159:    pub fn get_summary(&self) -> Result<GainSummary> {
+src\core\tracking.rs:1167:    pub fn get_summary_filtered(&self, project_path: Option<&str>) -> Result<GainSummary> {
+src\core\tracking.rs:1313:    pub fn get_all_days(&self) -> Result<Vec<DayStats>> {
+src\core\tracking.rs:1318:    pub fn get_all_days_filtered(&self, project_path: Option<&str>) -> Result<Vec<DayStats>> {
+src\core\tracking.rs:1394:    pub fn get_by_week(&self) -> Result<Vec<WeekStats>> {
+src\core\tracking.rs:1399:    pub fn get_by_week_filtered(&self, project_path: Option<&str>) -> Result<Vec<WeekStats>> {
+src\core\tracking.rs:1477:    pub fn get_by_month(&self) -> Result<Vec<MonthStats>> {
+src\core\tracking.rs:1482:    pub fn get_by_month_filtered(&self, project_path: Option<&str>) -> Result<Vec<MonthStats>> {
+src\core\tracking.rs:1562:    pub fn get_recent(&self, limit: usize) -> Result<Vec<CommandRecord>> {
+src\core\tracking.rs:1567:    pub fn get_recent_filtered(
+src\core\tracking.rs:1599:    pub fn count_commands_since(&self, since: chrono::DateTime<chrono::Utc>) -> Result<i64> {
+src\core\tracking.rs:1612:    pub fn top_commands(&self, limit: usize) -> Result<Vec<String>> {
+src\core\tracking.rs:1638:    pub fn overall_savings_pct(&self) -> Result<f64> {
+src\core\tracking.rs:1652:    pub fn total_tokens_saved(&self) -> Result<i64> {
+src\core\tracking.rs:1662:    pub fn tokens_saved_24h(&self, since: chrono::DateTime<chrono::Utc>) -> Result<i64> {
+src\core\tracking.rs:1675:    pub fn top_passthrough(&self, limit: usize) -> Result<Vec<(String, i64)>> {
+src\core\tracking.rs:1700:    pub fn parse_failures_since(&self, since: chrono::DateTime<chrono::Utc>) -> Result<i64> {
+src\core\tracking.rs:1719:    pub fn low_savings_commands(&self, limit: usize) -> Result<Vec<(String, f64)>> {
+src\core\tracking.rs:1752:    pub fn avg_savings_per_command(&self) -> Result<f64> {
+src\core\tracking.rs:1768:    pub fn count_meta_command(&self, name: &str) -> Result<i64> {
+src\core\tracking.rs:1779:    pub fn first_seen_days(&self) -> Result<i64> {
+src\core\tracking.rs:1803:    pub fn active_days_30d(&self) -> Result<i64> {
+src\core\tracking.rs:1816:    pub fn commands_total(&self) -> Result<i64> {
+src\core\tracking.rs:1824:    pub fn ecosystem_mix(&self) -> Result<Vec<(String, f64)>> {
+src\core\tracking.rs:1859:    pub fn tokens_saved_30d(&self) -> Result<i64> {
+src\core\tracking.rs:1872:    pub fn projects_count(&self) -> Result<i64> {
+src\core\tracking.rs:2048:pub fn ensure_schema_fresh() -> Result<()> {
+src\core\tracking.rs:2073:pub fn record_parse_failure_silent(raw_command: &str, error_message: &str, succeeded: bool) {
+src\core\tracking.rs:2118:    pub fn start() -> Self {
+src\core\tracking.rs:2148:    pub fn track(&self, original_cmd: &str, rtk_cmd: &str, input: &str, output: &str) {
+src\core\tracking.rs:2169:    pub fn track_bytes(&self, original_cmd: &str, rtk_cmd: &str, input_len: usize, output: &str) {
+src\core\tracking.rs:2207:    pub fn track_passthrough(&self, original_cmd: &str, rtk_cmd: &str) {
+src\core\tracking.rs:2219:pub fn passthrough_label(command: &str) -> String {
+src\core\tracking.rs:2238:pub fn args_display(args: &[OsString]) -> String {
+src\core\user_dirs.rs:36:pub fn data() -> Option<PathBuf> {
+src\core\user_dirs.rs:60:pub fn config() -> Option<PathBuf> {
+src\core\user_dirs.rs:82:pub fn home() -> Option<PathBuf> {
+src\core\user_dirs.rs:96:pub fn data_under(root: &str) -> PathBuf {
+src\core\user_dirs.rs:111:pub fn working_dir() -> Option<PathBuf> {
+src\core\user_dirs.rs:126:pub fn ancestors(dir: &Path) -> impl Iterator<Item = &Path> {
+src\core\user_dirs.rs:135:pub fn current_dir() -> std::io::Result<PathBuf> {
+src\core\user_dirs.rs:154:pub fn in_working_dir(name: &str) -> PathBuf {
+src\core\user_dirs.rs:174:pub fn project_root(marker: &str) -> Option<PathBuf> {
+src\core\user_dirs.rs:218:pub fn env_path(name: &str) -> Option<OsString> {
+src\core\user_env.rs:26:pub fn var(name: &str) -> Option<String> {
+src\core\user_env.rs:40:pub fn var_os(name: &str) -> Option<OsString> {
+src\core\user_env.rs:60:pub fn with_vars<R>(vars: &[(&str, Option<&str>)], f: impl FnOnce() -> R) -> R {
+src\core\user_env.rs:71:pub fn with_path<P: AsRef<std::ffi::OsStr>, R>(
+src\core\utils.rs:32:pub fn days_ago_cutoff(days: u64) -> DateTime<Utc> {
+src\core\utils.rs:41:pub fn sanitize_for_terminal(text: &str) -> String {
+src\core\utils.rs:53:pub fn strip_leading_bom(input: &str) -> &str {
+src\core\utils.rs:63:pub fn from_json_str<'a, T: serde::Deserialize<'a>>(s: &'a str) -> serde_json::Result<T> {
+src\core\utils.rs:90:pub fn format_tokens(n: usize) -> String {
+src\core\utils.rs:116:pub fn format_usd(amount: f64) -> String {
+src\core\utils.rs:142:pub fn format_cpt(cpt: f64) -> String {
+src\core\utils.rs:159:pub fn join_with_overflow(items: &[String], total: usize, max: usize, label: &str) -> String {
+src\core\utils.rs:176:pub fn truncate_iso_date(date: &str) -> &str {
+src\core\utils.rs:189:pub fn ok_confirmation(action: &str, detail: &str) -> String {
+src\core\utils.rs:200:pub fn exit_code_from_output(output: &std::process::Output, label: &str) -> i32 {
+src\core\utils.rs:221:pub fn exit_code_from_status(status: &std::process::ExitStatus, label: &str) -> i32 {
+src\core\utils.rs:241:pub fn fallback_tail(output: &str, label: &str, n: usize) -> String {
+src\core\utils.rs:252:pub fn create_private_dir(path: &std::path::Path) -> std::io::Result<()> {
+src\core\utils.rs:261:pub fn restrict_file(path: &std::path::Path) {
+src\core\utils.rs:271:pub fn open_private(
+src\core\utils.rs:351:pub fn ruby_exec(tool: &str) -> Command {
+src\core\utils.rs:363:pub fn count_tokens(text: &str) -> usize {
+src\core\utils.rs:377:pub fn detect_package_manager() -> &'static str {
+src\core\utils.rs:383:pub fn detect_package_manager_in(dir: &std::path::Path) -> &'static str {
+src\core\utils.rs:397:pub fn package_manager_exec(tool: &str) -> Command {
+src\core\utils.rs:415:pub fn exec_runner(runner: Option<&str>, missing: MissingTool) -> &str {
+src\core\utils.rs:438:pub fn tool_exec(runner: Option<&str>, tool: &str, missing: MissingTool) -> Command {
+src\core\utils.rs:481:pub fn quote_arg_for_child(arg: &str) -> String {
+src\core\utils.rs:587:pub fn resolve_binary(name: &str) -> Result<PathBuf> {
+src\core\utils.rs:609:pub fn resolved_command(name: &str) -> Command {
+src\core\utils.rs:641:pub fn composer_bin_dirs() -> Vec<PathBuf> {
+src\core\utils.rs:663:pub fn composer_tool_paths(tool: &str) -> Vec<PathBuf> {
+src\core\utils.rs:703:pub fn join_or_ok(lines: &[&str]) -> String {
+src\core\utils.rs:714:pub fn tool_exists(name: &str) -> bool {
+src\core\utils.rs:732:pub fn env_is_some(value: Option<&str>) -> bool {
+src\core\utils.rs:739:pub fn shorten_arn(arn: &str) -> &str {
+src\core\utils.rs:753:pub fn human_bytes(bytes: u64) -> String {
+src\core\utils.rs:783:pub fn decode_process_output(bytes: &[u8]) -> String {
+src\cmds\python\uv_cmd.rs:56:pub fn run(args: &[String], verbose: u8) -> Result<i32> {

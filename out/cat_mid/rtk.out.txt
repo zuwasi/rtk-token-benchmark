@@ -1,0 +1,150 @@
+use super::constants::{
+    CLAUDE_DIR, CURSOR_DIR, DROID_DIR, DROID_HOME_ENV, DROID_SETTINGS_FILE, GEMINI_DIR,
+    SETTINGS_JSON, SETTINGS_LOCAL_JSON,
+};
+use super::init::resolve_claude_dir;
+use crate::core::user_dirs;
+use crate::core::user_env;
+use crate::discover::lexer::{
+    is_word_boundary_whitespace, split_for_permissions, split_for_wrappers,
+};
+use crate::discover::registry;
+#[cfg(test)]
+use crate::discover::registry::MAX_MATCHING_PEELS;
+use crate::discover::registry::{MatchingReadings, matching_readings};
+use crate::discover::shell_wrapper::{is_shell_wrapper_candidate, parse_shell_wrapper};
+use serde_json::Value;
+use std::path::PathBuf;
+
+/// Verdict from checking a command against Claude Code's permission rules.
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub enum PermissionVerdict {
+    /// An explicit allow rule matched — safe to auto-allow.
+    Allow,
+    /// A deny rule matched — pass through to Claude Code's native deny handling.
+    Deny,
+    /// An ask rule matched — rewrite the command but let Claude Code prompt the user.
+    Ask,
+    /// No rule matched — default to ask (matches Claude Code's least-privilege default).
+    Default,
+    /// A deny rule matched inside a shell wrapper's script — RTK neither rewrites nor decides.
+    Defer,
+}
+
+/// Check `cmd` against Claude Code's deny/ask/allow permission rules.
+///
+/// Precedence: Deny > Defer > Ask > Allow > Default (ask).
+/// Returns `Default` when no rules match — callers should treat this as ask
+/// to match Claude Code's least-privilege default.
+pub fn check_command(cmd: &str) -> PermissionVerdict {
+    check_command_for(cmd, Host::Claude)
+}
+
+/// The agent host whose own permission settings should be consulted.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Host {
+    Claude,
+    Codex,
+    Trae,
+    Cursor,
+    Gemini,
+    Droid,
+    Vibe,
+    Antigravity,
+    OpenCode,
+}
+
+pub fn check_command_for(cmd: &str, host: Host) -> PermissionVerdict {
+    check_command_for_agent(cmd, host, None)
+}
+
+pub fn check_command_for_agent(cmd: &str, host: Host, agent: Option<&str>) -> PermissionVerdict {
+    if host == Host::OpenCode {
+        let rules = super::permissions_opencode::load_opencode_rules(agent);
+        return super::permissions_opencode::check_command_with_opencode_rules(cmd, &rules);
+    }
+    let (deny_rules, ask_rules, allow_rules) = load_rules_for(host);
+    let (_, transparent_prefixes) = crate::core::config::hook_rewrite_params();
+    check_command_with_rules_and_prefixes(
+        cmd,
+        &deny_rules,
+        &ask_rules,
+        &allow_rules,
+        &transparent_prefixes,
+    )
+}
+        }
+    }
+}
+}
+        {
+        }
+    }
+    {
+    }
+    }
+        }
+        }
+            }
+        }
+    }
+    }
+}
+fn check_shell_wrapper_permissions(
+        {
+                }
+            }
+            }
+        }
+    }
+}
+fn load_permission_rules() -> (Vec<String>, Vec<String>, Vec<String>) {
+    }
+}
+fn append_bash_rules(rules_value: Option<&Value>, target: &mut Vec<String>) {
+        {
+        }
+    }
+}
+fn get_settings_paths() -> Vec<PathBuf> {
+}
+fn get_settings_paths_from(
+    }
+    }
+}
+fn read_json(path: &std::path::Path) -> Option<Value> {
+        }
+    }
+}
+fn append_wrapped_rules(rules_value: Option<&Value>, prefixes: &[&str], target: &mut Vec<String>) {
+            }
+            }
+        }
+    }
+}
+fn global_config(dir: &str, file: &str) -> Option<Value> {
+}
+fn load_cursor_rules() -> (Vec<String>, Vec<String>, Vec<String>) {
+    {
+    }
+}
+fn gemini_settings() -> Option<Value> {
+    {
+    }
+}
+fn load_gemini_rules() -> (Vec<String>, Vec<String>, Vec<String>) {
+    }
+}
+fn droid_settings_scopes() -> Vec<Value> {
+    {
+    }
+    }
+            }
+        }
+    }
+}
+fn load_droid_rules() -> (Vec<String>, Vec<String>, Vec<String>) {
+}
+        }
+    }
+[2123 more lines]

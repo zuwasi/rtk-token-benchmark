@@ -1,0 +1,34 @@
+On branch develop
+Your branch is up to date with 'origin/develop'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   docs/TELEMETRY.md
+	modified:   docs/contributing/ARCHITECTURE.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   docs/contributing/CODING_PRACTICES.md
+	modified:   docs/contributing/TECHNICAL.md
+	modified:   docs/guide/analytics/discover.md
+	modified:   docs/guide/analytics/gain.md
+	modified:   docs/guide/getting-started/configuration.md
+	modified:   docs/guide/getting-started/installation.md
+	modified:   docs/guide/getting-started/quick-start.md
+	modified:   docs/guide/getting-started/supported-agents.md
+	modified:   docs/guide/index.md
+	modified:   docs/guide/pipelines/commands.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	bench_scratch/
+	bench_untracked_1.txt
+	bench_untracked_2.txt
+	bench_untracked_3.txt
+	bench_untracked_4.txt
+	bench_untracked_5.txt
+	bench_untracked_6.txt
+	bench_untracked_7.txt
+	bench_untracked_8.txt
+

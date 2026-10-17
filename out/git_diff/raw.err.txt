@@ -1,0 +1,10 @@
+warning: in the working copy of 'docs/contributing/CODING_PRACTICES.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/contributing/TECHNICAL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/analytics/discover.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/analytics/gain.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/getting-started/configuration.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/getting-started/installation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/getting-started/quick-start.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/getting-started/supported-agents.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/index.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/guide/pipelines/commands.md', LF will be replaced by CRLF the next time Git touches it

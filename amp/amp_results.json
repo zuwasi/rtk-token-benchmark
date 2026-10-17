@@ -1,0 +1,230 @@
+{
+  "truth": {
+    "modified_not_staged": 10,
+    "untracked_entries": 9,
+    "latest_commit_author": "Nicolas Le Cam",
+    "oldest_commit_author_of_40": "aesoft",
+    "diff_files_changed": 42,
+    "rg_files_with_pub_fn": 142,
+    "cargo_failed_tests": 6
+  },
+  "prompt": "You are being benchmarked. Use only the shell tool. Run exactly these commands, one per tool call,\nin this order, from the working directory unless told otherwise. Do not run any other command and do not\nread files any other way.\n\n1. git status\n2. git log -40\n3. git diff HEAD~12\n4. rg -n \"pub fn\" src\n5. cargo test   (run it with the working directory set to [your path]\\work\\rsproj)\n\nThen answer from the command output alone, as a single JSON object and nothing else:\n{\"modified_not_staged\": <int>, \"untracked_entries\": <int>, \"latest_commit_author\": \"<name>\",\n\"oldest_commit_author_of_40\": \"<name>\", \"diff_files_changed\": <int>, \"rg_files_with_pub_fn\": <int>,\n\"cargo_failed_tests\": <int>}\nIf the output does not let you determine a value, use null.",
+  "runs": [
+    {
+      "side": "on",
+      "idx": 0,
+      "thread": "T-01a148e3-1f6c-7003-bcae-c520168a84f8",
+      "wall_s": 75.3,
+      "turns": 6,
+      "usage": {
+        "input": 14,
+        "cache_write": 202683,
+        "cache_read": 223436,
+        "output": 1379
+      },
+      "context_tokens": 426133,
+      "new_input_tokens": 202697,
+      "tool_result_chars": 55591,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cargo test"
+      ],
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": null,
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": 42,
+        "rg_files_with_pub_fn": 142,
+        "cargo_failed_tests": 6
+      },
+      "correct": 6,
+      "of": 7,
+      "rc": 0,
+      "error": null
+    },
+    {
+      "side": "off",
+      "idx": 0,
+      "thread": "T-01a148e7-9712-70d4-ab35-c348e3084a8d",
+      "wall_s": 32.3,
+      "turns": 6,
+      "usage": {
+        "input": 14,
+        "cache_write": 85835,
+        "cache_read": 423091,
+        "output": 1127
+      },
+      "context_tokens": 508940,
+      "new_input_tokens": 85849,
+      "tool_result_chars": 127517,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cargo test"
+      ],
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": null,
+        "rg_files_with_pub_fn": null,
+        "cargo_failed_tests": 6
+      },
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "error": null
+    },
+    {
+      "side": "off",
+      "idx": 1,
+      "thread": "T-01a148e8-167b-707f-bdbc-75b28503658e",
+      "wall_s": 33.7,
+      "turns": 6,
+      "usage": {
+        "input": 14,
+        "cache_write": 135065,
+        "cache_read": 373643,
+        "output": 1085
+      },
+      "context_tokens": 508722,
+      "new_input_tokens": 135079,
+      "tool_result_chars": 127524,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cargo test"
+      ],
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": null,
+        "rg_files_with_pub_fn": null,
+        "cargo_failed_tests": 6
+      },
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "error": null
+    },
+    {
+      "side": "on",
+      "idx": 1,
+      "thread": "T-01a148e8-9a15-77ef-8f2e-6c4383672ef8",
+      "wall_s": 36.2,
+      "turns": 6,
+      "usage": {
+        "input": 14,
+        "cache_write": 118156,
+        "cache_read": 307942,
+        "output": 1259
+      },
+      "context_tokens": 426112,
+      "new_input_tokens": 118170,
+      "tool_result_chars": 55591,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cargo test"
+      ],
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": 42,
+        "rg_files_with_pub_fn": 142,
+        "cargo_failed_tests": 6
+      },
+      "correct": 7,
+      "of": 7,
+      "rc": 0,
+      "error": null
+    },
+    {
+      "side": "on",
+      "idx": 2,
+      "thread": "T-01a148e9-281a-73f6-b4c1-66f3b71c80f3",
+      "wall_s": 44.2,
+      "turns": 6,
+      "usage": {
+        "input": 14,
+        "cache_write": 118132,
+        "cache_read": 308073,
+        "output": 1437
+      },
+      "context_tokens": 426219,
+      "new_input_tokens": 118146,
+      "tool_result_chars": 55589,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cargo test"
+      ],
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": null,
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": 42,
+        "rg_files_with_pub_fn": 142,
+        "cargo_failed_tests": 6
+      },
+      "correct": 6,
+      "of": 7,
+      "rc": 0,
+      "error": null
+    },
+    {
+      "side": "off",
+      "idx": 2,
+      "thread": "T-01a148e9-d4e8-7696-84f7-8b5dbaf06937",
+      "wall_s": 32.3,
+      "turns": 6,
+      "usage": {
+        "input": 14,
+        "cache_write": 76038,
+        "cache_read": 431723,
+        "output": 766
+      },
+      "context_tokens": 507775,
+      "new_input_tokens": 76052,
+      "tool_result_chars": 127523,
+      "commands": [
+        "git status",
+        "git log -40",
+        "git diff HEAD~12",
+        "rg -n \"pub fn\" src",
+        "cargo test"
+      ],
+      "answer": {
+        "modified_not_staged": 10,
+        "untracked_entries": 9,
+        "latest_commit_author": "Nicolas Le Cam",
+        "oldest_commit_author_of_40": "aesoft",
+        "diff_files_changed": null,
+        "rg_files_with_pub_fn": null,
+        "cargo_failed_tests": 6
+      },
+      "correct": 5,
+      "of": 7,
+      "rc": 0,
+      "error": null
+    }
+  ]
+}

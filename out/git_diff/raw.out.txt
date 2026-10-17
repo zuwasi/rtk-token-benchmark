@@ -1,0 +1,4284 @@
+diff --git a/.github/workflows/cd.yml b/.github/workflows/cd.yml
+index aa9b4b7..51fec1e 100644
+--- a/.github/workflows/cd.yml
++++ b/.github/workflows/cd.yml
+@@ -114,7 +114,7 @@ jobs:
+           private-key: ${{ secrets.APP_PRIVATE_KEY }}
+           permission-contents: write
+           permission-pull-requests: write
+-      - uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1
++      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+         id: release
+         with:
+           token: ${{ steps.app-token.outputs.token }}
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 077649f..562ed57 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -57,7 +57,7 @@ jobs:
+     needs: fmt
+     runs-on: ubuntu-latest
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+       - uses: dtolnay/rust-toolchain@stable
+       - uses: Swatinem/rust-cache@v2
+       - run: cargo doc --no-deps
+@@ -73,7 +73,7 @@ jobs:
+     runs-on: ubuntu-latest
+     needs: clippy
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+       - uses: dtolnay/rust-toolchain@stable
+         with:
+           components: clippy, rustfmt
+@@ -91,7 +91,7 @@ jobs:
+     runs-on: ubuntu-latest
+     needs: clippy
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+       - uses: dtolnay/rust-toolchain@stable
+         with:
+           components: clippy
+@@ -112,18 +112,31 @@ jobs:
+           echo "Apache-2.0 edition links no BUSL crate."
+ 
+   test:
+-    name: test (${{ matrix.os }})
++    name: test (${{ matrix.os }}${{ matrix.target && format(', {0}', matrix.target) || '' }})
+     needs: clippy
+     runs-on: ${{ matrix.os }}
++    env:
++      # An explicit target on every leg keeps the run command the same. It also puts
++      # each leg in cross mode, where RUSTFLAGS no longer reach build scripts or proc-macros.
++      CARGO_BUILD_TARGET: ${{ matrix.target || 'host-tuple' }}
+     strategy:
+       fail-fast: false
+       matrix:
+-        os: [ubuntu-latest, windows-latest, macos-latest]
++        include:
++          - os: ubuntu-latest
++          - os: windows-latest
++          # Links with MinGW's ld, which link.exe's `/STACK:` spelling breaks (see build.rs).
++          # The runner's host stays msvc, so build.rs also runs with host != target.
++          - os: windows-latest
++            target: x86_64-pc-windows-gnu
++          - os: macos-latest
+     steps:
+       - uses: actions/checkout@v7
+         with:
+           fetch-depth: 0
+       - uses: dtolnay/rust-toolchain@stable
++        with:
++          targets: ${{ matrix.target }}
+       - uses: Swatinem/rust-cache@v2
+         # `--all` is `--workspace`: `rtk` + `engine`. `proxy/` is tested in
+         # its own job, since it is not a member.
+diff --git a/.github/workflows/release.yml b/.github/workflows/release.yml
+index bd0ac9e..0f4088a 100644
+--- a/.github/workflows/release.yml
++++ b/.github/workflows/release.yml
+@@ -138,7 +138,7 @@ jobs:
+           cd ../../..
+ 
+       - name: Upload rtk-oss artifact
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-oss-${{ matrix.target }}
+           path: rtk-oss-${{ matrix.target }}.${{ matrix.archive }}
+@@ -182,7 +182,7 @@ jobs:
+           cd ../../..
+ 
+       - name: Upload rtk-proxy artifact
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-proxy-${{ matrix.target }}
+           path: rtk-proxy-${{ matrix.target }}.${{ matrix.archive }}
+@@ -217,7 +217,7 @@ jobs:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Checkout
+-        uses: actions/checkout@v4
++        uses: actions/checkout@v7
+ 
+       - name: Install Rust
+         uses: dtolnay/rust-toolchain@stable
+@@ -232,7 +232,7 @@ jobs:
+           RTK_TELEMETRY_TOKEN: ${{ secrets.RTK_TELEMETRY_TOKEN }}
+ 
+       - name: Upload DEB
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-oss-deb
+           path: target/debian/*.deb
+@@ -243,7 +243,7 @@ jobs:
+     container: fedora:latest
+     steps:
+       - name: Checkout
+-        uses: actions/checkout@v4
++        uses: actions/checkout@v7
+ 
+       - name: Install dependencies
+         run: |
+@@ -262,7 +262,7 @@ jobs:
+         run: cargo generate-rpm --variant oss
+ 
+       - name: Upload RPM
+-        uses: actions/upload-artifact@v4
++        uses: actions/upload-artifact@v7
+         with:
+           name: rtk-oss-rpm
+           path: target/generate-rpm/*.rpm
+diff --git a/Cargo.lock b/Cargo.lock
+index 66276f1..f71e6dc 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -259,6 +259,12 @@ version = "0.8.7"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+ 
++[[package]]
++name = "core_detect"
++version = "1.0.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48"
++
+ [[package]]
+ name = "cpufeatures"
+ version = "0.2.17"
+@@ -421,19 +427,18 @@ checksum = "252afb9ae5eaa683babdc6a068b3f5726eb19e05070c731f9b2a23a7c3e8ed34"
+ 
+ [[package]]
+ name = "encoding_rs"
+-version = "0.8.35"
++version = "0.8.42"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "75030f3c4f45dafd7586dd6780965a8c7e8e285a5ecb86713e63a79c5b2766f3"
++checksum = "8e985e0451871ad22fb8d2b6b076e2028a502a0d3950998c2c5c0a4f9b5d9679"
+ dependencies = [
+  "cfg-if",
++ "core_detect",
++ "multiversion_no_op",
++ "rustversion",
++ "scopeguard",
++ "simdutf8",
+ ]
+ 
+-[[package]]
+-name = "env_home"
+-version = "0.1.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c7f84e12ccf0a7ddc17a6c41c93326024c42920d7ee630d04950e6926645c0fe"
+-
+ [[package]]
+ name = "equivalent"
+ version = "1.0.2"
+@@ -739,9 +744,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "ignore"
+-version = "0.4.25"
++version = "0.4.32"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d3d782a365a015e0f5c04902246139249abf769125006fbe7649e2ee88169b4a"
++checksum = "0b17771570a2b94107741a7b033f19132c2eee21d59d21b24d2ced26500bd66e"
+ dependencies = [
+  "crossbeam-deque",
+  "globset",
+@@ -943,6 +948,12 @@ dependencies = [
+  "windows-sys 0.61.2",
+ ]
+ 
++[[package]]
++name = "multiversion_no_op"
++version = "1.0.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "743fb55ba31b18fb1ecef6bdc9aa2743314978ac084044301a7eee33fb99a20d"
++
+ [[package]]
+ name = "new_debug_unreachable"
+ version = "1.0.6"
+@@ -1272,7 +1283,7 @@ dependencies = [
+  "ureq",
+  "walkdir",
+  "which",
+- "windows-sys 0.59.0",
++ "windows-sys 0.61.2",
+ ]
+ 
+ [[package]]
+@@ -1327,7 +1338,7 @@ dependencies = [
+  "errno",
+  "libc",
+  "linux-raw-sys 0.4.15",
+- "windows-sys 0.59.0",
++ "windows-sys 0.52.0",
+ ]
+ 
+ [[package]]
+@@ -1413,9 +1424,9 @@ checksum = "d767eb0aabc880b29956c35734170f26ed551a859dbd361d140cdbeca61ab1e2"
+ 
+ [[package]]
+ name = "serde"
+-version = "1.0.228"
++version = "1.0.229"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e"
++checksum = "4148590afebada386688f18773da617792bf2ef03ffc1e4cbd2b1d45b023e0ba"
+ dependencies = [
+  "serde_core",
+  "serde_derive",
+@@ -1423,22 +1434,22 @@ dependencies = [
+ 
+ [[package]]
+ name = "serde_core"
+-version = "1.0.228"
++version = "1.0.229"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad"
++checksum = "67dca2c9c51e58a4791a4b1ed58308b39c64224d349a935ab5039aa360942a48"
+ dependencies = [
+  "serde_derive",
+ ]
+ 
+ [[package]]
+ name = "serde_derive"
+-version = "1.0.228"
++version = "1.0.229"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79"
++checksum = "e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+- "syn 2.0.117",
++ "syn 3.0.5",
+ ]
+ 
+ [[package]]
+@@ -1518,6 +1529,12 @@ version = "0.3.8"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "e320a6c5ad31d271ad523dcf3ad13e2767ad8b1cb8f047f75a8aeaf8da139da2"
+ 
++[[package]]
++name = "simdutf8"
++version = "0.1.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e3a9fe34e3e7a50316060351f37187a3f546bce95496156754b601a5fa71b76e"
++
+ [[package]]
+ name = "siphasher"
+ version = "1.0.3"
+@@ -1998,13 +2015,11 @@ dependencies = [
+ 
+ [[package]]
+ name = "which"
+-version = "8.0.1"
++version = "8.0.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3a824aeba0fbb27264f815ada4cff43d65b1741b7a4ed7629ff9089148c4a4e0"
++checksum = "bae2f2b2b816647a1cab1acc91f5bd20812d53cb344382635ec2181940c8034f"
+ dependencies = [
+- "env_home",
+- "rustix 1.1.4",
+- "winsafe",
++ "libc",
+ ]
+ 
+ [[package]]
+@@ -2106,15 +2121,6 @@ dependencies = [
+  "windows-targets",
+ ]
+ 
+-[[package]]
+-name = "windows-sys"
+-version = "0.59.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "1e38bc4d79ed67fd075bcc251a1c39b32a1776bbe92e5bef1f0bf1f8c531853b"
+-dependencies = [
+- "windows-targets",
+-]
+-
+ [[package]]
+ name = "windows-sys"
+ version = "0.61.2"
+@@ -2197,12 +2203,6 @@ dependencies = [
+  "memchr",
+ ]
+ 
+-[[package]]
+-name = "winsafe"
+-version = "0.0.19"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d135d17ab770252ad95e9a872d365cf3090e3be864a34ab46f48555993efc904"
+-
+ [[package]]
+ name = "wit-bindgen"
+ version = "0.51.0"
+diff --git a/Cargo.toml b/Cargo.toml
+index e2418c2..0cfe06b 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -93,7 +93,7 @@ crossterm = "0.28"
+ libc = "0.2"
+ 
+ [target.'cfg(windows)'.dependencies]
+-windows-sys = { version = "0.59", features = [
++windows-sys = { version = "0.61", features = [
+     "Win32_System_Console",
+     "Win32_Globalization",
+ ] }
+diff --git a/build.rs b/build.rs
+index 0a68bcf..28563ee 100644
+--- a/build.rs
++++ b/build.rs
+@@ -2,15 +2,35 @@ use std::collections::HashSet;
+ use std::fs;
+ use std::path::Path;
+ 
+-fn main() {
+-    #[cfg(windows)]
+-    {
+-        // Clap + the full command graph can exceed the default 1 MiB Windows
+-        // main-thread stack during process startup. Reserve a larger stack for
+-        // the CLI binary so `rtk.exe --version`, `--help`, and hook entry
+-        // points start reliably without requiring ad-hoc RUSTFLAGS.
+-        println!("cargo:rustc-link-arg=/STACK:8388608");
++/// Reserve a larger main-thread stack for Windows targets.
++///
++/// Clap + the full command graph can exceed the default 1 MiB Windows stack
++/// during process startup, so `rtk.exe --version`, `--help`, and the hook entry
++/// points need the headroom to start reliably without ad-hoc RUSTFLAGS.
++///
++/// Two things here are deliberately keyed off the **target**, not the host:
++/// `CARGO_CFG_TARGET_OS` (a `#[cfg(windows)]` here would describe the machine
++/// running the build, so cross-compiling to Windows from Linux would silently
++/// skip the flag), and the flag syntax itself — `link.exe` takes `/STACK:`
++/// while the MinGW `ld` behind `x86_64-pc-windows-gnu` only understands
++/// `--stack`, and feeding it `/STACK:` makes it look for a file by that name.
++/// Only `msvc` needs its own spelling: `gnu` (gnullvm reports it too) links
++/// through a gcc or clang driver that takes `-Wl,--stack`, and that is also what
++/// an environment the match does not name gets.
++fn set_windows_stack_size() {
++    if std::env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {
++        return;
+     }
++    const STACK_BYTES: usize = 8 * 1024 * 1024;
++    let arg = match std::env::var("CARGO_CFG_TARGET_ENV").as_deref() {
++        Ok("msvc") => format!("/STACK:{STACK_BYTES}"),
++        _ => format!("-Wl,--stack,{STACK_BYTES}"),
++    };
++    println!("cargo:rustc-link-arg={arg}");
++}
++
++fn main() {
++    set_windows_stack_size();
+ 
+     check_cmds_modules_declared();
+ 
+diff --git a/docs/TELEMETRY.md b/docs/TELEMETRY.md
+index 31aa163..999c6eb 100644
+--- a/docs/TELEMETRY.md
++++ b/docs/TELEMETRY.md
+@@ -189,3 +189,5 @@ When adding new fields:
+ 4. Add it to the JSON payload in `send_ping()`
+ 5. Update this document and the README.md privacy table
+ 6. Ensure the field contains only **aggregate counts or anonymized names** — no raw paths, arguments, or user data
++
++<!-- benchmark scratch note -->
+diff --git a/docs/contributing/ARCHITECTURE.md b/docs/contributing/ARCHITECTURE.md
+index 0490796..ca627e9 100644
+--- a/docs/contributing/ARCHITECTURE.md
++++ b/docs/contributing/ARCHITECTURE.md
+@@ -985,3 +985,5 @@ strip = true           # Remove debug symbols
+ 
+ **Last Updated**: 2026-03-24
+ **Architecture Version**: 3.1
++
++<!-- benchmark scratch note -->
+diff --git a/docs/contributing/CODING_PRACTICES.md b/docs/contributing/CODING_PRACTICES.md
+index 2fe5679..910638f 100644
+--- a/docs/contributing/CODING_PRACTICES.md
++++ b/docs/contributing/CODING_PRACTICES.md
+@@ -184,3 +184,5 @@ RTK executes shell commands on behalf of the user, so security is a first-class
+ **Permission whitelist.** `is_operational_command()` in `main.rs` uses a whitelist pattern — new commands are *not* integrity-checked until explicitly added. This is an intentional security posture: fail-open with an audit trail is preferred over false confidence.
+ 
+ **`unsafe` code.** Not allowed except for Unix signal handling in proxy mode, which is correctly scoped to `#[cfg(unix)]`.
++
++<!-- benchmark scratch note -->
+diff --git a/docs/contributing/TECHNICAL.md b/docs/contributing/TECHNICAL.md
+index 9c25b06..8e2dc82 100644
+--- a/docs/contributing/TECHNICAL.md
++++ b/docs/contributing/TECHNICAL.md
+@@ -442,3 +442,5 @@ tests/
+ - **Extract cli.rs**: Move `Commands` enum, 13 sub-enums (`GitCommands`, `CargoCommands`, etc.), and `AgentTarget` from main.rs to a dedicated cli.rs module. This would reduce main.rs from ~2600 to ~1500 lines.
+ - **Split routing**: Extract the `match cli.command { ... }` block into a separate routing module.
+ - **Streaming filters**: For long-running commands, filter output line-by-line as it arrives instead of buffering.
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/analytics/discover.md b/docs/guide/analytics/discover.md
+index 1ef93e3..19a4c8f 100644
+--- a/docs/guide/analytics/discover.md
++++ b/docs/guide/analytics/discover.md
+@@ -58,3 +58,5 @@ Average coverage: 95.0%
+ ```
+ 
+ Low coverage on a session usually means RTK was disabled (`RTK_DISABLED=1`) or the hook wasn't active for a specific subagent.
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/analytics/gain.md b/docs/guide/analytics/gain.md
+index a00ff9f..11db1e2 100644
+--- a/docs/guide/analytics/gain.md
++++ b/docs/guide/analytics/gain.md
+@@ -328,3 +328,5 @@ enc = tiktoken.get_encoding('cl100k_base')
+ print(len(enc.encode(open('output.txt').read())), 'actual tokens')
+ "
+ ```
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/getting-started/configuration.md b/docs/guide/getting-started/configuration.md
+index 748a3f3..acddfe3 100644
+--- a/docs/guide/getting-started/configuration.md
++++ b/docs/guide/getting-started/configuration.md
+@@ -223,3 +223,5 @@ rtk untrust    # revokes trust
+ `rtk init` also detects existing filters and lets you enable them — interactively, or non-interactively with `--trust-filters` / `--no-trust-filters`. Trust is tied to the file's contents (SHA-256), so editing a trusted file requires re-running `rtk trust`.
+ 
+ > **Upgrading:** earlier versions applied `~/.config/rtk/filters.toml` without trust. After upgrading, the user-global file is gated like project filters — if you already relied on a global filter, run `rtk trust` once to re-enable it.
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/getting-started/installation.md b/docs/guide/getting-started/installation.md
+index 713314d..efd7ce9 100644
+--- a/docs/guide/getting-started/installation.md
++++ b/docs/guide/getting-started/installation.md
+@@ -159,3 +159,5 @@ cargo uninstall rtk         # remove binary (if installed via Cargo)
+ brew uninstall rtk          # remove binary (if installed via Homebrew)
+ winget uninstall rtk-ai.rtk # remove binary (if installed via winget)
+ ```
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/getting-started/quick-start.md b/docs/guide/getting-started/quick-start.md
+index 23c4129..5067119 100644
+--- a/docs/guide/getting-started/quick-start.md
++++ b/docs/guide/getting-started/quick-start.md
+@@ -122,3 +122,5 @@ rtk bypass make install
+ - [Configuration](./configuration.md) — customize RTK behavior
+ - [Token Savings Analytics](../analytics/gain.md) — the full `rtk gain` surface
+ - [Editions and Licensing](../resources/editions.md) — what each download contains
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/getting-started/supported-agents.md b/docs/guide/getting-started/supported-agents.md
+index e2d5ca3..76ff497 100644
+--- a/docs/guide/getting-started/supported-agents.md
++++ b/docs/guide/getting-started/supported-agents.md
+@@ -196,7 +196,7 @@ Plugin in the `openclaw/` directory. Uses the `before_tool_call` hook, delegates
+ 
+ **Permissions.** RTK keeps the deny gate; OpenClaw owns approval. The plugin runs `rtk rewrite` with `RTK_REWRITE_HOST=openclaw`, which tells RTK that this host applies its own exec policy (`tools.exec.mode`, `security`, `ask`) to whatever the hook returns. RTK therefore does not prompt for a command that matched **no** rule, instead of raising a second approval derived from Claude Code's `settings.json` on a runtime that never opted into it ([#3908](https://github.com/rtk-ai/rtk/issues/3908)).
+ 
+-A command matching a `permissions.deny` rule in those same Claude Code settings files is still refused, and the plugin blocks the tool call — naming the host only relaxes a *default* ask. As in Claude Code, a rule matches the command as written rather than every way of invoking the program (`Bash(git push *)` does not stop `git -C . push`), so a deny rule is not a security boundary. A command matching a `permissions.ask` rule you wrote still prompts when RTK rewrites it, because RTK keeps returning exit 3 for it. Commands containing a command substitution or a redirect to a file are never rewritten, on any host.
++A command matching a `permissions.deny` rule in those same Claude Code settings files is still refused, and the plugin blocks the tool call — naming the host only relaxes a *default* ask. As in Claude Code, a deny or ask rule matches the command as written and the command behind any leading assignment or wrapper (`HUSKY=0`, `timeout 30`, `nohup`, `command`, ...), each layer in turn, but not every way of invoking the program (`Bash(git push *)` does not stop `git -C . push` or `env -i git push`), so a deny rule is not a security boundary. Allow rules match the command as written. A command matching a `permissions.ask` rule you wrote still prompts when RTK rewrites it, because RTK keeps returning exit 3 for it. Commands containing a command substitution or a redirect to a file are never rewritten, on any host.
+ 
+ The exec tool's own checks see the rewritten command. OpenClaw carries hook adjustments forward into the parameters passed to the exec tool, so `tools.exec.mode`, `tools.exec.security`, `tools.exec.ask` and the exec-approvals allowlist are all matched against `rtk git push`, not `git push`; write those rules against the `rtk` form. That was already true before the permission change. A trusted tool policy (`api.registerTrustedToolPolicy(...)`) is the exception: OpenClaw runs trusted policies before ordinary `before_tool_call` hooks, so one of those still sees the original command.
+ 
+@@ -357,3 +357,5 @@ Or exclude commands permanently in `~/.config/rtk/config.toml`:
+ [hooks]
+ exclude_commands = ["git rebase", "git cherry-pick"]
+ ```
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/index.md b/docs/guide/index.md
+index a23b230..4b0918c 100644
+--- a/docs/guide/index.md
++++ b/docs/guide/index.md
+@@ -79,3 +79,5 @@ Two optional layers sit on top of the hooks. Neither changes anything until you
+ - [Agent Coverage](./resources/agent-coverage.md) — what each agent's hook API lets RTK do
+ - [Editions and Licensing](./resources/editions.md) — the three downloads, what each contains, where the licence boundary falls
+ - [ARCHITECTURE.md](https://github.com/rtk-ai/rtk/blob/master/ARCHITECTURE.md) — system design for contributors
++
++<!-- benchmark scratch note -->
+diff --git a/docs/guide/pipelines/commands.md b/docs/guide/pipelines/commands.md
+index c1ccaa2..d73d514 100644
+--- a/docs/guide/pipelines/commands.md
++++ b/docs/guide/pipelines/commands.md
+@@ -264,3 +264,5 @@ The continuous counterpart lives in `rtk gain`: a per-mechanism efficiency secti
+ rtk methods list    # every registered method with its contract
+ rtk tasks list      # every configured task with its kind and upstream
+ ```
++
++<!-- benchmark scratch note -->
+diff --git a/src/cmds/dotnet/dotnet_cmd.rs b/src/cmds/dotnet/dotnet_cmd.rs
+index 640737b..0482d4b 100644
+--- a/src/cmds/dotnet/dotnet_cmd.rs
++++ b/src/cmds/dotnet/dotnet_cmd.rs
+@@ -39,6 +39,9 @@ pub fn run_restore(args: &[String], verbose: u8) -> Result<i32> {
+ 
+ pub fn run_format(args: &[String], verbose: u8) -> Result<i32> {
+     let args = &args_utils::restore_double_dash(args);
++    if let Some(forwarded) = help_forward("format", args) {
++        return run_passthrough(&forwarded, verbose);
++    }
+     let tokens = tokenize_dotnet_args(args);
+     let timer = tracking::TimedExecution::start();
+     let (report_path, cleanup_report_path) = resolve_format_report_path(&tokens);
+@@ -74,6 +77,19 @@ pub fn run_format(args: &[String], verbose: u8) -> Result<i32> {
+     Ok(result.exit_code)
+ }
+ 
++/// The subcommand RTK routed on, then the caller's own arguments: what the child would
++/// have seen without the binlog injection.
++fn help_forward(subcommand: &str, args: &[String]) -> Option<Vec<OsString>> {
++    crate::core::runner::requests_help_args("dotnet", args)
++        .then(|| forwarded_dotnet_args(subcommand, args))
++}
++
++fn forwarded_dotnet_args(subcommand: &str, args: &[String]) -> Vec<OsString> {
++    let mut out = vec![OsString::from(subcommand)];
++    out.extend(args.iter().map(OsString::from));
++    out
++}
++
+ pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+     if args.is_empty() {
+         anyhow::bail!("dotnet: no subcommand specified");
+@@ -109,6 +125,12 @@ pub fn run_passthrough(args: &[OsString], verbose: u8) -> Result<i32> {
+ 
+ fn run_dotnet_with_binlog(subcommand: &str, args: &[String], verbose: u8) -> Result<i32> {
+     let args = &args_utils::restore_double_dash(args);
++    // Forwarded clean rather than left to the guard in stream::capture: by then RTK has
++    // injected `-bl:<tmp>.binlog`, and an injected flag can change what a tool prints for
++    // help -- git's `--no-pager` turns its man page into a one-screen usage (#4198).
++    if let Some(forwarded) = help_forward(subcommand, args) {
++        return run_passthrough(&forwarded, verbose);
++    }
+     let tokens = tokenize_dotnet_args(args);
+     let timer = tracking::TimedExecution::start();
+     let binlog_path = build_binlog_path(subcommand);
+@@ -1458,7 +1480,68 @@ fn format_restore_output(
+ 
+ #[cfg(test)]
+ mod tests {
++    #[test]
++    fn dotnet_routes_a_usage_request_to_the_unfiltered_path() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        let route = |sub: &str, a: &[&str]| {
++            super::help_forward(sub, &owned(a)).map(|v| {
++                v.iter()
++                    .map(|o| o.to_string_lossy().into_owned())
++                    .collect::<Vec<_>>()
++            })
++        };
++        assert_eq!(
++            route("build", &["--help"]),
++            Some(vec!["build".into(), "--help".into()])
++        );
++        assert_eq!(
++            route("format", &["-?"]),
++            Some(vec!["format".into(), "-?".into()])
++        );
++        assert_eq!(route("test", &["/?"]).map(|v| v.len()), Some(2));
++        assert_eq!(route("build", &["-c", "Release"]), None);
++        assert_eq!(route("test", &[]), None);
++    }
++
+     use super::*;
++
++    /// dotnet is not installed on every runner, so the argv the help guard forwards is
++    /// pinned here rather than only through the integration test, which skips absent tools.
++    #[test]
++    fn forwarded_dotnet_args_keeps_the_subcommand_rtk_routed_on() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        let argv = |sub: &str, args: &[&str]| -> Vec<String> {
++            forwarded_dotnet_args(sub, &owned(args))
++                .iter()
++                .map(|a| a.to_string_lossy().into_owned())
++                .collect()
++        };
++        assert_eq!(argv("format", &["--help"]), vec!["format", "--help"]);
++        assert_eq!(argv("build", &["-?"]), vec!["build", "-?"]);
++        assert_eq!(argv("test", &["/?"]), vec!["test", "/?"]);
++    }
++
++    /// The MSBuild spellings, which a POSIX scan reads as a cluster or a path.
++    #[test]
++    fn dotnet_help_is_recognised_in_every_spelling() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        for form in [
++            vec!["build", "--help"],
++            vec!["build", "-h"],
++            vec!["build", "-?"],
++            vec!["build", "/?"],
++            vec!["test", "-?"],
++        ] {
++            assert!(
++                crate::core::runner::requests_help_args("dotnet", &owned(&form)),
++                "{form:?}"
++            );
++        }
++        assert!(!crate::core::runner::requests_help_args(
++            "dotnet",
++            &owned(&["build", "-c", "Release"])
++        ));
++    }
+     use crate::core::test_isolation;
+     use crate::dotnet_format_report;
+     use std::fs;
+diff --git a/src/cmds/git/git_cmd.rs b/src/cmds/git/git_cmd.rs
+index dbdc7dc..54a547c 100644
+--- a/src/cmds/git/git_cmd.rs
++++ b/src/cmds/git/git_cmd.rs
+@@ -7,7 +7,7 @@ use crate::core::runner::{self, RunOptions};
+ use crate::core::shell::{display_args, quote_word, with_args};
+ use crate::core::stream::{
+     self, CaptureResult, FilterMode, LineHandler, LineStreamFilter, StdinMode, exec_capture,
+-    exec_capture_stdin,
++    exec_capture_stdin, exec_capture_unguarded,
+ };
+ use crate::core::tracking;
+ use crate::core::truncate::{CAP_LIST, CAP_WARNINGS};
+@@ -34,6 +34,46 @@ pub enum GitCommand {
+     Worktree,
+ }
+ 
++impl GitCommand {
++    /// The word git expects, for rebuilding the argv clap took apart.
++    fn git_name(&self) -> &'static str {
++        match self {
++            GitCommand::Diff => "diff",
++            GitCommand::Log => "log",
++            GitCommand::Status => "status",
++            GitCommand::Show => "show",
++            GitCommand::Add => "add",
++            GitCommand::Commit => "commit",
++            GitCommand::Checkout => "checkout",
++            GitCommand::Push => "push",
++            GitCommand::Pull => "pull",
++            GitCommand::Branch => "branch",
++            GitCommand::Fetch => "fetch",
++            GitCommand::Stash { .. } => "stash",
++            GitCommand::Worktree => "worktree",
++        }
++    }
++}
++
++/// What git would have seen: the caller's own globals, the subcommand clap matched, the
++/// stash subcommand clap carved out of the trailing args, then the rest.
++fn help_passthrough_argv(
++    cmd: &GitCommand,
++    args: &[String],
++    global_args: &[String],
++) -> Vec<OsString> {
++    let mut forwarded: Vec<OsString> = global_args.iter().map(OsString::from).collect();
++    forwarded.push(OsString::from(cmd.git_name()));
++    if let GitCommand::Stash {
++        subcommand: Some(sub),
++    } = cmd
++    {
++        forwarded.push(OsString::from(sub));
++    }
++    forwarded.extend(args.iter().map(OsString::from));
++    forwarded
++}
++
+ /// Create a git Command with global options (e.g. -C, -c, --git-dir, --work-tree)
+ /// prepended before any subcommand arguments.
+ fn git_cmd(global_args: &[String]) -> Command {
+@@ -114,6 +154,15 @@ pub fn run(
+         other => (other, args_utils::restore_double_dash(args)),
+     };
+     let args = &args;
++
++    // Forwarded clean rather than left to the guard in stream::capture: by then RTK has
++    // injected its own globals, and `--no-pager` turns git's man page into a one-screen
++    // usage (#4198).
++    if runner::requests_help_args("git", args) {
++        let forwarded = help_passthrough_argv(&cmd, args, global_args);
++        return runner::run_passthrough("git", &forwarded, verbose);
++    }
++
+     match cmd {
+         GitCommand::Diff => run_diff(args, max_lines, verbose, global_args),
+         GitCommand::Log => run_log(args, max_lines, verbose, global_args),
+@@ -904,7 +953,7 @@ fn commit_or_stat_route(args: &[String]) -> ShowRoute {
+ fn probe_is_blob(global_args: &[String], arg: &str) -> bool {
+     let mut cmd = git_cmd(global_args);
+     cmd.args(["cat-file", "-t", arg]);
+-    match exec_capture(&mut cmd) {
++    match exec_capture_unguarded(&mut cmd) {
+         Ok(result) if result.success() => result.stdout.trim() == "blob",
+         _ => false,
+     }
+@@ -1564,7 +1613,7 @@ fn walk_exceeds_limit(
+     }
+     cmd.args(log_probe_args(args, tokens));
+ 
+-    let result = exec_capture(&mut cmd).ok()?;
++    let result = exec_capture_unguarded(&mut cmd).ok()?;
+     if !result.success() {
+         return None;
+     }
+@@ -3771,6 +3820,66 @@ pub fn run_passthrough(args: &[OsString], global_args: &[String], verbose: u8) -
+ #[cfg(test)]
+ mod tests {
+     use super::*;
++
++    /// What reaches git decides which page comes back, and a wrong subcommand still returns
++    /// a plausible one. Pins every part the argv is assembled from.
++    #[test]
++    fn help_passthrough_argv_is_what_git_would_have_seen() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        let argv = |cmd: &GitCommand, args: &[&str], globals: &[&str]| -> Vec<String> {
++            help_passthrough_argv(cmd, &owned(args), &owned(globals))
++                .iter()
++                .map(|a| a.to_string_lossy().into_owned())
++                .collect()
++        };
++
++        assert_eq!(
++            argv(&GitCommand::Log, &["--help"], &[]),
++            vec!["log", "--help"]
++        );
++        // The caller's own globals come first, the way they were typed.
++        assert_eq!(
++            argv(&GitCommand::Status, &["--help"], &["-C", "/tmp"]),
++            vec!["-C", "/tmp", "status", "--help"]
++        );
++        // clap carves the stash subcommand out of the trailing args; it has to go back.
++        assert_eq!(
++            argv(
++                &GitCommand::Stash {
++                    subcommand: Some("list".into())
++                },
++                &["-h"],
++                &["-C", "/tmp"]
++            ),
++            vec!["-C", "/tmp", "stash", "list", "-h"]
++        );
++        assert_eq!(
++            argv(&GitCommand::Stash { subcommand: None }, &["--help"], &[]),
++            vec!["stash", "--help"]
++        );
++    }
++
++    /// Every arm, so `Status => "diff"` cannot pass by returning a page that is merely long.
++    #[test]
++    fn git_name_round_trips_every_subcommand() {
++        for (cmd, name) in [
++            (GitCommand::Diff, "diff"),
++            (GitCommand::Log, "log"),
++            (GitCommand::Status, "status"),
++            (GitCommand::Show, "show"),
++            (GitCommand::Add, "add"),
++            (GitCommand::Commit, "commit"),
++            (GitCommand::Checkout, "checkout"),
++            (GitCommand::Push, "push"),
++            (GitCommand::Pull, "pull"),
++            (GitCommand::Branch, "branch"),
++            (GitCommand::Fetch, "fetch"),
++            (GitCommand::Worktree, "worktree"),
++            (GitCommand::Stash { subcommand: None }, "stash"),
++        ] {
++            assert_eq!(cmd.git_name(), name, "{cmd:?}");
++        }
++    }
+     use crate::core::test_isolation;
+ 
+     #[test]
+diff --git a/src/cmds/go/go_cmd.rs b/src/cmds/go/go_cmd.rs
+index 6b3e4ef..d6439e0 100644
+--- a/src/cmds/go/go_cmd.rs
++++ b/src/cmds/go/go_cmd.rs
+@@ -3,7 +3,7 @@
+ use crate::core::guard::never_worse;
+ use crate::core::runner;
+ use crate::core::shell::{display_args, quote_word};
+-use crate::core::stream::{CaptureResult, exec_capture};
++use crate::core::stream::{CaptureResult, exec_capture, exec_capture_unguarded};
+ use crate::core::tracking;
+ use crate::core::truncate::CAP_ERRORS;
+ use crate::core::utils::{resolved_command, truncate};
+@@ -47,7 +47,16 @@ struct PackageResult {
+     fuzz_summary: Option<String>,
+ }
+ 
++fn forwarded_help(subcommand: &str, args: &[String], verbose: u8) -> Result<i32> {
++    let mut forwarded = vec![OsString::from(subcommand)];
++    forwarded.extend(args.iter().map(OsString::from));
++    crate::core::runner::run_passthrough("go", &forwarded, verbose)
++}
++
+ pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
++    if crate::core::runner::requests_help_args("go", args) {
++        return forwarded_help("test", args, verbose);
++    }
+     let mut cmd = resolved_command("go");
+     cmd.arg("test");
+ 
+@@ -85,6 +94,9 @@ pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+ }
+ 
+ pub fn run_build(args: &[String], verbose: u8) -> Result<i32> {
++    if crate::core::runner::requests_help_args("go", args) {
++        return forwarded_help("build", args, verbose);
++    }
+     let mut cmd = resolved_command("go");
+     cmd.arg("build");
+ 
+@@ -106,6 +118,9 @@ pub fn run_build(args: &[String], verbose: u8) -> Result<i32> {
+ }
+ 
+ pub fn run_vet(args: &[String], verbose: u8) -> Result<i32> {
++    if crate::core::runner::requests_help_args("go", args) {
++        return forwarded_help("vet", args, verbose);
++    }
+     let mut cmd = resolved_command("go");
+     cmd.arg("vet");
+ 
+@@ -176,7 +191,7 @@ fn detect_go_tool_golangci_version() -> u32 {
+     let mut cmd = resolved_command("go");
+     cmd.arg("tool").arg("golangci-lint").arg("--version");
+ 
+-    match exec_capture(&mut cmd) {
++    match exec_capture_unguarded(&mut cmd) {
+         Ok(captured) => {
+             let version_text = if captured.stdout.trim().is_empty() {
+                 &captured.stderr
+diff --git a/src/cmds/go/golangci_cmd.rs b/src/cmds/go/golangci_cmd.rs
+index 8fa24ce..1df488e 100644
+--- a/src/cmds/go/golangci_cmd.rs
++++ b/src/cmds/go/golangci_cmd.rs
+@@ -5,7 +5,7 @@ use crate::core::args_utils;
+ use crate::core::config;
+ use crate::core::runner;
+ use crate::core::shell::display_args;
+-use crate::core::stream::exec_capture;
++use crate::core::stream::exec_capture_unguarded;
+ use crate::core::truncate::CAP_WARNINGS;
+ use crate::core::utils::{resolved_command, truncate};
+ use anyhow::Result;
+@@ -181,7 +181,7 @@ pub(crate) fn detect_major_version() -> u32 {
+     let mut cmd = resolved_command("golangci-lint");
+     cmd.arg("--version");
+ 
+-    match exec_capture(&mut cmd) {
++    match exec_capture_unguarded(&mut cmd) {
+         Ok(r) => {
+             let version_text = if r.stdout.trim().is_empty() {
+                 &r.stderr
+diff --git a/src/cmds/js/bun_cmd.rs b/src/cmds/js/bun_cmd.rs
+index 4d4dbb3..ee7d693 100644
+--- a/src/cmds/js/bun_cmd.rs
++++ b/src/cmds/js/bun_cmd.rs
+@@ -227,6 +227,7 @@ pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+         "bun_test",
+         crate::core::runner::TestEcosystem::Bun,
+         verbose,
++        false,
+     )
+ }
+ 
+diff --git a/src/cmds/js/deno_cmd.rs b/src/cmds/js/deno_cmd.rs
+index 2222c4c..a87819e 100644
+--- a/src/cmds/js/deno_cmd.rs
++++ b/src/cmds/js/deno_cmd.rs
+@@ -93,6 +93,7 @@ pub fn run_test(args: &[String], verbose: u8) -> Result<i32> {
+         "deno_test",
+         crate::core::runner::TestEcosystem::Deno,
+         verbose,
++        false,
+     )
+ }
+ 
+diff --git a/src/cmds/python/uv_cmd.rs b/src/cmds/python/uv_cmd.rs
+index 03ee18d..7b0336c 100644
+--- a/src/cmds/python/uv_cmd.rs
++++ b/src/cmds/python/uv_cmd.rs
+@@ -48,6 +48,11 @@ const MAX_PROGRAM_LINE_CHARS: usize = 500;
+ const TEE_SLUG_STDOUT: &str = "uv-run-stdout";
+ const TEE_SLUG_STDERR: &str = "uv-run-stderr";
+ 
++fn runs_unfiltered(args: &[String]) -> bool {
++    args.first().map(String::as_str) != Some("run")
++        || crate::core::runner::requests_help_args("uv", args)
++}
++
+ pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+     let timer = tracking::TimedExecution::start();
+     let args_display = display_args(args);
+@@ -61,7 +66,7 @@ pub fn run(args: &[String], verbose: u8) -> Result<i32> {
+         eprintln!("Running: {}", original_cmd);
+     }
+ 
+-    if args.first().map(String::as_str) != Some("run") {
++    if runs_unfiltered(args) {
+         let status = cmd.status().context("Failed to run uv")?;
+         timer.track_passthrough(&original_cmd, &tracking::passthrough_label(&original_cmd));
+         return Ok(exit_code_from_status(&status, "uv"));
+@@ -346,6 +351,19 @@ fn is_error_continuation(line: &str) -> bool {
+ 
+ #[cfg(test)]
+ mod tests {
++    #[test]
++    fn uv_routes_a_usage_request_to_the_unfiltered_path() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        assert!(super::runs_unfiltered(&owned(&["run", "--help"])));
++        assert!(super::runs_unfiltered(&owned(&["run", "-h"])));
++        assert!(super::runs_unfiltered(&owned(&[
++            "run", "--", "pytest", "--help"
++        ])));
++        assert!(super::runs_unfiltered(&owned(&["pip", "list"])));
++        assert!(!super::runs_unfiltered(&owned(&["run", "pytest"])));
++        assert!(!super::runs_unfiltered(&owned(&["run", "pytest", "-q"])));
++    }
++
+     use super::{CAP_INVENTORY, MAX_TRACEBACK_FRAMES, filter_uv_run_output};
+     use crate::core::utils::count_tokens;
+ 
+diff --git a/src/cmds/rust/runner.rs b/src/cmds/rust/runner.rs
+index 2f5b645..aa05049 100644
+--- a/src/cmds/rust/runner.rs
++++ b/src/cmds/rust/runner.rs
+@@ -36,7 +36,8 @@ pub fn run_test(command: &[String], shell: Option<&str>, verbose: u8) -> Result<
+     let program = program_name(command, shell);
+     let eco = TestEcosystem::detect(&display);
+     match command_from_args(command, shell).context("Failed to prepare test command")? {
+-        Launch::Ready(cmd) => match run_test_cmd(cmd, "test", &display, "test", eco, verbose) {
++        Launch::Ready(cmd) => match run_test_cmd(cmd, "test", &display, "test", eco, verbose, true)
++        {
+             Ok(code) => Ok(code),
+             Err(error) => match spawn_failure(program, &error) {
+                 Some(outcome) => Ok(run_test_unrunnable(
+diff --git a/src/cmds/system/find_cmd.rs b/src/cmds/system/find_cmd.rs
+index 9ae0333..5692505 100644
+--- a/src/cmds/system/find_cmd.rs
++++ b/src/cmds/system/find_cmd.rs
+@@ -331,6 +331,10 @@ fn run_compress(
+ 
+ /// Entry point from main.rs — dispatches on find's grammar then delegates.
+ pub fn run_from_args(args: &[String], verbose: u8) -> Result<i32> {
++    // dispatch() would read a lone `--help` as find's legacy name pattern (#4198).
++    if crate::core::runner::requests_help_args("find", args) {
++        return run_verbatim(args, verbose);
++    }
+     match dispatch(args)? {
+         Dispatch::Native { parsed, label } => run(
+             &label,
+diff --git a/src/cmds/system/search.rs b/src/cmds/system/search.rs
+index fb358c0..a1cefae 100644
+--- a/src/cmds/system/search.rs
++++ b/src/cmds/system/search.rs
+@@ -7,7 +7,8 @@ use crate::core::arg_tokenizer::{self, Dialect, Token, TokenKind, ValueSpec};
+ use crate::core::guard::never_worse;
+ use crate::core::shell::{display_args, with_args};
+ use crate::core::stream::{
+-    self, CaptureResult, FilterMode, StdinMode, StreamFilter, exec_capture, exec_capture_stdin,
++    self, CaptureResult, FilterMode, StdinMode, StreamFilter, exec_capture_stdin,
++    exec_capture_unguarded,
+ };
+ use crate::core::tracking;
+ use crate::core::utils::{ChildArgExt, resolved_command, strip_ansi};
+@@ -711,7 +712,7 @@ pub fn run(
+     if asks_for_help {
+         let mut cmd = resolved_command(engine.bin());
+         cmd.child_args(args);
+-        let result = exec_capture(&mut cmd).context("search failed")?;
++        let result = exec_capture_unguarded(&mut cmd).context("search failed")?;
+         print!("{}", result.stdout);
+         if !result.stderr.is_empty() {
+             eprint!("{}", result.stderr);
+diff --git a/src/cmds/system/summary.rs b/src/cmds/system/summary.rs
+index 2c22600..a9774c0 100644
+--- a/src/cmds/system/summary.rs
++++ b/src/cmds/system/summary.rs
+@@ -1,7 +1,7 @@
+ //! Runs a command and produces a heuristic summary of its output.
+ 
+ use crate::core::guard::never_worse;
+-use crate::core::stream::exec_capture;
++use crate::core::stream::exec_capture_unguarded;
+ use crate::core::tracking;
+ use crate::core::truncate::CAP_WARNINGS;
+ use crate::core::utils::truncate;
+@@ -34,7 +34,7 @@ pub fn run(command: &[String], shell: Option<&str>, verbose: u8) -> Result<i32>
+     let result = match crate::core::shell::command_from_args(command, shell)
+         .context("Failed to prepare summary command")?
+     {
+-        crate::core::shell::Launch::Ready(mut cmd) => match exec_capture(&mut cmd) {
++        crate::core::shell::Launch::Ready(mut cmd) => match exec_capture_unguarded(&mut cmd) {
+             Ok(result) => result,
+             Err(error) => {
+                 let error = error.context("Failed to execute command");
+diff --git a/src/core/constants.rs b/src/core/constants.rs
+index 090dcc8..03bec72 100644
+--- a/src/core/constants.rs
++++ b/src/core/constants.rs
+@@ -37,6 +37,8 @@ pub const RTK_META_COMMANDS: &[&str] = &[
+     "methods",
+     "tasks",
+     "plugins",
++    "test",
++    "format",
+     // `err` and `summary` name no real binary, and since they grew `--shell`
+     // they have a flag to get wrong. Falling through would try to exec a
+     // program called `err` instead of reporting the flag error (#4125 review).
+diff --git a/src/core/runner.rs b/src/core/runner.rs
+index a1aacc3..fa65fd1 100644
+--- a/src/core/runner.rs
++++ b/src/core/runner.rs
+@@ -1,5 +1,6 @@
+ //! Shared command execution skeleton for filter modules.
+ 
++use crate::core::arg_tokenizer::{self, Dialect, TokenKind, ValueSpec};
+ use anyhow::{Context, Result};
+ use regex::Regex;
+ use std::borrow::Cow;
+@@ -216,6 +217,7 @@ pub struct RunOptions<'a> {
+     /// What the tool prints on a clean run in the output format rtk injected, e.g. ruff's
+     /// `[]`. See [`guard_stdout`]. Not consulted when `tee_label` is set.
+     pub clean_outputs: &'a [&'a str],
++    pub unguarded_help: bool,
+ }
+ 
+ impl<'a> RunOptions<'a> {
+@@ -226,6 +228,11 @@ impl<'a> RunOptions<'a> {
+         }
+     }
+ 
++    pub fn unguarded_help(mut self) -> Self {
++        self.unguarded_help = true;
++        self
++    }
++
+     pub fn stdout_only() -> Self {
+         Self {
+             filter_stdout_only: true,
+@@ -438,6 +445,132 @@ fn last_lines_offset(text: &str, n: usize) -> Option<(usize, usize)> {
+         .map(|(index, _)| (index + 1, skipped))
+ }
+ 
++/// How one tool spells a request for its own usage.
++struct HelpSpelling {
++    short_h: bool,
++    dialect: Dialect,
++    past_boundary: bool,
++    whole_arg: &'static [&'static str],
++}
++
++fn help_spelling(stem: &str, first: Option<&str>) -> HelpSpelling {
++    HelpSpelling {
++        short_h: !matches!(stem, "psql" | "ls" | "tree" | "grep"),
++        dialect: if stem == "dotnet" {
++            Dialect::Msbuild
++        } else {
++            Dialect::Posix
++        },
++        past_boundary: stem == "npx"
++            || matches!(
++                (stem, first.unwrap_or_default()),
++                ("cargo", "test" | "bench" | "run" | "nextest")
++                    | ("go", "test" | "run")
++                    | ("uv", "run")
++                    | ("npm" | "pnpm" | "yarn" | "bun", "run" | "exec" | "test")
++            ),
++        whole_arg: if stem == "go" { &["-help"] } else { &[] },
++    }
++}
++
++fn asks_for_usage(stem: &str, args: &[String]) -> bool {
++    let first = args.first().map(String::as_str);
++    let spelling = help_spelling(stem, first);
++    let takes_value = |kind: TokenKind, name: &str| {
++        let cargo_install_version = stem == "cargo"
++            && first == Some("install")
++            && kind == TokenKind::Long
++            && name == "version";
++        let git_message = stem == "git"
++            && match kind {
++                TokenKind::Short => matches!(name, "m" | "F"),
++                TokenKind::Long => matches!(name, "message" | "file"),
++                _ => false,
++            };
++        (cargo_install_version || git_message).then(ValueSpec::value)
++    };
++    let tokens = arg_tokenizer::tokenize_grammar(args, &takes_value, spelling.dialect);
++    if names_usage(
++        arg_tokenizer::before_dashdash(&tokens),
++        args,
++        &spelling,
++        &takes_value,
++    ) {
++        return true;
++    }
++    if !spelling.past_boundary {
++        return false;
++    }
++    let Some(boundary) = tokens
++        .iter()
++        .find(|t| t.kind == TokenKind::DashDash)
++        .map(|t| t.source_index)
++    else {
++        return false;
++    };
++    let forwarded = &args[boundary + 1..];
++    let no_values = |_: TokenKind, _: &str| None::<ValueSpec>;
++    let inner = arg_tokenizer::tokenize_grammar(forwarded, &no_values, Dialect::Posix);
++    names_usage(
++        arg_tokenizer::before_dashdash(&inner),
++        forwarded,
++        &HelpSpelling {
++            short_h: true,
++            dialect: Dialect::Posix,
++            past_boundary: false,
++            whole_arg: &[],
++        },
++        &no_values,
++    )
++}
++
++fn names_usage(
++    tokens: &[arg_tokenizer::Token<'_>],
++    args: &[String],
++    spelling: &HelpSpelling,
++    takes_value: &dyn Fn(TokenKind, &str) -> Option<ValueSpec>,
++) -> bool {
++    tokens.iter().any(|t| {
++        let arg = args.get(t.source_index).map(String::as_str);
++        if spelling.whole_arg.iter().any(|w| arg == Some(*w)) {
++            return true;
++        }
++        match t.kind {
++            TokenKind::Long => {
++                (matches!(t.text, "help" | "version" | "?") || (spelling.short_h && t.text == "h"))
++                    && t.linked.is_none()
++                    // `--version=1.2.3` on a flag that carries a value names a version too.
++                    && (t.attached.is_none() || takes_value(t.kind, t.text).is_none())
++            }
++            TokenKind::Short => spelling.short_h && t.text == "h" && arg == Some("-h"),
++            _ => false,
++        }
++    })
++}
++
++/// True when `cmd` asks the tool for its usage. Reads the program's stem and its argv; it
++/// never runs anything.
++pub fn requests_help(cmd: &Command) -> bool {
++    let stem = std::path::Path::new(cmd.get_program())
++        .file_stem()
++        .and_then(|s| s.to_str())
++        .unwrap_or_default();
++    let args: Vec<String> = cmd
++        .get_args()
++        .map(|a| a.to_string_lossy().into_owned())
++        .collect();
++    asks_for_usage(stem, &args)
++}
++
++/// Same rule, for a filter that runs the child itself rather than through [`run`].
++pub fn requests_help_args(tool: &str, args: &[String]) -> bool {
++    let stem = std::path::Path::new(tool)
++        .file_stem()
++        .and_then(|s| s.to_str())
++        .unwrap_or(tool);
++    asks_for_usage(stem, args)
++}
++
+ pub fn run(
+     cmd: Command,
+     tool_name: &str,
+@@ -445,6 +578,11 @@ pub fn run(
+     mode: RunMode<'_>,
+     opts: RunOptions<'_>,
+ ) -> Result<i32> {
++    let mode = if !opts.unguarded_help && requests_help(&cmd) {
++        RunMode::Passthrough
++    } else {
++        mode
++    };
+     let result = run_inner(cmd, tool_name, args_display, mode, opts);
+     // #2375
+     stream::die_by_relayed_signal();
+@@ -698,7 +836,7 @@ pub fn run_err_cmd(
+         tool,
+         display,
+         Box::new(ErrorStreamFilter::new()),
+-        RunOptions::with_tee(tee_label),
++        RunOptions::with_tee(tee_label).unguarded_help(),
+     )
+ }
+ 
+@@ -816,6 +954,7 @@ pub fn run_test_cmd(
+     tee_label: &str,
+     eco: TestEcosystem,
+     verbose: u8,
++    caller_named_command: bool,
+ ) -> Result<i32> {
+     if verbose > 0 {
+         eprintln!("Running tests: {}", display);
+@@ -825,7 +964,11 @@ pub fn run_test_cmd(
+         tool,
+         display,
+         move |raw| extract_test_summary(raw, eco),
+-        RunOptions::with_tee(tee_label),
++        if caller_named_command {
++            RunOptions::with_tee(tee_label).unguarded_help()
++        } else {
++            RunOptions::with_tee(tee_label)
++        },
+     )
+ }
+ 
+@@ -1434,6 +1577,231 @@ mod forwarded_stderr_tests {
+     }
+ }
+ 
++#[cfg(test)]
++mod requests_help_tests {
++    use super::*;
++
++    /// The rule itself, without a `Command`: `.semgrep.yml` forbids
++    /// `Command::new(<variable>)`, and the logic is the pure part anyway.
++    fn asks(tool: &str, args: &[&str]) -> bool {
++        requests_help_args(
++            tool,
++            &args.iter().map(|s| s.to_string()).collect::<Vec<_>>(),
++        )
++    }
++
++    #[test]
++    fn long_spellings_are_a_usage_request() {
++        assert!(asks("cargo", &["build", "--help"]));
++        assert!(asks("cargo", &["--version"]));
++        assert!(!asks("cargo", &["build", "--release"]));
++        assert!(!asks("cargo", &[]));
++    }
++
++    #[test]
++    fn short_h_is_a_request_except_where_the_tool_defines_it() {
++        assert!(asks("cargo", &["build", "-h"]));
++        assert!(asks("go", &["vet", "-h"]));
++        for tool in ["ls", "tree", "grep", "psql"] {
++            assert!(!asks(tool, &["-h"]), "{tool} -h is its own flag");
++        }
++        assert!(
++            asks("ls", &["--help"]),
++            "the long form is still help everywhere"
++        );
++    }
++
++    /// The adapter, once, with literal programs: `requests_help` must read the stem off
++    /// the program's path and the args off the `Command`.
++    #[test]
++    fn the_command_form_reads_the_program_stem_and_args() {
++        let mut cargo = Command::new("/usr/bin/cargo");
++        cargo.arg("-h");
++        assert!(requests_help(&cargo));
++
++        let mut ls = Command::new("/bin/ls");
++        ls.arg("-h");
++        assert!(!requests_help(&ls), "-h belongs to ls");
++
++        let mut ls_long = Command::new("/bin/ls");
++        ls_long.arg("--help");
++        assert!(requests_help(&ls_long));
++    }
++
++    #[test]
++    fn past_the_boundary_it_is_an_operand() {
++        assert!(!asks("grep", &["--", "--help", "f.txt"]));
++        assert!(asks("grep", &["--help", "--", "f.txt"]));
++    }
++
++    #[test]
++    fn rtks_own_package_runner_prefix_is_not_the_boundary() {
++        assert!(asks("pnpm", &["exec", "--", "vitest", "--help"]));
++        assert!(asks("npx", &["--", "tsc", "--help"]));
++        assert!(asks("npx", &["--no-install", "--", "tsc", "-h"]));
++        assert!(!asks("pnpm", &["exec", "--", "vitest", "run"]));
++    }
++
++    /// Every tool RTK wraps, crossed with every position a meta token can take. The
++    /// property is the boundary, not a table of answers: before `--` the token is a
++    /// request, past it the tool is being asked to match on it.
++    #[test]
++    fn fuzz_the_boundary_decides_and_position_does_not() {
++        const TOOLS: &[&str] = &[
++            "cargo", "git", "go", "npm", "pnpm", "docker", "kubectl", "gh", "mvn", "tsc", "pip",
++            "uv", "dotnet", "rg", "psql", "ls", "tree", "grep", "find", "wc",
++        ];
++        const BASES: &[&[&str]] = &[
++            &[],
++            &["build"],
++            &["-n", "1"],
++            &["log", "--oneline", "-5"],
++            &["a", "b", "c", "d"],
++        ];
++        let mut checked = 0usize;
++        for tool in TOOLS {
++            let short_is_help = help_spelling(tool, None).short_h;
++            for meta in ["--help", "--version", "-h"] {
++                let expected = meta != "-h" || short_is_help;
++                for base in BASES {
++                    for at in 0..=base.len() {
++                        let mut argv: Vec<String> = base.iter().map(|s| s.to_string()).collect();
++                        argv.insert(at, meta.to_string());
++                        checked += 1;
++                        assert_eq!(requests_help_args(tool, &argv), expected, "{tool} {argv:?}");
++
++                        // The same tokens past the boundary are operands, never a request.
++                        let mut guarded = vec!["--".to_string()];
++                        guarded.extend(argv.iter().cloned());
++                        assert!(
++                            !requests_help_args(tool, &guarded),
++                            "{tool} {guarded:?} is past the boundary"
++                        );
++                    }
++                }
++            }
++        }
++        assert!(checked > 500, "fuzz did not cover enough, got {checked}");
++    }
++
++    #[test]
++    fn a_forwarded_boundary_is_another_programs_argv() {
++        // `cargo test -- --help` is libtest's usage; an integration case for it would
++        // rebuild this crate's test binaries, so it is pinned here.
++        assert!(asks("cargo", &["test", "--", "--help"]));
++        assert!(asks("cargo", &["test", "--", "-h"]));
++        assert!(asks("uv", &["run", "--", "pytest", "--help"]));
++        assert!(asks("go", &["test", "--", "-h"]));
++        assert!(asks("npx", &["--no-install", "--", "tsc", "--help"]));
++
++        // cargo build does not forward, so there the boundary still ends the scan.
++        assert!(!asks("cargo", &["build", "--", "--help"]));
++        assert!(!asks("grep", &["--", "--help", "f.txt"]));
++        assert!(!asks("git", &["log", "--", "--help"]));
++    }
++
++    /// A flag that carries a value is naming something, not asking for usage.
++    #[test]
++    fn a_flags_value_names_something_a_value_on_help_still_asks() {
++        assert!(!asks(
++            "cargo",
++            &["install", "ripgrep", "--version", "1.2.3"]
++        ));
++        assert!(!asks("cargo", &["install", "ripgrep", "--version=1.2.3"]));
++        assert!(
++            asks("cargo", &["install", "--version"]),
++            "alone it still asks"
++        );
++        assert!(asks("cargo", &["build", "--help=never"]));
++        assert!(asks("prettier", &["--help=x"]));
++        assert!(asks("go", &["build", "--help=x"]));
++    }
++
++    /// Shapes that have made argument scanners panic: nothing, a bare boundary, repeated
++    /// boundaries, a lone dash, empty strings and non-UTF8.
++    #[test]
++    fn fuzz_odd_argv_never_panics() {
++        const ODD: &[&[&str]] = &[
++            &[],
++            &["--"],
++            &["--", "--"],
++            &["-"],
++            &[""],
++            &["", "--help"],
++            &["--help="],
++            &["-hh"],
++            &["--HELP"],
++            &["\u{1f600}", "--help"],
++        ];
++        for tool in ["cargo", "ls", "grep", ""] {
++            for argv in ODD {
++                let owned: Vec<String> = argv.iter().map(|s| s.to_string()).collect();
++                let _ = requests_help_args(tool, &owned);
++            }
++        }
++        assert!(!requests_help_args("cargo", &["-hh".to_string()]));
++        // Case matters; tools spell it lowercase.
++        assert!(!requests_help_args("cargo", &["--HELP".to_string()]));
++    }
++
++    /// The regression this rule exists for: a single-dash long name and a `-D` property
++    /// both carry an `h`, and reading either as a request runs the command unfiltered.
++    #[test]
++    fn a_go_value_that_starts_with_a_slash_is_not_a_switch() {
++        assert!(!asks("go", &["test", "-run", "/version"]));
++        assert!(!asks("go", &["test", "-run", "/help", "./..."]));
++        assert!(!asks("go", &["build", "-o", "/tmp/help"]));
++        assert!(asks("go", &["vet", "-help"]));
++        assert!(asks("go", &["test", "-h"]));
++        assert!(asks("dotnet", &["build", "/?"]));
++    }
++
++    #[test]
++    fn deno_hands_the_forwarded_region_to_the_test_scripts() {
++        assert!(!asks("deno", &["test", "--", "--help"]));
++        assert!(!asks("deno", &["run", "x.ts", "--", "--help"]));
++        assert!(asks("deno", &["test", "--help"]));
++        assert!(asks("deno", &["--version"]));
++    }
++
++    #[test]
++    fn a_letter_inside_another_flag_is_not_a_request() {
++        assert!(!asks("find", &["src", "-maxdepth", "2", "-name", "mod.rs"]));
++        assert!(!asks("find", &["src", "-ipath", "x"]));
++        assert!(!asks("mvn", &["-Dhttp.proxyHost=proxy", "test"]));
++        assert!(!asks("gradlew", &["-Dhttp.x=1", "tasks"]));
++        assert!(!asks("cargo", &["build", "--features", "graph"]));
++        // Still found when it is the argument.
++        assert!(asks("find", &["-h"]));
++        assert!(asks("cargo", &["build", "-h"]));
++    }
++
++    /// git's message and file flags carry a value: `git commit -m "--help"` is a message.
++    /// The git handler passes the arguments after the subcommand, as these do, so the rule
++    /// reads `-m` and `-F` this way on every subcommand.
++    #[test]
++    fn a_git_message_is_not_a_request() {
++        assert!(!asks("git", &["-m", "--help"]));
++        assert!(!asks("git", &["-am", "--help"]));
++        assert!(!asks("git", &["-F", "--help"]));
++        assert!(!asks("git", &["--message", "--help"]));
++        assert!(!asks("git", &["--file", "--version"]));
++        assert!(asks("git", &["--help"]));
++        assert!(asks("git", &["-m", "x", "--help"]));
++    }
++
++    #[test]
++    fn a_cluster_is_not_the_flag() {
++        assert!(!asks("ls", &["-lh"]), "but -h is ls's own");
++        assert!(
++            !asks("cargo", &["-qh"]),
++            "inside a cluster the h is not the flag"
++        );
++        assert!(asks("git", &["log", "--help"]));
++        assert!(!asks("git", &["log", "-5"]));
++    }
++}
++
+ #[cfg(test)]
+ mod err_test_runner_tests {
+     use super::*;
+diff --git a/src/core/stream.rs b/src/core/stream.rs
+index 986aa22..59132be 100644
+--- a/src/core/stream.rs
++++ b/src/core/stream.rs
+@@ -709,15 +709,45 @@ impl CaptureResult {
+ 
+ pub fn exec_capture(cmd: &mut Command) -> Result<CaptureResult> {
+     cmd.stdin(Stdio::null());
++    show_usage_if_asked(cmd)?;
+     capture(cmd)
+ }
+ 
+-/// Like [`exec_capture`] but inherits stdin so a wrapped engine can read a piped stdin.
++/// Like [`exec_capture`] but inherits stdin so a wrapped engine can read a piped stdin, and
++/// without the usage guard: its callers pass the caller's argv through verbatim or decide on
++/// it first.
+ pub fn exec_capture_stdin(cmd: &mut Command) -> Result<CaptureResult> {
+     cmd.stdin(Stdio::inherit());
+     capture(cmd)
+ }
+ 
++/// Like [`exec_capture`] without the usage guard, for an argv whose `--help`, `--version` or
++/// `-h` is not the caller asking the tool for its usage: a probe RTK runs for itself, or a
++/// command whose flags RTK does not read. A caller that has already answered the usage
++/// question on the caller's own argv uses it too.
++pub fn exec_capture_unguarded(cmd: &mut Command) -> Result<CaptureResult> {
++    cmd.stdin(Stdio::null());
++    capture(cmd)
++}
++
++/// A usage page is not the output a filter reads: handed one, a filter built for the tool's
++/// normal output reports an empty run, which is how `pnpm outdated --help` became
++/// "48 outdated packages" and `jest --help` lost 24 KB of its 26 (#4198). Show it as the
++/// tool printed it and end with the tool's own code: there is no captured output to hand
++/// back, and an empty capture would get a summary written under it.
++fn show_usage_if_asked(cmd: &mut Command) -> Result<()> {
++    if !crate::core::runner::requests_help(cmd) {
++        return Ok(());
++    }
++    let program = cmd.get_program().to_string_lossy().into_owned();
++    let status = cmd
++        .stdout(Stdio::inherit())
++        .stderr(Stdio::inherit())
++        .status()
++        .with_context(|| format!("Failed to execute {program}"))?;
++    std::process::exit(crate::core::utils::exit_code_from_status(&status, &program));
++}
++
+ /// Run `cmd` to completion, decode what it wrote, and report the exit code.
+ ///
+ /// A process killed by a signal has no exit code of its own, and returning
+diff --git a/src/discover/README.md b/src/discover/README.md
+index 75bcf28..c79e396 100644
+--- a/src/discover/README.md
++++ b/src/discover/README.md
+@@ -98,6 +98,9 @@ longer be read off the token list.
+ `stdbuf` is deliberately not a wrapper here: it exists to make the wrapped
+ command emit output incrementally, and routing through rtk buffers that output
+ until the child exits, so rewriting it would remove the only reason to type it.
++The permission gate still reads past it, and past a bare `xargs`, when it
++matches deny and ask rules (`matching_readings`): recognising the command
++behind a prefix and rewriting through it are separate decisions.
+ 
+ Wrapping also changes who receives a signal. `timeout 300 rtk cargo test`
+ signals rtk rather than cargo, so `core::stream` relays SIGINT/SIGTERM to the
+diff --git a/src/discover/registry.rs b/src/discover/registry.rs
+index e4d2d53..3b6aefb 100644
+--- a/src/discover/registry.rs
++++ b/src/discover/registry.rs
+@@ -64,17 +64,26 @@ static COMPILED: LazyLock<Vec<Regex>> = LazyLock::new(|| {
+         .collect()
+ });
+ static ENV_PREFIX: LazyLock<Regex> = LazyLock::new(|| {
+-    let double_quoted = r#""(?:[^"\\]|\\.)*""#;
+-    let single_quoted = r#"'(?:[^'\\]|\\.)*'"#;
+-    let unquoted = r#"[^\s]*"#;
+-    let env_value = format!("(?:{}|{}|{})", double_quoted, single_quoted, unquoted);
+-    let env_assign = format!(r#"[A-Z_][A-Z0-9_]*={}"#, env_value);
+     // NOTE: `sudo` is intentionally NOT stripped here. Rewriting `sudo docker ps`
+     // to `sudo rtk docker ps` breaks at runtime because `rtk` is not on root's
+     // secure_path, and (where it is) would run rtk itself as root. sudo commands
+     // are left untouched so they pass through unchanged. See #146.
+-    Regex::new(&format!(r#"^(?:env\s+|{}\s+)+"#, env_assign)).unwrap()
++    Regex::new(&format!(r#"^(?:{})+"#, env_word())).unwrap()
+ });
++/// One word of [`ENV_PREFIX`]: a single `env` or assignment, so the permission
++/// gate can read the command behind each in turn ([`matching_readings`]).
++static ENV_WORD: LazyLock<Regex> =
++    LazyLock::new(|| Regex::new(&format!(r#"^(?:{})"#, env_word())).unwrap());
++
++/// An `env` word or an assignment, with the blanks after it.
++fn env_word() -> String {
++    let double_quoted = r#""(?:[^"\\]|\\.)*""#;
++    let single_quoted = r#"'(?:[^'\\]|\\.)*'"#;
++    let unquoted = r#"[^\s]*"#;
++    let env_value = format!("(?:{}|{}|{})", double_quoted, single_quoted, unquoted);
++    let env_assign = format!(r#"[A-Z_][A-Z0-9_]*={}"#, env_value);
++    format!(r#"env\s+|{}\s+"#, env_assign)
++}
+ // Git global options that appear before the subcommand: -C <path>, -c <key=val>,
+ // --git-dir <dir>, --work-tree <dir>, and flag-only options (#163)
+ static GIT_GLOBAL_OPT: LazyLock<Regex> = LazyLock::new(|| {
+@@ -1460,6 +1469,33 @@ const PROCESS_WRAPPERS: &[ProcessWrapper] = &[
+     },
+ ];
+ 
++/// Wrappers a permission rule looks past but the rewrite does not go through.
++///
++/// `stdbuf` exists to make the wrapped command emit output incrementally, and
++/// routing through rtk buffers that output until the child exits, so it is
++/// never rewritten — but `stdbuf -oL git push` is still `git push` to a deny
++/// rule. A bare `xargs` is the same: it runs the command it is given, and the
++/// option-less form is the one Claude Code matches past. Any option makes the
++/// grammar below give up, which is what keeps `xargs -I{} …` out.
++const MATCH_ONLY_WRAPPERS: &[ProcessWrapper] = &[
++    ProcessWrapper {
++        name: "stdbuf",
++        value_opts: &["-i", "-o", "-e", "--input", "--output", "--error"],
++        flag_opts: &[],
++        attached_opts: &["-i", "-o", "-e"],
++        positionals: 0,
++        numeric_opts: false,
++    },
++    ProcessWrapper {
++        name: "xargs",
++        value_opts: &[],
++        flag_opts: &[],
++        attached_opts: &[],
++        positionals: 0,
++        numeric_opts: false,
++    },
++];
++
+ struct SafePipeConsumer {
+     name: &'static str,
+     unsafe_flags: &'static [&'static str],
+@@ -2060,13 +2096,23 @@ fn tool_form(cmd_clean: &str, rtk_equivalent: &str) -> String {
+ }
+ 
+ fn strip_process_wrapper_prefix(cmd: &str) -> Option<(&str, &str)> {
++    strip_wrapper_prefix_from_any(&[PROCESS_WRAPPERS], cmd)
++}
++
++/// Peel one wrapper from any of `tables` off the front of `cmd`, giving
++/// `(wrapper text, wrapped command)`; `cmd` is tokenized once.
++fn strip_wrapper_prefix_from_any<'a>(
++    tables: &[&[ProcessWrapper]],
++    cmd: &'a str,
++) -> Option<(&'a str, &'a str)> {
+     let tokens = tokenize(cmd);
+     let first = tokens.first()?;
+     if first.kind != TokenKind::Arg {
+         return None;
+     }
+-    let wrapper = PROCESS_WRAPPERS
++    let wrapper = tables
+         .iter()
++        .flat_map(|table| table.iter())
+         .find(|candidate| candidate.name == command_basename(&first.value))?;
+     let inner = wrapper_inner_command(wrapper, &tokens)?;
+     if tokens[..inner_index(&tokens, inner)]
+@@ -2083,6 +2129,106 @@ fn strip_process_wrapper_prefix(cmd: &str) -> Option<(&str, &str)> {
+     Some((prefix, rest))
+ }
+ 
++/// The command a line runs, read past each prefix a deny or ask rule should
++/// see past, one reading per prefix peeled ([`MatchingReadings`]).
++///
++/// Claude Code matches those rules past any leading assignment and past a
++/// fixed set of wrappers — `timeout`, `time`, `nice`, `nohup`, `stdbuf`,
++/// `command`, `builtin`, `noglob` and a bare `xargs` — so a rule written for
++/// `git push` also stops `HUSKY=0 timeout 30 git push`. Every peel here is one
++/// the rewrite already applies — its env peel, its keyword prefixes, its
++/// wrapper table — so where both look through a prefix they read the same
++/// command behind it, plus the two wrappers RTK looks through without
++/// rewriting through. The rewrite also looks through `uv run` and a user's
++/// `transparent_prefixes`, which the host does not strip and neither does
++/// this.
++///
++/// The line is drawn at the shell: anything that only runs the next word as
++/// the command is peeled, which also takes in `env`, `exec` and `nocorrect`
++/// where the host's list stops short. A program's own arguments are not —
++/// `git -C . push` stays `git`, as the host documents — since that would
++/// mean knowing every program's option grammar. Nor is `env` or a keyword
++/// prefix written with an option of its own (`env -i`, `command -p`,
++/// `exec -a x`), or `env` written as a path (`/usr/bin/env`): the peel stops
++/// there, as the rewrite's does. The process wrappers are read with their
++/// options and through a path (`timeout -s KILL 30`, `/usr/bin/nohup`).
++///
++/// Deny and ask only. Allow matches past known-safe variables alone, and
++/// peeling a wrapper for it would let `timeout 30 <cmd>` inherit `<cmd>`'s
++/// allow rule.
++pub(crate) fn matching_readings(cmd: &str) -> MatchingReadings<'_> {
++    let mut readings = vec![cmd.trim()];
++    let mut rest = cmd.trim();
++    loop {
++        let before = rest;
++        for step in [PeelStep::Assignments, PeelStep::Keyword, PeelStep::Wrapper] {
++            if let Some(inner) = step.peel(rest) {
++                if readings.len() > MAX_MATCHING_PEELS {
++                    return MatchingReadings {
++                        readings,
++                        complete: false,
++                    };
++                }
++                rest = inner;
++                readings.push(rest);
++            }
++        }
++        if rest == before {
++            return MatchingReadings {
++                readings,
++                complete: true,
++            };
++        }
++    }
++}
++
++/// One kind of prefix [`matching_readings`] peels: the rewrite's env peel,
++/// its keyword prefixes, and its wrapper table plus the match-only wrappers.
++#[derive(Clone, Copy)]
++enum PeelStep {
++    Assignments,
++    Keyword,
++    Wrapper,
++}
++
++impl PeelStep {
++    /// What is left of `cmd` once this prefix is peeled, `None` when it has
++    /// none.
++    fn peel(self, cmd: &str) -> Option<&str> {
++        match self {
++            PeelStep::Assignments => ENV_WORD.find(cmd).map(|word| cmd[word.end()..].trim()),
++            PeelStep::Keyword => SHELL_KEYWORD_PREFIXES
++                .iter()
++                .find_map(|prefix| strip_word_prefix(cmd, prefix)),
++            PeelStep::Wrapper => {
++                strip_wrapper_prefix_from_any(&[PROCESS_WRAPPERS, MATCH_ONLY_WRAPPERS], cmd)
++                    .map(|(_, inner)| inner)
++            }
++        }
++    }
++}
++
++/// How many prefixes [`matching_readings`] peels before it stops. Each
++/// assignment is one, so the cap sits well above the longest run of
++/// variables a line sets before its command; deeper stacks are no command
++/// anyone types. Past the cap the command behind them is unread, which the
++/// gate answers with a prompt where a deny or ask rule exists, never an
++/// allow.
++pub(crate) const MAX_MATCHING_PEELS: usize = 32;
++
++/// The command a line runs read every way a deny or ask rule may name it:
++/// as written, then after each prefix peeled in turn (`env HUSKY=0 git
++/// push` is also `HUSKY=0 git push` and `git push`). A reading need not be
++/// a command the shell would run as written — `nohup HUSKY=0 git push` makes
++/// nohup look for a program named `HUSKY=0` — so a rule naming it can only
++/// make the verdict stricter.
++pub(crate) struct MatchingReadings<'a> {
++    pub(crate) readings: Vec<&'a str>,
++    /// False when the peel stopped at [`MAX_MATCHING_PEELS`] with prefixes
++    /// left: the innermost command was not read.
++    pub(crate) complete: bool,
++}
++
+ fn inner_index(tokens: &[ParsedToken], inner: &ParsedToken) -> usize {
+     tokens
+         .iter()
+@@ -7618,6 +7764,13 @@ mod tests {
+         );
+     }
+ 
++    /// The gate reads past `xargs`; the rewrite never does, since `xargs rtk
++    /// git status` would run rtk once per input item.
++    #[test]
++    fn test_xargs_is_not_a_process_wrapper() {
++        assert_eq!(rewrite_command_no_prefixes("xargs git status", &[]), None);
++    }
++
+     #[test]
+     fn test_process_wrapper_composes_with_prefixes_and_compounds() {
+         assert_eq!(
+diff --git a/src/hooks/README.md b/src/hooks/README.md
+index 57d8ecc..dfea2b7 100644
+--- a/src/hooks/README.md
++++ b/src/hooks/README.md
+@@ -101,6 +101,8 @@ them.
+ | Default | No rule matched | 3 | Rewrite + let host tool prompt user |
+ | Defer | `permissions.deny` rule matched inside a shell wrapper | 1 | Passthrough — command runs as without RTK |
+ 
++A deny or ask rule is matched against each segment as written, without the grammar a split leaves (`{`, `!`, `(`), and past each leading assignment or wrapper in turn (`registry::matching_readings`): `env HUSKY=0 git push` is read as `HUSKY=0 git push` and as `git push`, as Claude Code reads it. A reading need not be what the shell runs (`nohup HUSKY=0 git push` makes nohup look for a program named `HUSKY=0`), so it can only make a verdict stricter. Past 32 prefixes the command behind them is unread, and where a deny or ask rule exists the verdict is at least Ask. An allow rule matches the segment as written only, so a wrapper never inherits the allow of the command it runs.
++
+ A delegate that shells out to `rtk rewrite` and applies its own exec policy to
+ the result can set `RTK_REWRITE_HOST=<agent>` on that subprocess. For an agent
+ whose `AgentPath` records it as owning approval — OpenClaw is the only one —
+diff --git a/src/hooks/permissions.rs b/src/hooks/permissions.rs
+index 2a72449..d684f77 100644
+--- a/src/hooks/permissions.rs
++++ b/src/hooks/permissions.rs
+@@ -9,6 +9,9 @@ use crate::discover::lexer::{
+     is_word_boundary_whitespace, split_for_permissions, split_for_wrappers,
+ };
+ use crate::discover::registry;
++#[cfg(test)]
++use crate::discover::registry::MAX_MATCHING_PEELS;
++use crate::discover::registry::{MatchingReadings, matching_readings};
+ use crate::discover::shell_wrapper::{is_shell_wrapper_candidate, parse_shell_wrapper};
+ use serde_json::Value;
+ use std::path::PathBuf;
+@@ -115,16 +118,39 @@ pub(crate) fn check_command_with_rules_and_prefixes(
+     transparent_prefixes: &[String],
+ ) -> PermissionVerdict {
+     let segments = split_compound_command(cmd);
++    // Each segment read every way a deny or ask rule may name it, once: as
++    // written, then without the grammar a split leaves behind (`{`, `!`,
++    // `(`), then past each assignment or wrapper in turn — `HUSKY=0 git
++    // push`, `timeout 30 git push` and `{ env HUSKY=0 git push; }` are all
++    // `git push` to a rule that names it, and the last is `HUSKY=0 git push`
++    // too. Allow does not get these readings, so they can never make a
++    // verdict looser. With no deny or ask rule there is nothing to read them
++    // for, and none are taken.
++    let reads_past_prefixes = !deny_rules.is_empty() || !ask_rules.is_empty();
++    let readings: Vec<(&str, Option<MatchingReadings<'_>>)> = segments
++        .iter()
++        .map(|segment| {
++            let segment = segment.trim();
++            let peeled =
++                reads_past_prefixes.then(|| matching_readings(strip_grammar_residue(segment)));
++            (segment, peeled)
++        })
++        .collect();
++    let matches_any = |segment: &str, peeled: &Option<MatchingReadings<'_>>, pattern: &str| {
++        let readings = peeled.iter().flat_map(|peeled| peeled.readings.iter());
++        command_matches_pattern(segment, pattern)
++            || readings
++                .filter(|reading| **reading != segment)
++                .any(|reading| command_matches_pattern(reading, pattern))
++    };
+ 
+     // Deny takes highest priority and pre-empts every other construct.
+-    for segment in &segments {
+-        let segment = segment.trim();
+-        for pattern in deny_rules {
+-            if command_matches_pattern(segment, pattern)
+-                || command_matches_pattern(strip_grammar_residue(segment), pattern)
+-            {
+-                return PermissionVerdict::Deny;
+-            }
++    for (segment, peeled) in &readings {
++        if deny_rules
++            .iter()
++            .any(|pattern| matches_any(segment, peeled, pattern))
++        {
++            return PermissionVerdict::Deny;
+         }
+     }
+ 
+@@ -149,23 +175,20 @@ pub(crate) fn check_command_with_rules_and_prefixes(
+     let mut all_segments_allowed = true;
+     let mut saw_segment = false;
+ 
+-    for segment in &segments {
+-        let segment = segment.trim();
++    for (segment, peeled) in &readings {
+         if segment.is_empty() {
+             continue;
+         }
+         saw_segment = true;
+ 
+         // Ask — if any segment matches an ask rule, the final verdict is Ask.
++        // A segment whose prefixes ran past the peel's cap hides a command
++        // no deny or ask rule was matched against, so it asks too.
+         if !any_ask {
+-            for pattern in ask_rules {
+-                if command_matches_pattern(segment, pattern)
+-                    || command_matches_pattern(strip_grammar_residue(segment), pattern)
+-                {
+-                    any_ask = true;
+-                    break;
+-                }
+-            }
++            any_ask = peeled.as_ref().is_some_and(|peeled| !peeled.complete)
++                || ask_rules
++                    .iter()
++                    .any(|pattern| matches_any(segment, peeled, pattern));
+         }
+ 
+         // Allow — every non-empty segment must match an allow rule independently.
+@@ -936,6 +959,279 @@ mod tests {
+         );
+     }
+ 
++    /// Claude Code matches a deny or ask rule past any leading assignment and
++    /// past a fixed set of wrappers, so a rule written for `git push` also
++    /// stops the same command behind `HUSKY=0`, `timeout 30` or `command`.
++    /// This is that table, row for row, with the host's documented verdict as
++    /// the expected one — the first row is the control that always matched.
++    #[test]
++    fn test_deny_matches_past_assignments_and_wrappers() {
++        let deny = vec!["git push *".to_string(), "rm *".to_string()];
++        for cmd in [
++            "git push origin main",
++            "HUSKY=0 git push origin main",
++            "FOO=bar rm -rf tmp/",
++            "command git push",
++            "builtin git push",
++            "timeout 30 git push",
++            "time git push",
++            "nice git push",
++            "nohup git push",
++            "stdbuf -oL git push",
++            "noglob git push",
++            "xargs git push",
++            // Several at once, as an agent that is trying writes them.
++            "HUSKY=0 nohup timeout 30 git push origin main",
++            // Values the env peel reads as one word: empty, and quoted with a
++            // space inside.
++            "FOO= git push",
++            "FOO=\"a b\" git push",
++            "FOO='a b' git push",
++            // Shell prefixes that only run the next word, past the host's own
++            // list: the command behind them is still `git push`.
++            "env git push",
++            "env FOO=1 git push",
++            "exec git push",
++        ] {
++            assert_eq!(
++                check_command_with_rules(cmd, &deny, &[], &[]),
++                PermissionVerdict::Deny,
++                "a deny rule for the command behind the prefix did not fire: {cmd}"
++            );
++        }
++    }
++
++    /// Words bash does not treat as assignments are the command, so peeling
++    /// them would put a denied command where none runs. Each of these runs
++    /// something other than `git push`. The quoted rows carry the denied text
++    /// inside the value with more after it, so a peel that split the value at
++    /// its space would leave `git push y" echo hi` — which the rule matches.
++    #[test]
++    fn test_deny_does_not_peel_what_is_not_an_assignment() {
++        let deny = vec!["git push *".to_string()];
++        for cmd in [
++            "1A=b git push",
++            "=x git push",
++            "FOO-BAR=x git push",
++            "\"FOO\"=x git push",
++            "FOO=\"x git push y\" echo hi",
++            "FOO='x git push y' echo hi",
++        ] {
++            assert_eq!(
++                check_command_with_rules(cmd, &deny, &[], &[]),
++                PermissionVerdict::Default,
++                "denied a command bash would not run as `git push`: {cmd}"
++            );
++        }
++    }
++
++    /// Grammar left by the split and a prefix behind it, together: the `{`,
++    /// `!` or `(` has to go before the prefix can be read past. A rule that
++    /// names the assignment itself still matches the form with only the
++    /// grammar removed.
++    #[test]
++    fn test_deny_matches_past_grammar_and_a_prefix_together() {
++        let deny = vec!["git push *".to_string()];
++        for cmd in [
++            "true && { HUSKY=0 git push ; }",
++            "! timeout 30 git push",
++            "( nice git push )",
++        ] {
++            assert_eq!(
++                check_command_with_rules(cmd, &deny, &[], &[]),
++                PermissionVerdict::Deny,
++                "grammar and a prefix together hid the command: {cmd}"
++            );
++        }
++        let deny = vec!["HUSKY=0 git push *".to_string()];
++        assert_eq!(
++            check_command_with_rules("true && { HUSKY=0 git push x ; }", &deny, &[], &[]),
++            PermissionVerdict::Deny,
++            "a rule naming the assignment stopped matching once it was peelable"
++        );
++    }
++
++    /// The same reading for ask: a missed ask falls to Default, which the
++    /// hook renders identically today, so this is what makes the difference
++    /// observable.
++    #[test]
++    fn test_ask_matches_past_assignments_and_wrappers() {
++        let ask = vec!["git push *".to_string()];
++        for cmd in [
++            "HUSKY=0 git push",
++            "timeout 30 git push",
++            "stdbuf -oL git push",
++        ] {
++            assert_eq!(
++                check_command_with_rules(cmd, &[], &ask, &[]),
++                PermissionVerdict::Ask,
++                "an ask rule for the command behind the prefix did not fire: {cmd}"
++            );
++        }
++    }
++
++    /// Allow is deliberately not read the same way. The host matches allow
++    /// past known-safe variables only, and peeling a wrapper for it would
++    /// let `timeout 30 <cmd>` inherit `<cmd>`'s allow rule — so the peel can
++    /// only ever make a verdict stricter, never looser.
++    #[test]
++    fn test_allow_is_not_matched_past_assignments_or_wrappers() {
++        let allow = vec!["git status".to_string()];
++        assert_eq!(
++            check_command_with_rules("git status", &[], &[], &allow),
++            PermissionVerdict::Allow,
++            "control: the plain command is allowed"
++        );
++        for cmd in [
++            "HUSKY=0 git status",
++            "timeout 30 git status",
++            "nice git status",
++            "env git status",
++        ] {
++            assert_ne!(
++                check_command_with_rules(cmd, &[], &[], &allow),
++                PermissionVerdict::Allow,
++                "allow was widened through a prefix: {cmd}"
++            );
++        }
++    }
++
++    /// Where the peel stops. A shell prefix that only runs the next word is
++    /// peeled; a program's own arguments are not, since reading past them
++    /// means knowing every program's option grammar — `git -C . push` is the
++    /// host's own example of what `Bash(git push *)` does not stop. `xargs`
++    /// with an option is the same case from the other side: `-n1` or `-I{}`
++    /// changes what it runs, so only the bare form is looked through.
++    #[test]
++    fn test_deny_does_not_peel_a_programs_own_arguments() {
++        let deny = vec!["git push *".to_string()];
++        for cmd in ["xargs -n1 git push", "git -C . push origin main"] {
++            assert_eq!(
++                check_command_with_rules(cmd, &deny, &[], &[]),
++                PermissionVerdict::Default,
++                "peeled past a program's own arguments: {cmd}"
++            );
++        }
++    }
++
++    /// A rule may name any layer of the prefixes, not only the command
++    /// behind all of them: `env HUSKY=0 git push` runs `HUSKY=0 git push`
++    /// as much as it runs `git push`. An allow rule on the outer wrapper
++    /// must not win over it. In the `nohup` rows, nohup would look for a
++    /// program named `HUSKY=0`; denying them is stricter than the shell,
++    /// never looser.
++    #[test]
++    fn test_deny_and_ask_match_every_layer_of_the_prefixes() {
++        let deny = vec!["HUSKY=0 git push *".to_string()];
++        let allow = vec![
++            "nohup *".to_string(),
++            "env *".to_string(),
++            "CI=1 *".to_string(),
++        ];
++        for cmd in [
++            "nohup HUSKY=0 git push x",
++            "timeout 30 nohup HUSKY=0 git push x",
++            // Each assignment and each `env` is a layer of its own.
++            "env HUSKY=0 git push x",
++            "CI=1 HUSKY=0 git push x",
++            "nohup CI=1 HUSKY=0 git push x",
++        ] {
++            assert_eq!(
++                check_command_with_rules(cmd, &deny, &[], &allow),
++                PermissionVerdict::Deny,
++                "a rule naming a middle layer did not fire: {cmd}"
++            );
++            assert_eq!(
++                check_command_with_rules(cmd, &[], &deny, &allow),
++                PermissionVerdict::Ask,
++                "an ask rule naming a middle layer did not fire: {cmd}"
++            );
++        }
++    }
++
++    /// Deny and ask read past a wrapper whose own allow rule matches the
++    /// whole line: the command behind it decides.
++    #[test]
++    fn test_deny_and_ask_win_over_an_allow_on_the_wrapper() {
++        let allow = vec!["timeout *".to_string()];
++        let rule = vec!["git push *".to_string()];
++        assert_eq!(
++            check_command_with_rules("timeout 30 git push", &rule, &[], &allow),
++            PermissionVerdict::Deny
++        );
++        assert_eq!(
++            check_command_with_rules("timeout 30 git push", &[], &rule, &allow),
++            PermissionVerdict::Ask
++        );
++        assert_eq!(
++            check_command_with_rules("timeout 30 git status", &rule, &[], &allow),
++            PermissionVerdict::Allow,
++            "control: an allowed wrapper around an unruled command stays allowed"
++        );
++    }
++
++    /// The peel stops after a fixed number of prefixes. Past it, the command
++    /// behind them is unread, so the gate prompts rather than allow what an
++    /// allow rule on the outer wrapper would match — and a stack of thousands
++    /// takes no more peels than one at the cap.
++    #[test]
++    fn test_prefixes_past_the_peel_cap_ask_never_allow() {
++        let allow = vec!["nohup *".to_string()];
++        let deny = vec!["git push *".to_string()];
++        for depth in [MAX_MATCHING_PEELS - 1, MAX_MATCHING_PEELS] {
++            let within = format!("{}git push", "nohup ".repeat(depth));
++            assert_eq!(
++                check_command_with_rules(&within, &deny, &[], &allow),
++                PermissionVerdict::Deny,
++                "control: a stack of {depth}, within the cap, is read through"
++            );
++        }
++        for depth in [MAX_MATCHING_PEELS + 1, 5000] {
++            let cmd = format!("{}git push", "nohup ".repeat(depth));
++            assert_eq!(
++                check_command_with_rules(&cmd, &deny, &[], &allow),
++                PermissionVerdict::Ask,
++                "{depth} stacked prefixes"
++            );
++        }
++        // Bounded work: the readings stop at the cap however deep the stack.
++        let cmd = format!("{}git push", "nohup ".repeat(5000));
++        let peeled = matching_readings(&cmd);
++        assert!(!peeled.complete);
++        assert_eq!(peeled.readings.len(), MAX_MATCHING_PEELS + 1);
++        // With no deny or ask rule nothing can hide behind the prefixes, so
++        // the cap changes no verdict.
++        let cmd = format!("{}git status", "nohup ".repeat(MAX_MATCHING_PEELS + 1));
++        assert_eq!(
++            check_command_with_rules(&cmd, &[], &[], &allow),
++            PermissionVerdict::Allow
++        );
++        assert_eq!(
++            check_command_with_rules(&cmd, &[], &[], &[]),
++            PermissionVerdict::Default
++        );
++    }
++
++    /// Each assignment is a prefix of its own, so an ordinary line that sets
++    /// many variables before its command stays well inside the cap: no
++    /// prompt where develop answered allow.
++    #[test]
++    fn test_a_long_run_of_assignments_stays_within_the_cap() {
++        let vars: String = (0..20).map(|i| format!("V{i}=1 ")).collect();
++        let cmd = format!("{vars}cargo test");
++        let deny = vec!["rm *".to_string()];
++        let allow = vec!["*".to_string()];
++        assert_eq!(
++            check_command_with_rules(&cmd, &deny, &[], &allow),
++            PermissionVerdict::Allow
++        );
++        let deny = vec!["cargo test *".to_string()];
++        assert_eq!(
++            check_command_with_rules(&format!("{cmd} --all"), &deny, &[], &allow),
++            PermissionVerdict::Deny
++        );
++    }
++
+     // --- Allow rules tests ---
+ 
+     #[test]
+@@ -1820,6 +2116,7 @@ mod tests {
+             "env bash -c 'git status; ! exec git push'",
+             "bash -c 'exec git push'",
+             "bash -c 'nohup FOO=1 git push'",
++            "bash -c 'env HUSKY=0 nohup git push x'",
+         ] {
+             assert_eq!(
+                 check_command_with_rules(cmd, &deny, &[], &allow),
+@@ -1827,7 +2124,11 @@ mod tests {
+                 "{cmd:?}"
+             );
+         }
+-        for cmd in ["env bash -c 'echo git push'", "env bash -c 'git -C . push'"] {
++        for cmd in [
++            "env bash -c 'echo git push'",
++            "env bash -c 'git -C . push'",
++            "env bash -c 'HUSKY=0 git status'",
++        ] {
+             assert_eq!(
+                 check_command_with_rules(cmd, &deny, &[], &allow),
+                 PermissionVerdict::Allow,
+diff --git a/src/lib.rs b/src/lib.rs
+index cf0f98b..4cfc6da 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -304,7 +304,6 @@ enum Commands {
+     },
+ 
+     /// PostgreSQL client with compact output (strip borders, compress tables)
+-    #[command(disable_help_flag = true)]
+     Psql {
+         /// psql arguments
+         #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+@@ -637,7 +636,6 @@ enum Commands {
+     },
+ 
+     /// CTest with compact output
+-    #[command(disable_help_flag = true, disable_version_flag = true)]
+     Ctest {
+         /// Additional ctest arguments
+         #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+@@ -1489,6 +1487,10 @@ enum KubectlCommands {
+         /// All namespaces
+         #[arg(short = 'A', long)]
+         all: bool,
++        // An RTK-only alias, so the raw-exec fallback would run `kubectl pods` (#4198).
++        /// Further arguments forwarded to `get pods`
++        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
++        extra: Vec<String>,
+     },
+     /// List services
+     Services {
+@@ -1497,6 +1499,9 @@ enum KubectlCommands {
+         /// All namespaces
+         #[arg(short = 'A', long)]
+         all: bool,
++        /// Further arguments forwarded to `get services`
++        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
++        extra: Vec<String>,
+     },
+     /// Show pod logs (deduplicated)
+     Logs {
+@@ -1524,6 +1529,10 @@ enum OcCommands {
+         /// All namespaces
+         #[arg(short = 'A', long)]
+         all: bool,
++        // An RTK-only alias, so the raw-exec fallback would run `kubectl pods` (#4198).
++        /// Further arguments forwarded to `get pods`
++        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
++        extra: Vec<String>,
+     },
+     /// List services
+     Services {
+@@ -1532,6 +1541,9 @@ enum OcCommands {
+         /// All namespaces
+         #[arg(short = 'A', long)]
+         all: bool,
++        /// Further arguments forwarded to `get services`
++        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
++        extra: Vec<String>,
+     },
+     /// Show pod logs (deduplicated)
+     Logs {
+@@ -1849,6 +1861,48 @@ fn configured_awareness_level() -> core::config::AwarenessLevel {
+     }
+ }
+ 
++/// True when `cmd` hands its arguments to a native binary.
++///
++/// `has_subcommands` stands in for `external_subcommand`, which clap only infers inside
++/// `Command::build`; `cheap_wrapper_test_matches_clap_built_tree` pins that equivalence.
++fn forwards_to_native_tool(cmd: &clap::Command) -> bool {
++    cmd.get_positionals().any(|a| a.is_trailing_var_arg_set()) || cmd.has_subcommands()
++}
++
++/// Gives a wrapper subcommand's `-h`, `--help`, `-V`, `--version` and `help` back to the
++/// tool it wraps: `grep -h` is `--no-filename`, `git help log` is a real subcommand
++/// (#4198). All three settings are global in clap, so one call covers the subtree.
++fn release_meta_flags(cmd: clap::Command) -> clap::Command {
++    if !forwards_to_native_tool(&cmd) {
++        return cmd;
++    }
++    cmd.disable_help_flag(true)
++        .disable_version_flag(true)
++        .disable_help_subcommand(true)
++}
++
++/// The `Cli` clap command with every wrapper subcommand's meta flags released. RTK's own
++/// meta-commands and the root keep theirs.
++fn rtk_command() -> clap::Command {
++    <Cli as clap::CommandFactory>::command().mut_subcommands(|sub| {
++        if core::constants::RTK_META_COMMANDS.contains(&sub.get_name()) {
++            sub
++        } else {
++            release_meta_flags(sub)
++        }
++    })
++}
++
++/// Single parse entry point; tests go through it so they assert what ships.
++fn try_parse_cli_from<I, T>(args: I) -> Result<Cli, clap::Error>
++where
++    I: IntoIterator<Item = T>,
++    T: Into<std::ffi::OsString> + Clone,
++{
++    let matches = rtk_command().try_get_matches_from(args)?;
++    <Cli as clap::FromArgMatches>::from_arg_matches(&matches)
++}
++
+ fn run_fallback(parse_error: clap::Error) -> Result<i32> {
+     use crate::core::utils::ChildArgExt;
+ 
+@@ -2100,7 +2154,39 @@ fn proxy_label(cmd_name: &str, cmd_args: &[String]) -> String {
+     core::shell::display_command(&words)
+ }
+ 
+-fn build_k8s_namespace_args(namespace: Option<String>, all: bool) -> Vec<String> {
++/// `pods` and `services` are RTK's own aliases for `get pods`/`get services`.
++enum K8sAlias {
++    /// Forward to the aliased subcommand and filter as usual.
++    Filtered(Vec<String>),
++    /// Run what the caller typed, unfiltered. `extra` exists so a usage request reaches the
++    /// tool; anything else would land on a `get` RTK has pinned to `-o json`, where `-o wide`
++    /// fights the parser. Those stay what they were before the field existed: the literal
++    /// `kubectl pods …`, which the tool answers itself.
++    Raw(Vec<OsString>),
++}
++
++#[cfg(test)]
++impl K8sAlias {
++    fn filtered_args(self) -> Vec<String> {
++        match self {
++            K8sAlias::Filtered(args) => args,
++            K8sAlias::Raw(argv) => panic!("expected a filtered run, got {argv:?}"),
++        }
++    }
++}
++
++fn build_k8s_namespace_args(
++    alias: &str,
++    namespace: Option<String>,
++    all: bool,
++    extra: Vec<String>,
++) -> K8sAlias {
++    let extra = core::args_utils::restore_double_dash(&extra);
++    if !extra.is_empty() && !core::runner::requests_help_args("kubectl", &extra) {
++        let mut raw = vec![OsString::from(alias)];
++        raw.extend(extra.iter().map(OsString::from));
++        return K8sAlias::Raw(raw);
++    }
+     let mut args = Vec::new();
+     if all {
+         args.push("-A".to_string());
+@@ -2108,7 +2194,8 @@ fn build_k8s_namespace_args(namespace: Option<String>, all: bool) -> Vec<String>
+         args.push("-n".to_string());
+         args.push(n);
+     }
+-    args
++    args.extend(extra);
++    K8sAlias::Filtered(args)
+ }
+ 
+ fn build_k8s_logs_args(pod: String, container: Option<String>) -> Vec<String> {
+@@ -2394,7 +2481,7 @@ fn run_cli() -> Result<i32> {
+     // Fire-and-forget telemetry ping (1/day, non-blocking)
+     core::telemetry::maybe_ping();
+ 
+-    let cli = match Cli::try_parse_from(std::env::args_os()) {
++    let cli = match try_parse_cli_from(std::env::args_os()) {
+         Ok(cli) => cli,
+         Err(e) => {
+             if matches!(e.kind(), ErrorKind::DisplayHelp | ErrorKind::DisplayVersion) {
+@@ -2799,14 +2886,30 @@ fn run_cli() -> Result<i32> {
+ 
+         Commands::Kubectl { command } => match command {
+             KubectlCommands::Get { args } => container::run_kubectl_get(&args, cli.verbose)?,
+-            KubectlCommands::Pods { namespace, all } => {
+-                let args = build_k8s_namespace_args(namespace, all);
+-                container::run(container::ContainerCmd::KubectlPods, &args, cli.verbose)?
+-            }
+-            KubectlCommands::Services { namespace, all } => {
+-                let args = build_k8s_namespace_args(namespace, all);
+-                container::run(container::ContainerCmd::KubectlServices, &args, cli.verbose)?
+-            }
++            KubectlCommands::Pods {
++                namespace,
++                all,
++                extra,
++            } => match build_k8s_namespace_args("pods", namespace, all, extra) {
++                K8sAlias::Filtered(args) => {
++                    container::run(container::ContainerCmd::KubectlPods, &args, cli.verbose)?
++                }
++                K8sAlias::Raw(argv) => {
++                    core::runner::run_passthrough("kubectl", &argv, cli.verbose)?
++                }
++            },
++            KubectlCommands::Services {
++                namespace,
++                all,
++                extra,
++            } => match build_k8s_namespace_args("services", namespace, all, extra) {
++                K8sAlias::Filtered(args) => {
++                    container::run(container::ContainerCmd::KubectlServices, &args, cli.verbose)?
++                }
++                K8sAlias::Raw(argv) => {
++                    core::runner::run_passthrough("kubectl", &argv, cli.verbose)?
++                }
++            },
+             KubectlCommands::Logs { pod, container: c } => {
+                 let args = build_k8s_logs_args(pod, c);
+                 container::run(container::ContainerCmd::KubectlLogs, &args, cli.verbose)?
+@@ -2816,14 +2919,22 @@ fn run_cli() -> Result<i32> {
+ 
+         Commands::Oc { command } => match command {
+             OcCommands::Get { args } => container::run_oc_get(&args, cli.verbose)?,
+-            OcCommands::Pods { namespace, all } => {
+-                let args = build_k8s_namespace_args(namespace, all);
+-                container::k8s_pods("oc", &args, cli.verbose)?
+-            }
+-            OcCommands::Services { namespace, all } => {
+-                let args = build_k8s_namespace_args(namespace, all);
+-                container::k8s_services("oc", &args, cli.verbose)?
+-            }
++            OcCommands::Pods {
++                namespace,
++                all,
++                extra,
++            } => match build_k8s_namespace_args("pods", namespace, all, extra) {
++                K8sAlias::Filtered(args) => container::k8s_pods("oc", &args, cli.verbose)?,
++                K8sAlias::Raw(argv) => core::runner::run_passthrough("oc", &argv, cli.verbose)?,
++            },
++            OcCommands::Services {
++                namespace,
++                all,
++                extra,
++            } => match build_k8s_namespace_args("services", namespace, all, extra) {
++                K8sAlias::Filtered(args) => container::k8s_services("oc", &args, cli.verbose)?,
++                K8sAlias::Raw(argv) => core::runner::run_passthrough("oc", &argv, cli.verbose)?,
++            },
+             OcCommands::Logs { pod, container: c } => {
+                 let args = build_k8s_logs_args(pod, c);
+                 container::k8s_logs("oc", &args, cli.verbose)?
+@@ -3958,7 +4069,6 @@ fn is_operational_command(cmd: &Commands) -> bool {
+ mod tests {
+     use super::*;
+     use crate::core::test_isolation;
+-    use clap::Parser;
+     use std::cell::Cell;
+ 
+     #[test]
+@@ -3985,7 +4095,7 @@ mod tests {
+ 
+     #[test]
+     fn test_git_commit_single_message() {
+-        let cli = Cli::try_parse_from(["rtk", "git", "commit", "-m", "fix: typo"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "git", "commit", "-m", "fix: typo"]).unwrap();
+         match cli.command {
+             Commands::Git {
+                 command: GitCommands::Commit { args },
+@@ -3999,7 +4109,7 @@ mod tests {
+ 
+     #[test]
+     fn test_git_commit_multiple_messages() {
+-        let cli = Cli::try_parse_from([
++        let cli = try_parse_cli_from([
+             "rtk",
+             "git",
+             "commit",
+@@ -4026,7 +4136,7 @@ mod tests {
+     // #327: git commit -am "msg" was rejected by Clap
+     #[test]
+     fn test_git_commit_am_flag() {
+-        let cli = Cli::try_parse_from(["rtk", "git", "commit", "-am", "quick fix"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "git", "commit", "-am", "quick fix"]).unwrap();
+         match cli.command {
+             Commands::Git {
+                 command: GitCommands::Commit { args },
+@@ -4040,8 +4150,7 @@ mod tests {
+ 
+     #[test]
+     fn test_git_commit_amend() {
+-        let cli =
+-            Cli::try_parse_from(["rtk", "git", "commit", "--amend", "-m", "new msg"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "git", "commit", "--amend", "-m", "new msg"]).unwrap();
+         match cli.command {
+             Commands::Git {
+                 command: GitCommands::Commit { args },
+@@ -4055,9 +4164,8 @@ mod tests {
+ 
+     #[test]
+     fn test_git_global_options_parsing() {
+-        let cli =
+-            Cli::try_parse_from(["rtk", "git", "--no-pager", "--no-optional-locks", "status"])
+-                .unwrap();
++        let cli = try_parse_cli_from(["rtk", "git", "--no-pager", "--no-optional-locks", "status"])
++            .unwrap();
+         match cli.command {
+             Commands::Git {
+                 no_pager,
+@@ -4079,7 +4187,7 @@ mod tests {
+     fn test_pnpm_recursive_install_parsing() {
+         // The rewriter emits `rtk pnpm -r install` for `pnpm -r install`; it must parse
+         // to Install with recursive=true (not error, not Other) so `-r` is forwarded.
+-        let cli = Cli::try_parse_from(["rtk", "pnpm", "-r", "install"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "pnpm", "-r", "install"]).unwrap();
+         match cli.command {
+             Commands::Pnpm {
+                 recursive,
+@@ -4097,8 +4205,7 @@ mod tests {
+ 
+     #[test]
+     fn test_pnpm_workspace_root_filter_install_parsing() {
+-        let cli =
+-            Cli::try_parse_from(["rtk", "pnpm", "-w", "--filter", "@app", "install"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "pnpm", "-w", "--filter", "@app", "install"]).unwrap();
+         match cli.command {
+             Commands::Pnpm {
+                 filter,
+@@ -4117,7 +4224,7 @@ mod tests {
+ 
+     #[test]
+     fn test_git_commit_long_flag_multiple() {
+-        let cli = Cli::try_parse_from([
++        let cli = try_parse_cli_from([
+             "rtk",
+             "git",
+             "commit",
+@@ -4152,13 +4259,13 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_valid_git_status() {
+-        let result = Cli::try_parse_from(["rtk", "git", "status"]);
++        let result = try_parse_cli_from(["rtk", "git", "status"]);
+         assert!(result.is_ok(), "git status should parse successfully");
+     }
+ 
+     #[test]
+     fn test_try_parse_init_agent_hermes() {
+-        let cli = Cli::try_parse_from(["rtk", "init", "--agent", "hermes"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "init", "--agent", "hermes"]).unwrap();
+         match cli.command {
+             Commands::Init { agent, .. } => {
+                 assert_eq!(agent, Some(AgentTarget::Hermes));
+@@ -4169,7 +4276,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_init_agent_trae_and_uninstall() {
+-        let cli = Cli::try_parse_from(["rtk", "init", "--agent", "trae", "--uninstall"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "init", "--agent", "trae", "--uninstall"]).unwrap();
+         match cli.command {
+             Commands::Init {
+                 agent, uninstall, ..
+@@ -4183,7 +4290,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_kubectl_get_alias() {
+-        let cli = Cli::try_parse_from(["rtk", "kubectl", "get", "pods", "-n", "default"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "kubectl", "get", "pods", "-n", "default"]).unwrap();
+ 
+         match cli.command {
+             Commands::Kubectl {
+@@ -4195,7 +4302,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_oc_get() {
+-        let cli = Cli::try_parse_from(["rtk", "oc", "get", "pods", "-n", "default"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "oc", "get", "pods", "-n", "default"]).unwrap();
+ 
+         match cli.command {
+             Commands::Oc {
+@@ -4207,7 +4314,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_oc_other() {
+-        let cli = Cli::try_parse_from(["rtk", "oc", "new-project", "test"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "oc", "new-project", "test"]).unwrap();
+ 
+         match cli.command {
+             Commands::Oc {
+@@ -4222,7 +4329,7 @@ mod tests {
+         // Regression: `-m` is GNU grep's --max-count, not RTK's --max. It must
+         // parse (not consume the pattern), keep `max` at its default, and reach
+         // extra_args so it is forwarded to grep as a real --max-count.
+-        let cli = Cli::try_parse_from(["rtk", "grep", "-m", "5", "pattern", "file"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "grep", "-m", "5", "pattern", "file"]).unwrap();
+ 
+         match cli.command {
+             Commands::Grep {
+@@ -4237,7 +4344,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_init_agent_hermes_uninstall() {
+-        let cli = Cli::try_parse_from(["rtk", "init", "--agent", "hermes", "--uninstall"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "init", "--agent", "hermes", "--uninstall"]).unwrap();
+         match cli.command {
+             Commands::Init {
+                 agent, uninstall, ..
+@@ -4285,7 +4392,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_init_agent_omp() {
+-        let cli = Cli::try_parse_from(["rtk", "init", "--agent", "omp"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "init", "--agent", "omp"]).unwrap();
+         match cli.command {
+             Commands::Init { agent, .. } => {
+                 assert_eq!(agent, Some(AgentTarget::Omp));
+@@ -4296,7 +4403,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_init_agent_omp_uninstall() {
+-        let cli = Cli::try_parse_from(["rtk", "init", "--uninstall", "--agent", "omp", "--global"])
++        let cli = try_parse_cli_from(["rtk", "init", "--uninstall", "--agent", "omp", "--global"])
+             .unwrap();
+         match cli.command {
+             Commands::Init {
+@@ -4346,7 +4453,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_help_is_display_help() {
+-        match Cli::try_parse_from(["rtk", "--help"]) {
++        match try_parse_cli_from(["rtk", "--help"]) {
+             Err(e) => assert_eq!(e.kind(), ErrorKind::DisplayHelp),
+             Ok(_) => panic!("Expected DisplayHelp error"),
+         }
+@@ -4354,7 +4461,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_version_is_display_version() {
+-        match Cli::try_parse_from(["rtk", "--version"]) {
++        match try_parse_cli_from(["rtk", "--version"]) {
+             Err(e) => assert_eq!(e.kind(), ErrorKind::DisplayVersion),
+             Ok(_) => panic!("Expected DisplayVersion error"),
+         }
+@@ -4362,7 +4469,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_unknown_subcommand_is_error() {
+-        match Cli::try_parse_from(["rtk", "nonexistent-command"]) {
++        match try_parse_cli_from(["rtk", "nonexistent-command"]) {
+             Err(e) => assert!(!matches!(
+                 e.kind(),
+                 ErrorKind::DisplayHelp | ErrorKind::DisplayVersion
+@@ -4397,7 +4504,7 @@ mod tests {
+ 
+     #[test]
+     fn test_try_parse_git_with_dash_c_succeeds() {
+-        let result = Cli::try_parse_from(["rtk", "git", "-C", "/path", "status"]);
++        let result = try_parse_cli_from(["rtk", "git", "-C", "/path", "status"]);
+         assert!(
+             result.is_ok(),
+             "git -C /path status should parse successfully"
+@@ -4414,7 +4521,7 @@ mod tests {
+ 
+     #[test]
+     fn test_gain_failures_flag_parses() {
+-        let result = Cli::try_parse_from(["rtk", "gain", "--failures"]);
++        let result = try_parse_cli_from(["rtk", "gain", "--failures"]);
+         assert!(result.is_ok());
+         if let Ok(cli) = result {
+             match cli.command {
+@@ -4426,7 +4533,7 @@ mod tests {
+ 
+     #[test]
+     fn test_gain_failures_short_flag_parses() {
+-        let result = Cli::try_parse_from(["rtk", "gain", "-F"]);
++        let result = try_parse_cli_from(["rtk", "gain", "-F"]);
+         assert!(result.is_ok());
+         if let Ok(cli) = result {
+             match cli.command {
+@@ -4443,11 +4550,19 @@ mod tests {
+         for cmd in core::constants::RTK_META_COMMANDS {
+             if matches!(
+                 *cmd,
+-                "bypass" | "proxy" | "run" | "rewrite" | "session" | "err" | "summary"
++                "bypass"
++                    | "proxy"
++                    | "run"
++                    | "rewrite"
++                    | "session"
++                    | "err"
++                    | "test"
++                    | "summary"
++                    | "format"
+             ) {
+                 continue; // these use trailing_var_arg (accept any args by design)
+             }
+-            let result = Cli::try_parse_from(["rtk", cmd, "--nonexistent-flag-xyz"]);
++            let result = try_parse_cli_from(["rtk", cmd, "--nonexistent-flag-xyz"]);
+             assert!(
+                 result.is_err(),
+                 "Meta-command '{}' with bad flag should fail to parse",
+@@ -4475,7 +4590,6 @@ mod tests {
+             "aws",
+             "psql",
+             "pnpm",
+-            "test",
+             "env",
+             "find",
+             "diff",
+@@ -4495,7 +4609,6 @@ mod tests {
+             "next",
+             "lint",
+             "prettier",
+-            "format",
+             "playwright",
+             "cargo",
+             "npm",
+@@ -4549,7 +4662,7 @@ mod tests {
+ 
+     #[test]
+     fn test_run_command_with_dash_c() {
+-        let cli = Cli::try_parse_from(["rtk", "run", "-c", "git status && echo done"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "run", "-c", "git status && echo done"]).unwrap();
+         match cli.command {
+             Commands::Run {
+                 command,
+@@ -4566,7 +4679,7 @@ mod tests {
+ 
+     #[test]
+     fn test_run_command_positional_args() {
+-        let cli = Cli::try_parse_from(["rtk", "run", "echo", "hello"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "run", "echo", "hello"]).unwrap();
+         match cli.command {
+             Commands::Run {
+                 command,
+@@ -4584,7 +4697,7 @@ mod tests {
+     #[test]
+     fn test_ctest_help_and_version_passthrough_args() {
+         for flag in ["--help", "--version"] {
+-            let cli = Cli::try_parse_from(["rtk", "ctest", flag]).unwrap();
++            let cli = try_parse_cli_from(["rtk", "ctest", flag]).unwrap();
+             match cli.command {
+                 Commands::Ctest { args } => assert_eq!(args, vec![flag]),
+                 _ => panic!("Expected Ctest command"),
+@@ -4592,6 +4705,429 @@ mod tests {
+         }
+     }
+ 
++    #[test]
++    fn grep_dash_h_reaches_grep() {
++        let cli = try_parse_cli_from(["rtk", "grep", "-h", "TODO", "a.txt"]).unwrap();
++        match cli.command {
++            Commands::Grep { extra_args, .. } => {
++                assert_eq!(extra_args, vec!["-h", "TODO", "a.txt"]);
++            }
++            other => panic!("Expected Grep command, got {other:?}"),
++        }
++    }
++
++    #[test]
++    fn wrapper_meta_flags_are_forwarded_verbatim() {
++        let cases: &[(&[&str], &[&str])] = &[
++            (&["rtk", "ls", "-h"], &["-h"]),
++            (&["rtk", "tree", "-h"], &["-h"]),
++            (&["rtk", "ls", "--help"], &["--help"]),
++            (&["rtk", "wc", "--help"], &["--help"]),
++            (&["rtk", "psql", "-h", "localhost"], &["-h", "localhost"]),
++            (&["rtk", "ctest", "--version"], &["--version"]),
++        ];
++        for (argv, expected) in cases {
++            let cli = try_parse_cli_from(argv.iter().copied())
++                .unwrap_or_else(|e| panic!("{argv:?} should parse, got: {e}"));
++            let forwarded = match cli.command {
++                Commands::Ls { args } => args,
++                Commands::Tree { args } => args,
++                Commands::Wc { args } => args,
++                Commands::Psql { args } => args,
++                Commands::Ctest { args } => args,
++                other => panic!("unexpected command for {argv:?}: {other:?}"),
++            };
++            assert_eq!(forwarded, *expected, "for {argv:?}");
++        }
++    }
++
++    #[test]
++    fn every_wrapper_subcommand_releases_its_meta_flags() {
++        fn walk(cmd: &clap::Command, path: &str, misses: &mut Vec<String>) {
++            for sub in cmd.get_subcommands() {
++                let here = format!("{path} {}", sub.get_name());
++                if forwards_to_native_tool(sub) && !sub.is_disable_help_flag_set() {
++                    misses.push(here.clone());
++                }
++                walk(sub, &here, misses);
++            }
++        }
++        let built = {
++            let mut c = rtk_command();
++            c.build();
++            c
++        };
++        let mut misses = Vec::new();
++        for sub in built.get_subcommands() {
++            if core::constants::RTK_META_COMMANDS.contains(&sub.get_name()) {
++                continue;
++            }
++            let here = format!("rtk {}", sub.get_name());
++            if forwards_to_native_tool(sub) && !sub.is_disable_help_flag_set() {
++                misses.push(here.clone());
++            }
++            walk(sub, &here, &mut misses);
++        }
++        assert!(
++            misses.is_empty(),
++            "these wrappers still answer -h/--help themselves: {misses:#?}"
++        );
++    }
++
++    #[test]
++    fn cheap_wrapper_test_matches_clap_built_tree() {
++        fn authoritative(cmd: &clap::Command) -> bool {
++            cmd.get_positionals().any(|a| a.is_trailing_var_arg_set())
++                || cmd.is_allow_external_subcommands_set()
++                || cmd.get_subcommands().any(authoritative)
++        }
++        fn walk(built: &clap::Command, path: &str, disagree: &mut Vec<String>) {
++            for sub in built.get_subcommands() {
++                // added by clap during build, not part of RTK's surface
++                if sub.get_name() == "help" {
++                    continue;
++                }
++                let here = format!("{path} {}", sub.get_name());
++                if forwards_to_native_tool(sub) != authoritative(sub) {
++                    disagree.push(format!(
++                        "{here}: cheap={} authoritative={}",
++                        forwards_to_native_tool(sub),
++                        authoritative(sub)
++                    ));
++                }
++                walk(sub, &here, disagree);
++            }
++        }
++        let mut built = <Cli as clap::CommandFactory>::command();
++        built.build();
++        let mut disagree = Vec::new();
++        for sub in built.get_subcommands() {
++            if core::constants::RTK_META_COMMANDS.contains(&sub.get_name())
++                || sub.get_name() == "help"
++            {
++                continue;
++            }
++            let here = format!("rtk {}", sub.get_name());
++            if forwards_to_native_tool(sub) != authoritative(sub) {
++                disagree.push(format!(
++                    "{here}: cheap={} authoritative={}",
++                    forwards_to_native_tool(sub),
++                    authoritative(sub)
++                ));
++            }
++            walk(sub, &here, &mut disagree);
++        }
++        assert!(
++            disagree.is_empty(),
++            "wrapper detection disagrees with clap's built tree: {disagree:#?}"
++        );
++    }
++
++    #[test]
++    fn rtk_own_commands_keep_their_help() {
++        let root = rtk_command();
++        assert!(
++            !root.is_disable_help_flag_set(),
++            "`rtk --help` must stay RTK's"
++        );
++        for name in [
++            "gain", "init", "proxy", "recall", "verify", "rewrite", "hook",
++        ] {
++            let sub = root
++                .get_subcommands()
++                .find(|s| s.get_name() == name || s.get_all_aliases().any(|a| a == name))
++                .unwrap_or_else(|| panic!("missing subcommand {name}"));
++            assert!(
++                !sub.is_disable_help_flag_set(),
++                "`rtk {name} --help` is RTK's own, not a wrapped tool's"
++            );
++        }
++    }
++
++    // ---- #4198 fuzz: a wrapper must never answer a meta flag itself ----
++
++    /// Every subcommand path under `rtk` that forwards to a native tool, and every path
++    /// that is RTK's own. Read off the built tree so a new subcommand joins the fuzz on
++    /// its own.
++    fn classified_paths() -> (Vec<Vec<String>>, Vec<Vec<String>>) {
++        fn walk(
++            cmd: &clap::Command,
++            path: &[String],
++            rtk_own: bool,
++            wrappers: &mut Vec<Vec<String>>,
++            own: &mut Vec<Vec<String>>,
++        ) {
++            for sub in cmd.get_subcommands() {
++                if sub.get_name() == "help" {
++                    continue;
++                }
++                let mut here = path.to_vec();
++                here.push(sub.get_name().to_string());
++                // Only at depth 1: `rtk test` is RTK's, `rtk dotnet test` is dotnet's.
++                let mine = rtk_own
++                    || (path.is_empty()
++                        && core::constants::RTK_META_COMMANDS.contains(&sub.get_name()));
++                if mine {
++                    own.push(here.clone());
++                } else if forwards_to_native_tool(sub) {
++                    wrappers.push(here.clone());
++                }
++                walk(sub, &here, mine, wrappers, own);
++            }
++        }
++        let mut built = rtk_command();
++        built.build();
++        let (mut wrappers, mut own) = (Vec::new(), Vec::new());
++        walk(&built, &[], false, &mut wrappers, &mut own);
++        (wrappers, own)
++    }
++
++    /// Argv shapes a caller reaches for, with `meta` dropped at every position of each.
++    fn argv_shapes(meta: &str) -> Vec<Vec<String>> {
++        // Decoys chosen to exercise the parser rather than the tool: a value-taking flag,
++        // a short cluster, an attached value, a bare operand, and the boundary itself.
++        const BASES: &[&[&str]] = &[
++            &[],
++            &["pattern"],
++            &["-n"],
++            &["-rn", "src/"],
++            &["--color=always"],
++            &["-e", "x"],
++            &["a", "b", "c"],
++            &["--", "after"],
++            &["before", "--", "after"],
++        ];
++        let mut out = Vec::new();
++        for base in BASES {
++            for at in 0..=base.len() {
++                let mut argv: Vec<String> = base.iter().map(|s| s.to_string()).collect();
++                argv.insert(at, meta.to_string());
++                out.push(argv);
++            }
++        }
++        out
++    }
++
++    /// The #4198 invariant, over the whole surface: whatever a caller types, RTK never
++    /// answers a wrapped tool's `-h`, `--help`, `-V`, `--version` or `help` with its own
++    /// usage. Any other parse outcome is fine, since the args reach the tool either
++    /// directly or through the raw-exec fallback.
++    #[test]
++    fn fuzz_no_wrapper_ever_answers_a_meta_flag_itself() {
++        let (wrappers, _) = classified_paths();
++        assert!(wrappers.len() > 100, "expected the full wrapper surface");
++        let mut cmd = rtk_command();
++        let mut checked = 0usize;
++        for meta in ["-h", "--help", "-V", "--version", "help"] {
++            for path in &wrappers {
++                for extra in argv_shapes(meta) {
++                    let argv: Vec<String> = std::iter::once("rtk".to_string())
++                        .chain(path.iter().cloned())
++                        .chain(extra.iter().cloned())
++                        .collect();
++                    checked += 1;
++                    if let Err(e) = cmd.try_get_matches_from_mut(&argv) {
++                        assert!(
++                            !matches!(
++                                e.kind(),
++                                ErrorKind::DisplayHelp
++                                    | ErrorKind::DisplayVersion
++                                    | ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand
++                            ),
++                            "RTK answered `{}` itself",
++                            argv.join(" ")
++                        );
++                    }
++                }
++            }
++        }
++        assert!(checked > 10_000, "fuzz did not cover enough, got {checked}");
++    }
++
++    /// The inverse, so the rule above cannot be satisfied by releasing everything: RTK's
++    /// own commands still answer `-h` and `--help`.
++    #[test]
++    fn fuzz_rtk_own_commands_still_answer_their_own_help() {
++        let (_, own) = classified_paths();
++        let mut cmd = rtk_command();
++        for path in &own {
++            for meta in ["-h", "--help"] {
++                let argv: Vec<String> = std::iter::once("rtk".to_string())
++                    .chain(path.iter().cloned())
++                    .chain(std::iter::once(meta.to_string()))
++                    .collect();
++                match cmd.try_get_matches_from_mut(&argv) {
++                    Err(e) if e.kind() == ErrorKind::DisplayHelp => {}
++                    other => panic!(
++                        "`{}` should print RTK's own help, got {:?}",
++                        argv.join(" "),
++                        other.err().map(|e| e.kind())
++                    ),
++                }
++            }
++        }
++    }
++
++    /// Nothing the caller typed may be dropped on the way to the tool: when the parse
++    /// succeeds, every token still appears in the leaf subcommand's own values.
++    #[test]
++    fn fuzz_wrapper_args_reach_the_leaf_verbatim() {
++        /// Descends to the leaf, collecting the subcommand names passed on the way. Past
++        /// the wrapper's own path those names are the caller's tokens: an
++        /// `external_subcommand` arm stores the first one as the subcommand name.
++        fn leaf<'m>(
++            m: &'m clap::ArgMatches,
++            depth: usize,
++            names: &mut Vec<String>,
++        ) -> &'m clap::ArgMatches {
++            match m.subcommand() {
++                Some((name, sub)) => {
++                    if depth == 0 {
++                        names.push(name.to_string());
++                    }
++                    leaf(sub, depth.saturating_sub(1), names)
++                }
++                None => m,
++            }
++        }
++        let (wrappers, _) = classified_paths();
++        let mut cmd = rtk_command();
++        for meta in ["-h", "--help"] {
++            for path in &wrappers {
++                for extra in argv_shapes(meta) {
++                    let argv: Vec<String> = std::iter::once("rtk".to_string())
++                        .chain(path.iter().cloned())
++                        .chain(extra.iter().cloned())
++                        .collect();
++                    let Ok(m) = cmd.try_get_matches_from_mut(&argv) else {
++                        continue; // a parse error routes to the raw-exec fallback
++                    };
++                    let mut names = Vec::new();
++                    let leaf = leaf(&m, path.len(), &mut names);
++                    // An `external_subcommand` arm collects OsString, everything else String.
++                    let seen: Vec<String> = leaf
++                        .ids()
++                        .flat_map(|id| {
++                            let strs = leaf
++                                .try_get_many::<String>(id.as_str())
++                                .ok()
++                                .flatten()
++                                .map(|v| v.cloned().collect::<Vec<_>>())
++                                .unwrap_or_default();
++                            let os = leaf
++                                .try_get_many::<std::ffi::OsString>(id.as_str())
++                                .ok()
++                                .flatten()
++                                .map(|v| {
++                                    v.map(|o| o.to_string_lossy().into_owned())
++                                        .collect::<Vec<_>>()
++                                })
++                                .unwrap_or_default();
++                            strs.into_iter().chain(os)
++                        })
++                        .collect();
++                    assert!(
++                        seen.iter().chain(names.iter()).any(|v| v == meta),
++                        "`{}` parsed but `{meta}` reached nothing: {seen:?} {names:?}",
++                        argv.join(" ")
++                    );
++                }
++            }
++        }
++    }
++
++    /// Commands that wrap nothing are not in `RTK_META_COMMANDS`, so the fuzz above never
++    /// reaches them. Removing the `forwards_to_native_tool` early return passes everything
++    /// else and breaks exactly these: `read` and `log` fall back to resolving a binary of
++    /// that name, `diff` and `env` print GNU's usage.
++    #[test]
++    fn rtk_commands_that_wrap_nothing_keep_their_help() {
++        let root = rtk_command();
++        for name in ["read", "diff", "log", "env", "json", "deps", "smart"] {
++            let sub = root
++                .get_subcommands()
++                .find(|s| s.get_name() == name || s.get_all_aliases().any(|a| a == name))
++                .unwrap_or_else(|| panic!("missing subcommand {name}"));
++            assert!(
++                !forwards_to_native_tool(sub),
++                "`rtk {name}` wraps nothing, so it must not be treated as a wrapper"
++            );
++            assert!(
++                !sub.is_disable_help_flag_set(),
++                "`rtk {name} --help` is RTK's own"
++            );
++        }
++    }
++
++    /// `pods` is RTK's alias for `get pods`, so `extra` carries a usage request down and
++    /// nothing else: anything more would reach a `get` already pinned to `-o json`.
++    #[test]
++    fn k8s_alias_forwards_only_a_usage_request() {
++        let owned = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
++        let filtered = |all, extra: &[&str]| {
++            build_k8s_namespace_args("pods", None, all, owned(extra)).filtered_args()
++        };
++
++        assert_eq!(filtered(true, &[]), vec!["-A"]);
++        assert_eq!(
++            build_k8s_namespace_args("pods", Some("kube-system".into()), false, Vec::new())
++                .filtered_args(),
++            vec!["-n", "kube-system"]
++        );
++        // The request is appended after the namespace flags RTK adds.
++        assert_eq!(filtered(true, &["--help"]), vec!["-A", "--help"]);
++        assert_eq!(filtered(false, &["-h"]), vec!["-h"]);
++
++        match build_k8s_namespace_args("pods", None, false, owned(&["--", "--help"])) {
++            K8sAlias::Raw(argv) => assert_eq!(
++                argv.iter()
++                    .map(|a| a.to_string_lossy().into_owned())
++                    .collect::<Vec<_>>(),
++                vec!["pods", "--", "--help"]
++            ),
++            K8sAlias::Filtered(args) => panic!("expected a raw run, got {args:?}"),
++        }
++
++        match build_k8s_namespace_args("pods", None, true, owned(&["-o", "wide"])) {
++            K8sAlias::Raw(argv) => assert_eq!(
++                argv.iter()
++                    .map(|a| a.to_string_lossy().into_owned())
++                    .collect::<Vec<_>>(),
++                vec!["pods", "-o", "wide"]
++            ),
++            K8sAlias::Filtered(args) => panic!("expected a raw run, got {args:?}"),
++        }
++    }
++
++    #[test]
++    fn rtk_composite_commands_keep_their_help() {
++        let root = rtk_command();
++        for name in ["err", "test", "summary", "format"] {
++            let sub = root
++                .get_subcommands()
++                .find(|s| s.get_name() == name || s.get_all_aliases().any(|a| a == name))
++                .unwrap_or_else(|| panic!("missing subcommand {name}"));
++            assert!(
++                !sub.is_disable_help_flag_set(),
++                "`rtk {name} --help` has no single wrapped tool to defer to"
++            );
++        }
++    }
++
++    #[test]
++    fn rtk_help_subcommand_still_reaches_wrapper_usage() {
++        let err = match try_parse_cli_from(["rtk", "help", "grep"]) {
++            Err(e) => e,
++            Ok(_) => panic!("`rtk help grep` renders usage via a clap error"),
++        };
++        assert_eq!(err.kind(), ErrorKind::DisplayHelp);
++        let rendered = err.to_string();
++        assert!(
++            rendered.contains("--max-len"),
++            "should list RTK's own grep options, got: {rendered}"
++        );
++    }
++
+     #[test]
+     fn test_run_command_with_explicit_shell() {
+         let cli =
+@@ -4617,7 +5153,7 @@ mod tests {
+ 
+     #[test]
+     fn test_hook_claude_parses() {
+-        let cli = Cli::try_parse_from(["rtk", "hook", "claude"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "hook", "claude"]).unwrap();
+         assert!(matches!(
+             cli.command,
+             Commands::Hook {
+@@ -4628,13 +5164,13 @@ mod tests {
+ 
+     #[test]
+     fn test_hook_trae_parses() {
+-        let cli = Cli::try_parse_from(["rtk", "hook", "trae"]);
++        let cli = try_parse_cli_from(["rtk", "hook", "trae"]);
+         assert!(cli.is_ok());
+     }
+ 
+     #[test]
+     fn test_hook_codex_parses() {
+-        let cli = Cli::try_parse_from(["rtk", "hook", "codex"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "hook", "codex"]).unwrap();
+         assert!(matches!(
+             cli.command,
+             Commands::Hook {
+@@ -4645,7 +5181,7 @@ mod tests {
+ 
+     #[test]
+     fn test_hook_check_parses() {
+-        let cli = Cli::try_parse_from(["rtk", "hook", "check", "git", "status"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "hook", "check", "git", "status"]).unwrap();
+         match cli.command {
+             Commands::Hook {
+                 command: HookCommands::Check { agent, command },
+@@ -4660,7 +5196,7 @@ mod tests {
+     #[test]
+     fn test_hook_check_with_agent() {
+         let cli =
+-            Cli::try_parse_from(["rtk", "hook", "check", "--agent", "gemini", "cargo", "test"])
++            try_parse_cli_from(["rtk", "hook", "check", "--agent", "gemini", "cargo", "test"])
+                 .unwrap();
+         match cli.command {
+             Commands::Hook {
+@@ -4675,7 +5211,7 @@ mod tests {
+ 
+     #[test]
+     fn test_hook_check_preserves_double_dash_in_command() {
+-        let cli = Cli::try_parse_from([
++        let cli = try_parse_cli_from([
+             "rtk",
+             "hook",
+             "check",
+@@ -4739,7 +5275,7 @@ mod tests {
+             vec!["rtk", "cc-economics"],
+         ];
+         for args in &meta_cmds_that_parse {
+-            let result = Cli::try_parse_from(args.iter());
++            let result = try_parse_cli_from(args.iter());
+             assert!(
+                 result.is_ok(),
+                 "Meta-command {:?} should parse successfully",
+@@ -4797,7 +5333,7 @@ mod tests {
+             vec!["rtk", "rewrite", "head", "-50", "file.txt"],
+         ];
+         for args in &cases {
+-            let result = Cli::try_parse_from(args.iter());
++            let result = try_parse_cli_from(args.iter());
+             assert!(
+                 result.is_ok(),
+                 "rtk rewrite {:?} should parse (was failing before trailing_var_arg fix)",
+@@ -4817,7 +5353,7 @@ mod tests {
+     #[test]
+     fn test_rewrite_clap_quoted_single_arg() {
+         // Quoted form: `rtk rewrite "git status"` — single arg containing spaces
+-        let result = Cli::try_parse_from(["rtk", "rewrite", "git status"]);
++        let result = try_parse_cli_from(["rtk", "rewrite", "git status"]);
+         assert!(result.is_ok());
+         if let Ok(cli) = result {
+             match cli.command {
+@@ -4939,7 +5475,7 @@ mod tests {
+ 
+     #[test]
+     fn test_pnpm_subcommand_with_filter() {
+-        let cli = Cli::try_parse_from([
++        let cli = try_parse_cli_from([
+             "rtk", "pnpm", "--filter", "@app1", "--filter", "@app2", "list", "--filter", "@app3",
+             "--filter", "@app4", "--prod",
+         ])
+@@ -4963,7 +5499,7 @@ mod tests {
+ 
+     #[test]
+     fn test_git_push_u_flag_passes_through() {
+-        let cli = Cli::try_parse_from(["rtk", "git", "push", "-u", "origin", "my-branch"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "git", "push", "-u", "origin", "my-branch"]).unwrap();
+         match cli.command {
+             Commands::Git {
+                 command: GitCommands::Push { args },
+@@ -4983,7 +5519,7 @@ mod tests {
+     fn test_pnpm_subcommand_with_short_filter() {
+         // -F is the short form of --filter in pnpm
+         let cli =
+-            Cli::try_parse_from(["rtk", "pnpm", "-F", "@app1", "-F", "@app2", "list"]).unwrap();
++            try_parse_cli_from(["rtk", "pnpm", "-F", "@app1", "-F", "@app2", "list"]).unwrap();
+         match cli.command {
+             Commands::Pnpm { filter, .. } => {
+                 assert_eq!(filter, vec!["@app1", "@app2"]);
+@@ -4994,7 +5530,7 @@ mod tests {
+ 
+     #[test]
+     fn test_pnpm_typecheck_without_filters() {
+-        let cli = Cli::try_parse_from([
++        let cli = try_parse_cli_from([
+             "rtk",
+             "pnpm",
+             "typecheck",
+@@ -5019,7 +5555,7 @@ mod tests {
+ 
+     #[test]
+     fn test_pnpm_typecheck_with_filters() {
+-        let cli = Cli::try_parse_from([
++        let cli = try_parse_cli_from([
+             "rtk",
+             "pnpm",
+             "--filter",
+@@ -5084,7 +5620,7 @@ mod tests {
+         // were dispatched to `npm` instead of `npx`. At the parse level, the
+         // Npx variant must carry all args through unchanged so the dispatch
+         // arm can forward them to npx.
+-        let cli = Cli::try_parse_from(["rtk", "npx", "cowsay", "hello"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "npx", "cowsay", "hello"]).unwrap();
+         match cli.command {
+             Commands::Npx { args } => {
+                 assert_eq!(args, vec!["cowsay", "hello"]);
+@@ -5096,13 +5632,13 @@ mod tests {
+     #[test]
+     fn test_init_pi_flag_rejected() {
+         // --pi has been removed; --agent pi is the canonical form
+-        let result = Cli::try_parse_from(["rtk", "init", "--pi"]);
++        let result = try_parse_cli_from(["rtk", "init", "--pi"]);
+         assert!(result.is_err(), "--pi must be rejected as unknown argument");
+     }
+ 
+     #[test]
+     fn test_init_agent_pi_parses() {
+-        let cli = Cli::try_parse_from(["rtk", "init", "--agent", "pi"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "init", "--agent", "pi"]).unwrap();
+         match cli.command {
+             Commands::Init { agent, .. } => {
+                 assert_eq!(
+@@ -5117,7 +5653,7 @@ mod tests {
+ 
+     #[test]
+     fn test_init_uninstall_agent_pi_parses() {
+-        let cli = Cli::try_parse_from(["rtk", "init", "--uninstall", "--agent", "pi", "--global"])
++        let cli = try_parse_cli_from(["rtk", "init", "--uninstall", "--agent", "pi", "--global"])
+             .unwrap();
+         match cli.command {
+             Commands::Init {
+@@ -5143,7 +5679,7 @@ mod tests {
+     /// Parse `rtk grep …` and return the captured `extra_args`, or `None` if
+     /// clap rejects the invocation (e.g. a colliding short option mis-binds).
+     fn grep_extra_args(args: &[&str]) -> Option<Vec<String>> {
+-        match Cli::try_parse_from(args).ok()?.command {
++        match try_parse_cli_from(args).ok()?.command {
+             Commands::Grep { extra_args, .. } => Some(extra_args),
+             _ => None,
+         }
+@@ -5227,7 +5763,7 @@ mod tests {
+ 
+     /// Parse `rtk grep …` into the full `Grep` field set for inspection.
+     fn parse_grep(args: &[&str]) -> Result<(usize, usize, bool, Vec<String>), clap::Error> {
+-        match Cli::try_parse_from(args)?.command {
++        match try_parse_cli_from(args)?.command {
+             Commands::Grep {
+                 max_len,
+                 max,
+@@ -5296,7 +5832,7 @@ mod tests {
+ 
+     #[test]
+     fn test_bun_build_parses_to_arg_vector() {
+-        let cli = Cli::try_parse_from(["rtk", "bun", "build", "--outdir", "dist"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "bun", "build", "--outdir", "dist"]).unwrap();
+         match cli.command {
+             Commands::Bun {
+                 command: BunCommands::Build { args },
+@@ -5307,7 +5843,7 @@ mod tests {
+ 
+     #[test]
+     fn test_bun_x_parses_to_arg_vector() {
+-        let cli = Cli::try_parse_from(["rtk", "bun", "x", "tsc", "--noEmit"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "bun", "x", "tsc", "--noEmit"]).unwrap();
+         match cli.command {
+             Commands::Bun {
+                 command: BunCommands::X { args },
+@@ -5318,7 +5854,7 @@ mod tests {
+ 
+     #[test]
+     fn test_bun_pm_ls_parses_to_typed_ls() {
+-        let cli = Cli::try_parse_from(["rtk", "bun", "pm", "ls"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "bun", "pm", "ls"]).unwrap();
+         match cli.command {
+             Commands::Bun {
+                 command:
+@@ -5332,7 +5868,7 @@ mod tests {
+ 
+     #[test]
+     fn test_bun_pm_other_passes_through() {
+-        let cli = Cli::try_parse_from(["rtk", "bun", "pm", "cache", "rm"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "bun", "pm", "cache", "rm"]).unwrap();
+         match cli.command {
+             Commands::Bun {
+                 command:
+@@ -5346,7 +5882,7 @@ mod tests {
+ 
+     #[test]
+     fn test_deno_compile_parses_to_arg_vector() {
+-        let cli = Cli::try_parse_from(["rtk", "deno", "compile", "main.ts"]).unwrap();
++        let cli = try_parse_cli_from(["rtk", "deno", "compile", "main.ts"]).unwrap();
+         match cli.command {
+             Commands::Deno {
+                 command: DenoCommands::Compile { args },
+diff --git a/tests/common/mod.rs b/tests/common/mod.rs
+index 64d8704..1f33caf 100644
+--- a/tests/common/mod.rs
++++ b/tests/common/mod.rs
+@@ -61,6 +61,12 @@ pub fn isolate_git(cmd: &mut Command) {
+     scratch::isolate_git(cmd);
+ }
+ 
++/// A temporary directory of the test's own under the scratch directory, so
++/// concurrent runs never share one. Keep the `TempDir` alive for the test.
++pub fn tempdir() -> tempfile::TempDir {
++    scratch::tempdir()
++}
++
+ /// A throwaway git repository with one commit, which works with no user git
+ /// configuration at all. Keep the `TempDir` alive for the test.
+ pub fn temp_git_repo() -> tempfile::TempDir {
+diff --git a/tests/help_passthrough_fuzz_test.rs b/tests/help_passthrough_fuzz_test.rs
+new file mode 100644
+index 0000000..bbc1d65
+--- /dev/null
++++ b/tests/help_passthrough_fuzz_test.rs
+@@ -0,0 +1,573 @@
++//! Differential fuzz for #4198: what a wrapped tool prints for its own `-h`/`--help`
++//! must survive RTK.
++//!
++//! Two failure modes are covered, because the bug had two halves. RTK must not answer the
++//! flag itself (its usage is recognisable by the `Usage: rtk` line), and the filter must
++//! not compress the page the tool printed -- `cargo build --help` came back as
++//! `cargo build (0 crates compiled)`, 31 bytes of 3135.
++//!
++//! Tools that are not installed are skipped rather than failing, so the suite runs
++//! anywhere and covers whatever the machine has. Commands are spawned directly, never
++//! through a shell, so a `grep` shell function cannot stand in for the real binary.
++
++mod common;
++
++use std::path::{Path, PathBuf};
++use std::process::Command;
++
++fn on_path(tool: &str) -> Option<PathBuf> {
++    let dirs: Vec<PathBuf> = std::env::split_paths(&std::env::var_os("PATH")?).collect();
++    if cfg!(windows) {
++        // A bare `npm` on PATH is an extensionless shell script; spawning it fails with
++        // "not a valid Win32 application". PATHEXT names the ones that are programs.
++        let pathext = std::env::var("PATHEXT").unwrap_or_else(|_| ".EXE;.CMD;.BAT;.COM".into());
++        for dir in &dirs {
++            for ext in pathext.split(';').filter(|e| !e.is_empty()) {
++                let candidate = dir.join(format!("{tool}{ext}"));
++                if candidate.is_file() {
++                    return Some(candidate);
++                }
++            }
++        }
++        return None;
++    }
++    dirs.into_iter()
++        .find(|d| d.join(tool).is_file())
++        .map(|d| d.join(tool))
++}
++
++/// A tool prints its own name from argv[0], and on Windows this harness reaches `pip.EXE`
++/// where rtk reaches `pip`. The page is the same; only that spelling differs.
++fn without_exe(text: &str) -> String {
++    text.replace(".EXE", "").replace(".exe", "")
++}
++
++/// The first line of a tool's page that identifies it: `GIT-LOG(1)`, `Usage: tsc`. A page
++/// from the wrong subcommand fails on this where a length check would pass.
++fn first_substantial_line(text: &str) -> &str {
++    text.lines()
++        .map(str::trim_end)
++        .find(|l| l.trim().len() > 8)
++        .unwrap_or("")
++}
++
++/// Clap names the program from argv[0], which is `rtk.exe` on Windows, so the marker
++/// stops at the stem. Getting this wrong made the "RTK did not answer" check below pass
++/// for the wrong reason on Windows.
++fn is_rtk_usage(text: &str) -> bool {
++    text.contains("Usage: rtk")
++}
++
++/// Windows ships a `find.exe` and a `tree.com` that are unrelated programs, and `ls`,
++/// `grep` and `wc` only exist there if a Unix toolchain is on PATH. Comparing RTK against
++/// those proves nothing about the filters, which assume the Unix tools.
++#[cfg(windows)]
++const UNIX_ONLY: &[&str] = &["grep", "ls", "tree", "wc", "find"];
++#[cfg(not(windows))]
++const UNIX_ONLY: &[&str] = &[];
++
++struct Output {
++    text: String,
++    code: i32,
++}
++
++/// `LC_ALL=C` on both sides, since a tool's usage is translated and the two are compared
++/// byte for byte. `MANWIDTH`/`COLUMNS` pin the width `man` renders a git page at.
++fn finish(mut cmd: Command, args: &[&str], label: &str) -> Output {
++    let out = cmd
++        .args(args)
++        .env("LC_ALL", "C")
++        .env("MANWIDTH", "80")
++        .env("COLUMNS", "80")
++        .output()
++        .unwrap_or_else(|e| panic!("spawn {label}: {e}"));
++    let mut text = String::from_utf8_lossy(&out.stdout).into_owned();
++    text.push_str(&String::from_utf8_lossy(&out.stderr));
++    Output {
++        text,
++        code: out.status.code().unwrap_or(-1),
++    }
++}
++
++fn run(program: &Path, args: &[&str]) -> Output {
++    let label = program.display().to_string();
++    let mut cmd = common::native_command(&label);
++    if let Some(dir) = common::rtk_command().get_current_dir() {
++        cmd.current_dir(dir);
++    }
++    finish(cmd, args, &label)
++}
++
++/// rtk with its tracking database and tee spool redirected to this test's scratch
++/// directory; `core::test_isolation` fails the suite on a spawn that skips this.
++fn run_rtk(args: &[&str]) -> Output {
++    finish(common::rtk_command(), args, "rtk")
++}
++
++/// `rtk <rtk_args>` must answer with what `<tool> <native_args>` answers.
++struct Case {
++    rtk_args: &'static [&'static str],
++    tool: &'static str,
++    native_args: &'static [&'static str],
++}
++
++const CASES: &[Case] = &[
++    // `-h` spelled by a tool that means something else by it.
++    Case {
++        rtk_args: &["grep", "--help"],
++        tool: "grep",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["ls", "--help"],
++        tool: "ls",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["tree", "--help"],
++        tool: "tree",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["wc", "--help"],
++        tool: "wc",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["find", "--help"],
++        tool: "find",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["rg", "--help"],
++        tool: "rg",
++        native_args: &["--help"],
++    },
++    // `-h` as a genuine help request, the half that only the filter guard catches.
++    Case {
++        rtk_args: &["cargo", "build", "-h"],
++        tool: "cargo",
++        native_args: &["build", "-h"],
++    },
++    Case {
++        rtk_args: &["cargo", "test", "--help"],
++        tool: "cargo",
++        native_args: &["test", "--help"],
++    },
++    Case {
++        rtk_args: &["cargo", "clippy", "--help"],
++        tool: "cargo",
++        native_args: &["clippy", "--help"],
++    },
++    Case {
++        rtk_args: &["git", "log", "--help"],
++        tool: "git",
++        native_args: &["log", "--help"],
++    },
++    Case {
++        rtk_args: &["git", "status", "--help"],
++        tool: "git",
++        native_args: &["status", "--help"],
++    },
++    Case {
++        rtk_args: &["git", "diff", "--help"],
++        tool: "git",
++        native_args: &["diff", "--help"],
++    },
++    Case {
++        rtk_args: &["go", "vet", "-h"],
++        tool: "go",
++        native_args: &["vet", "-h"],
++    },
++    Case {
++        rtk_args: &["gh", "pr", "diff", "--help"],
++        tool: "gh",
++        native_args: &["pr", "diff", "--help"],
++    },
++    Case {
++        rtk_args: &["kubectl", "get", "--help"],
++        tool: "kubectl",
++        native_args: &["get", "--help"],
++    },
++    Case {
++        rtk_args: &["docker", "--help"],
++        tool: "docker",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["npm", "--help"],
++        tool: "npm",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["tsc", "--help"],
++        tool: "tsc",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["prettier", "--help"],
++        tool: "prettier",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["mvn", "--help"],
++        tool: "mvn",
++        native_args: &["--help"],
++    },
++    Case {
++        rtk_args: &["pip", "list", "--help"],
++        tool: "pip",
++        native_args: &["list", "--help"],
++    },
++    Case {
++        rtk_args: &["uv", "run", "--help"],
++        tool: "uv",
++        native_args: &["run", "--help"],
++    },
++    Case {
++        rtk_args: &["deno", "test", "--help"],
++        tool: "deno",
++        native_args: &["test", "--help"],
++    },
++    Case {
++        rtk_args: &["dotnet", "build", "--help"],
++        tool: "dotnet",
++        native_args: &["build", "--help"],
++    },
++    Case {
++        rtk_args: &["dotnet", "format", "--help"],
++        tool: "dotnet",
++        native_args: &["format", "--help"],
++    },
++    // Spellings a POSIX scan misreads: MSBuild's `-?`, Go's single-dash long name, and a
++    // request addressed past the tool's own boundary.
++    Case {
++        rtk_args: &["dotnet", "build", "-?"],
++        tool: "dotnet",
++        native_args: &["build", "-?"],
++    },
++    Case {
++        rtk_args: &["go", "vet", "-help"],
++        tool: "go",
++        native_args: &["vet", "-help"],
++    },
++    Case {
++        rtk_args: &["pnpm", "outdated", "--help"],
++        tool: "pnpm",
++        native_args: &["outdated", "--help"],
++    },
++    Case {
++        rtk_args: &["jest", "--help"],
++        tool: "jest",
++        native_args: &["--help"],
++    },
++];
++
++#[test]
++fn a_wrapped_tools_own_help_survives_rtk() {
++    let mut checked = 0usize;
++    let mut skipped = Vec::new();
++
++    for case in CASES {
++        if UNIX_ONLY.contains(&case.tool) {
++            skipped.push(case.tool);
++            continue;
++        }
++        let Some(tool) = on_path(case.tool) else {
++            skipped.push(case.tool);
++            continue;
++        };
++        let label = format!("rtk {}", case.rtk_args.join(" "));
++        let mine = run_rtk(case.rtk_args);
++        let native = run(&tool, case.native_args);
++        checked += 1;
++
++        assert!(
++            !is_rtk_usage(&mine.text),
++            "{label} answered with RTK's own usage:\n{}",
++            &mine.text[..mine.text.len().min(200)]
++        );
++        assert_eq!(
++            mine.code, native.code,
++            "{label} exit code drifted from the tool's"
++        );
++        // Content, not length: a length check passes on a long page from the wrong
++        // subcommand, which is exactly what a bad `git_name` arm would return. Exact bytes
++        // are still not asserted, because `man` renders to the terminal it thinks it has
++        // and a tool may print its own name from argv[0].
++        let anchor = without_exe(first_substantial_line(&native.text));
++        assert!(
++            without_exe(&mine.text).contains(&anchor),
++            "{label} does not contain the tool's own first line {anchor:?}:\n{}",
++            &mine.text[..mine.text.len().min(200)]
++        );
++        assert!(
++            mine.text.len() * 2 >= native.text.len(),
++            "{label} returned {} bytes of the tool's {}",
++            mine.text.len(),
++            native.text.len()
++        );
++    }
++
++    assert!(
++        checked > 0,
++        "no wrapped tool was available to compare against"
++    );
++    if !skipped.is_empty() {
++        eprintln!("skipped (not installed): {}", skipped.join(", "));
++    }
++}
++
++/// The reported bug, end to end: `-h` is grep's `--no-filename`, so the output must be
++/// grep's matches, byte for byte, and not a help page.
++// Unix only: these assert GNU/BSD flag semantics that the Windows namesakes do not share.
++#[cfg(unix)]
++#[test]
++fn grep_dash_h_searches_and_drops_the_filename() {
++    let Some(grep) = on_path("grep") else {
++        eprintln!("skipped: grep not installed");
++        return;
++    };
++    let tmp = common::tempdir();
++    let dir = tmp.path();
++    let (a, b) = (dir.join("a.txt"), dir.join("b.txt"));
++    std::fs::write(&a, "alpha\nbeta\n").expect("write a");
++    std::fs::write(&b, "alpha\ngamma\n").expect("write b");
++    let (a, b) = (
++        a.to_string_lossy().into_owned(),
++        b.to_string_lossy().into_owned(),
++    );
++
++    for flags in [
++        vec!["-h", "alpha", &a, &b],
++        vec!["-rh", "alpha", &a, &b],
++        vec!["alpha", "-h", &a, &b],
++        vec!["-h", "-n", "alpha", &a, &b],
++    ] {
++        let mine = run_rtk(&[&["grep"], flags.as_slice()].concat());
++        let native = run(&grep, &flags);
++        assert_eq!(
++            mine.text,
++            native.text,
++            "rtk grep {} diverged from grep",
++            flags.join(" ")
++        );
++        assert_eq!(mine.code, native.code, "exit code for {}", flags.join(" "));
++    }
++}
++
++#[cfg(unix)]
++#[test]
++fn a_caller_value_that_spells_a_help_token_is_not_a_request() {
++    let tmp = common::tempdir();
++    let dir = tmp.path();
++    let file = dir.join("flags.txt");
++    std::fs::write(&file, "use --help for usage\nplain\nuse --version here\n").expect("write");
++    let f = file.to_string_lossy().into_owned();
++
++    for (tool, args) in [
++        ("grep", vec!["-e", "--help", &f]),
++        ("grep", vec!["--", "--version", &f]),
++        ("grep", vec!["-F", "--", "--help", &f]),
++        ("rg", vec!["-e", "--help", &f]),
++        ("rg", vec!["--", "-h", &f]),
++    ] {
++        let Some(native) = on_path(tool) else {
++            continue;
++        };
++        let mine = run_rtk(&[&[tool], args.as_slice()].concat());
++        let theirs = run(&native, &args);
++        assert_eq!(
++            mine.text,
++            theirs.text,
++            "rtk {tool} {} searched for the token instead of matching it",
++            args.join(" ")
++        );
++        assert_eq!(mine.code, theirs.code, "{tool} {}", args.join(" "));
++    }
++}
++
++#[cfg(unix)]
++#[test]
++fn go_test_help_is_not_replayed_through_the_injected_json() {
++    let Some(go) = on_path("go") else { return };
++    let tmp = common::tempdir();
++    let dir = tmp.path();
++    std::fs::write(dir.join("go.mod"), "module t\n\ngo 1.21\n").expect("write go.mod");
++    std::fs::write(
++        dir.join("t_test.go"),
++        "package t\n\nimport \"testing\"\n\nfunc TestA(t *testing.T) {}\n",
++    )
++    .expect("write test");
++
++    let args = ["test", "./...", "-args", "-help"];
++    let mut rtk_cmd = common::rtk_command();
++    rtk_cmd.current_dir(dir).arg("go");
++    let mine = finish(rtk_cmd, &args, "rtk");
++
++    let mut go_cmd = common::native_command(&go.display().to_string());
++    go_cmd.current_dir(dir);
++    let theirs = finish(go_cmd, &args, "go");
++
++    assert!(
++        !mine.text.contains("\"Action\":"),
++        "the usage came back as -json events:\n{}",
++        &mine.text[..mine.text.len().min(200)]
++    );
++    assert!(
++        mine.text.contains("Usage of") && theirs.text.contains("Usage of"),
++        "expected the test binary's usage from both sides"
++    );
++}
++
++#[cfg(unix)]
++#[test]
++fn an_arbitrary_commands_flags_are_not_rtks_to_read() {
++    let Some(du) = on_path("du") else { return };
++
++    // Generated rather than `df -h`, whose 436 bytes on a CI runner are small enough that
++    // RTK rightly returns them raw and the marker below cannot tell guard from size.
++    let tmp = common::tempdir();
++    let dir = tmp.path();
++    for i in 0..60 {
++        let leaf = dir.join(format!("d{i}"));
++        std::fs::create_dir_all(&leaf).expect("create temp tree");
++        std::fs::write(leaf.join("f"), vec![b'x'; 2000]).expect("write leaf");
++    }
++    let tree = dir.display().to_string();
++
++    let raw = run(&du, &["-h", &tree]);
++    for sub in ["err", "summary"] {
++        let mine = run_rtk(&[sub, "du", "-h", &tree]);
++        assert_ne!(
++            mine.text, raw.text,
++            "rtk {sub} du -h <tree> passed du's output through instead of filtering it"
++        );
++        assert!(
++            mine.text.starts_with("[ok]"),
++            "rtk {sub} du -h <tree> did not produce RTK's own summary; got: {}",
++            mine.text.chars().take(120).collect::<String>()
++        );
++    }
++
++    // `rtk test` reports the tail of what it ran rather than a copy of it.
++    let mine = run_rtk(&["test", "du", "-h", &tree]);
++    assert_ne!(
++        mine.text, raw.text,
++        "rtk test du -h <tree> passed du's output through instead of filtering it"
++    );
++    assert!(
++        mine.text.starts_with("OUTPUT (last 5 lines):"),
++        "rtk test du -h <tree> did not produce RTK's own report; got: {}",
++        mine.text.chars().take(120).collect::<String>()
++    );
++}
++
++/// `rtk git log` probes git again with the patch letters stripped from the caller's flags,
++/// which turns `-hp` into a bare `-h`. The command has already gone to git, so git's answer,
++/// usage or rejection, is the only one, with git's own code.
++#[test]
++fn a_clustered_h_is_answered_by_git_once() {
++    let Some(git) = on_path("git") else {
++        eprintln!("skipped: git not installed");
++        return;
++    };
++    let repo = common::temp_git_repo();
++    let flags = ["log", "-hp"];
++    let mut rtk_cmd = common::rtk_command();
++    rtk_cmd.current_dir(repo.path()).arg("git");
++    let mine = finish(rtk_cmd, &flags, "rtk");
++    let mut git_cmd = Command::new(&git);
++    common::isolate_git(&mut git_cmd);
++    git_cmd.current_dir(repo.path());
++    let theirs = finish(git_cmd, &flags, "git");
++    assert_eq!(mine.code, theirs.code, "rtk git log -hp exit code");
++    assert_eq!(mine.text, theirs.text, "rtk git log -hp output");
++}
++
++#[test]
++fn a_usage_request_keeps_a_non_zero_exit() {
++    let mut checked = 0usize;
++    for (tool, args) in [
++        ("wget", vec!["--zzz", "--help"]),
++        ("pnpm", vec!["outdated", "--zzz", "--help"]),
++    ] {
++        let Some(native) = on_path(tool) else {
++            continue;
++        };
++        let theirs = run(&native, &args);
++        if theirs.code == 0 {
++            continue;
++        }
++        let mine = run_rtk(&[&[tool], args.as_slice()].concat());
++        assert_eq!(
++            mine.code,
++            theirs.code,
++            "rtk {tool} {} must end with the tool's code",
++            args.join(" ")
++        );
++        assert!(!is_rtk_usage(&mine.text));
++        checked += 1;
++    }
++    if checked == 0 {
++        eprintln!("skipped: no tool available that rejects a flag before printing usage");
++    }
++}
++
++/// The inverse of the passthrough: a tool whose `-h` is its own flag must still be
++/// filtered. Dropping `tree` from `DASH_H_IS_NOT_HELP` fails here, which is what stops a
++/// future edit from silently turning compression off with every other check still green.
++/// `ls` is along for the ride rather than proving the table: it renders human sizes itself
++/// and strips `-h` before building the child, so the guard never sees that flag.
++// Unix only: these assert GNU/BSD flag semantics that the Windows namesakes do not share.
++#[cfg(unix)]
++#[test]
++fn a_tools_own_dash_h_is_still_filtered() {
++    let tmp = common::tempdir();
++    let dir = tmp.path();
++    std::fs::write(dir.join("one.txt"), "x\n").expect("write");
++    std::fs::write(dir.join("two.txt"), "y\n").expect("write");
++    let path = dir.to_string_lossy().into_owned();
++
++    for (tool, args) in [("ls", vec!["-h", &path]), ("tree", vec!["-h", &path])] {
++        let Some(native) = on_path(tool) else {
++            continue;
++        };
++        let mine = run_rtk(&[&[tool], args.as_slice()].concat());
++        let theirs = run(&native, &args);
++        assert!(
++            !mine.text.is_empty(),
++            "rtk {tool} {} produced nothing",
++            args.join(" ")
++        );
++        assert_ne!(
++            mine.text,
++            theirs.text,
++            "rtk {tool} {} was passed through unfiltered; is `{tool}` still in \
++             DASH_H_IS_NOT_HELP?",
++            args.join(" ")
++        );
++    }
++}
++
++/// RTK's own commands keep their help: releasing everything would satisfy the checks
++/// above and leave no way to read RTK's usage.
++#[test]
++fn rtks_own_help_is_still_rtks() {
++    for args in [
++        vec!["--help"],
++        vec!["-h"],
++        vec!["gain", "--help"],
++        vec!["proxy", "-h"],
++        vec!["init", "--help"],
++        vec!["help", "grep"],
++    ] {
++        let out = run_rtk(&args);
++        assert!(
++            is_rtk_usage(&out.text),
++            "rtk {} should print RTK's own usage, got:\n{}",
++            args.join(" "),
++            &out.text[..out.text.len().min(200)]
++        );
++    }
++}
+diff --git a/tests/rewrite_exit_code_test.rs b/tests/rewrite_exit_code_test.rs
+new file mode 100644
+index 0000000..d4af864
+--- /dev/null
++++ b/tests/rewrite_exit_code_test.rs
+@@ -0,0 +1,197 @@
++#![cfg(unix)]
++//! Exit-code faithfulness across hook rewrites (#3492, #2974, #2735).
++//!
++//! Agents gate on exit status (`&&` chains, "did the tests pass?"), and hooks
++//! silently replace the command with whatever `rtk rewrite` returns. So the
++//! rewritten command must exit with exactly the code the raw command would
++//! have — compressing the output may never change the status.
++
++mod common;
++
++use std::path::{Path, PathBuf};
++use std::process::Command;
++
++struct Sandbox {
++    _dir: tempfile::TempDir,
++    root: PathBuf,
++}
++
++impl Sandbox {
++    fn new() -> Self {
++        let dir = common::temp_git_repo();
++        let root = dir.path().to_path_buf();
++        std::fs::write(root.join("a.txt"), "alpha\nbeta\n").expect("write");
++        for args in [
++            &["add", "a.txt"][..],
++            &["commit", "-q", "-m", "add fixture"][..],
++        ] {
++            let mut git = Command::new("git");
++            common::isolate_git(&mut git);
++            let ok = git
++                .args(args)
++                .current_dir(&root)
++                .status()
++                .expect("git")
++                .success();
++            assert!(ok, "git {args:?} failed");
++        }
++        // A tracked change, left unstaged: `git diff --exit-code` reports it and
++        // `git diff --cached --exit-code` has nothing to report.
++        std::fs::write(root.join("a.txt"), "alpha\nbeta\ngamma\n").expect("modify");
++        Sandbox { _dir: dir, root }
++    }
++
++    fn repo(&self) -> PathBuf {
++        self.root.clone()
++    }
++
++    /// Isolate rtk's config, tracking DB and tee output from the developer's machine,
++    /// and put the freshly built `rtk` first on PATH so rewritten commands resolve it.
++    fn command(&self, program: &str) -> Command {
++        let rtk = common::rtk_command();
++        let bin_dir = Path::new(rtk.get_program())
++            .parent()
++            .expect("rtk binary has a parent directory")
++            .to_path_buf();
++        let inherited = std::env::var_os("PATH").unwrap_or_default();
++        let path =
++            std::env::join_paths(std::iter::once(bin_dir).chain(std::env::split_paths(&inherited)))
++                .expect("PATH entries join");
++        let mut cmd = Command::new(program);
++        common::isolate_rtk(&mut cmd);
++        cmd.current_dir(self.repo())
++            .env("PATH", path)
++            .env("LC_ALL", "C");
++        cmd
++    }
++
++    fn sh_exit(&self, script: &str) -> Option<i32> {
++        self.command("sh")
++            .args(["-c", script])
++            .output()
++            .expect("sh")
++            .status
++            .code()
++    }
++
++    /// `rtk rewrite` prints the rewrite and exits 0 (allow) or 3 (ask); anything
++    /// else means the hook would run the command unchanged.
++    fn rewrite(&self, script: &str) -> Option<String> {
++        let mut cmd = common::rtk_command();
++        let out = cmd
++            .current_dir(self.repo())
++            .env("LC_ALL", "C")
++            .args(["rewrite", script])
++            .output()
++            .expect("rtk rewrite");
++        let text = String::from_utf8_lossy(&out.stdout).trim().to_string();
++        match out.status.code() {
++            Some(0) | Some(3) if !text.is_empty() => Some(text),
++            _ => None,
++        }
++    }
++}
++
++/// Asked in the sandbox's own environment, where the Python cases run: a
++/// version manager's shim can answer for the caller's home and not for it.
++fn python3_available(sb: &Sandbox) -> bool {
++    sb.command("python3")
++        .arg("--version")
++        .output()
++        .map(|o| o.status.success())
++        .unwrap_or(false)
++}
++
++/// Each case puts a recognized tool (the part rtk rewrites) alone, succeeding
++/// or failing, or ahead of an `&&`, `||` or `;`, so both its own status and the
++/// list's are checked. The number is the raw command's exit code; `LS_MISSING`
++/// stands for the one a missing operand gets from the `ls` first on PATH.
++const CASES: &[(&str, i32)] = &[
++    ("git status", 0),
++    ("git log -1 && sh -c 'exit 9'", 9),
++    ("git log --no-such-flag", 128),
++    ("git diff --exit-code", 1),
++    ("git diff --exit-code HEAD && sh -c 'exit 7'", 1),
++    ("git diff --cached --exit-code && sh -c 'exit 7'", 7),
++    ("git show no-such-rev && sh -c 'exit 9'", 128),
++    ("ls /nonexistent-rtk-path", LS_MISSING),
++    ("ls /nonexistent-rtk-path && sh -c 'exit 13'", LS_MISSING),
++    ("ls /nonexistent-rtk-path || sh -c 'exit 13'", 13),
++    ("ls a.txt || sh -c 'exit 13'", 0),
++    ("ls a.txt && sh -c 'exit 13'", 13),
++    ("grep -r not-present-anywhere a.txt", 1),
++    ("grep -r alpha a.txt && sh -c 'exit 14'", 14),
++    ("wc -l /nonexistent-rtk-path", 1),
++    ("cat /nonexistent-rtk-path", 1),
++    ("cat a.txt && sh -c 'exit 11'", 11),
++    ("head -n 1 a.txt && sh -c 'exit 15'", 15),
++    ("find . -name a.txt -exec false {} +", 1),
++    ("git status; sh -c 'exit 12'", 12),
++];
++
++/// Replaced by `cases` with the code a missing operand gets from whichever `ls`
++/// is first on PATH: 2 from GNU, 1 from BSD and busybox.
++const LS_MISSING: i32 = -1;
++
++const PYTHON_CASES: &[(&str, i32)] = &[
++    // Bare `python3 -c` one-liners are intentional passthrough commands.
++    // These compound cases exercise a rewritten git/ls segment while keeping
++    // the Python step's exit status intact.
++    ("git status && python3 -c 'import sys; sys.exit(8)'", 8),
++    ("ls a.txt && python3 -c 'import sys; sys.exit(6)'", 6),
++];
++
++fn cases(sb: &Sandbox) -> Vec<(&'static str, i32)> {
++    let probe = sb.sh_exit("ls /nonexistent-rtk-path");
++    let Some(ls_missing @ (1 | 2)) = probe else {
++        panic!("ls on a missing path exited {probe:?}, expected 1 or 2");
++    };
++    let python = if python3_available(sb) {
++        PYTHON_CASES
++    } else {
++        &[]
++    };
++    CASES
++        .iter()
++        .chain(python)
++        .map(|&(case, code)| (case, if code == LS_MISSING { ls_missing } else { code }))
++        .collect()
++}
++
++#[test]
++fn rewritten_commands_keep_the_raw_exit_code() {
++    let sb = Sandbox::new();
++    let mut mismatches = Vec::new();
++    for (case, expected) in cases(&sb) {
++        let rewritten = sb
++            .rewrite(case)
++            .unwrap_or_else(|| panic!("case must exercise the rewrite path: {case}"));
++        let raw = sb.sh_exit(case);
++        assert_eq!(raw, Some(expected), "raw fixture exit changed: {case}");
++        let via_rtk = sb.sh_exit(&rewritten);
++        if raw != via_rtk {
++            mismatches.push(format!(
++                "  {case:?} exited {raw:?}, but its rewrite {rewritten:?} exited {via_rtk:?}"
++            ));
++        }
++    }
++    assert!(
++        mismatches.is_empty(),
++        "rewrite changed the exit code:\n{}",
++        mismatches.join("\n")
++    );
++}
++
++#[test]
++fn every_case_actually_goes_through_a_rewrite() {
++    // The test above stops at the first case that is not rewritten; this one
++    // reports rule drift under its own name. It only asks `rtk rewrite`, which
++    // never runs a case, so it checks the Python rows without python3 too.
++    let sb = Sandbox::new();
++    for (case, _) in CASES.iter().chain(PYTHON_CASES) {
++        assert!(
++            sb.rewrite(case).is_some(),
++            "case must exercise the rewrite path: {case}"
++        );
++    }
++}
+diff --git a/tests/stderr_only_failure_test.rs b/tests/stderr_only_failure_test.rs
+index eddec41..18e1bc8 100644
+--- a/tests/stderr_only_failure_test.rs
++++ b/tests/stderr_only_failure_test.rs
+@@ -189,6 +189,92 @@ exit 2"#,
+     );
+ }
+ 
++#[test]
++fn the_k8s_alias_sees_the_boundary_the_caller_typed() {
++    let dir = tempfile::tempdir().expect("tempdir");
++    fake_tool(dir.path(), "kubectl", r#"echo "ARGS: $*""#);
++
++    let out = rtk_with(dir.path(), &["kubectl", "pods", "--", "--help"]);
++    let stdout = String::from_utf8_lossy(&out.stdout);
++    assert!(
++        stdout.contains("ARGS: pods -- --help"),
++        "the boundary was lost; got: {stdout}"
++    );
++
++    let out = rtk_with(dir.path(), &["kubectl", "pods", "--help"]);
++    let stdout = String::from_utf8_lossy(&out.stdout);
++    assert!(
++        stdout.contains("get pods") && stdout.contains("--help"),
++        "a plain request should forward to get pods; got: {stdout}"
++    );
++}
++
++#[test]
++fn dotnet_help_is_forwarded_without_the_injected_binlog() {
++    let dir = tempfile::tempdir().expect("tempdir");
++    fake_tool(
++        dir.path(),
++        "dotnet",
++        r#"case "$*" in
++  *-bl:*|*--report*) echo "MSBUILD : error MSB1025: an injected flag reached the tool" >&2; exit 1;;
++esac
++for a in "$@"; do
++  case "$a" in
++    --help|-h|-\?|/\?) echo "Usage: dotnet [options]"; echo "  -c, --configuration <CONFIG>"; exit 0;;
++  esac
++done
++echo "Build succeeded."
++exit 0"#,
++    );
++
++    for sub in ["build", "test", "format"] {
++        for flag in ["--help", "-h", "-?", "/?"] {
++            let out = rtk_with(dir.path(), &["dotnet", sub, flag]);
++            let stdout = String::from_utf8_lossy(&out.stdout);
++            let stderr = String::from_utf8_lossy(&out.stderr);
++            assert!(
++                stdout.contains("Usage: dotnet"),
++                "dotnet {sub} {flag} did not return the usage; stdout: {stdout} stderr: {stderr}"
++            );
++            assert!(
++                !stderr.contains("MSB1025"),
++                "dotnet {sub} {flag} reached the tool with an injected flag"
++            );
++            assert_eq!(out.status.code(), Some(0), "exit code for {sub} {flag}");
++        }
++    }
++}
++
++#[test]
++fn go_tool_golangci_lint_probe_does_not_answer_for_the_lint_run() {
++    let dir = tempfile::tempdir().expect("tempdir");
++    let issues = r#"{"Issues":[{"FromLinter":"errcheck","Text":"unchecked","Pos":{"Filename":"main.go","Line":1,"Column":1},"SourceLines":["x()"],"Severity":""}]}"#;
++    fake_tool(
++        dir.path(),
++        "go",
++        &format!(
++            r#"if [ "$1" = "tool" ] && [ "$3" = "--version" ]; then
++  echo "golangci-lint has version 2.13.1"
++  exit 0
++fi
++echo '{issues}'
++exit 1"#
++        ),
++    );
++
++    let out = rtk_with(dir.path(), &["go", "tool", "golangci-lint", "run"]);
++    let stdout = String::from_utf8_lossy(&out.stdout);
++
++    assert!(
++        !stdout.contains("has version"),
++        "the probe answered for the run; got: {stdout}"
++    );
++    assert!(
++        stdout.contains("errcheck"),
++        "expected the lint result; got: {stdout}"
++    );
++}
++
+ /// golangci-lint exits 1 when it merely found lint issues. RTK reports them and
+ /// returns 0, so the linter running successfully does not fail a build.
+ #[test]
+diff --git a/tests/windows_stack_reserve_test.rs b/tests/windows_stack_reserve_test.rs
+new file mode 100644
+index 0000000..1a140b8
+--- /dev/null
++++ b/tests/windows_stack_reserve_test.rs
+@@ -0,0 +1,45 @@
++//! Windows executables of this package reserve an 8 MiB main-thread stack (see
++//! `build.rs`). The test executables get it from the same link argument as
++//! rtk.exe, so the running one is read back.
++//!
++//! build.rs spells the request per linker (`/STACK:` for msvc, `-Wl,--stack,`
++//! otherwise). A linker that does not know the spelling either fails the link or
++//! drops the request, and only the image shows which.
++
++// 64-bit images only: they are PE32+, the one header layout this reads.
++#![cfg(all(windows, target_pointer_width = "64"))]
++
++use std::fs::File;
++use std::io::Read;
++
++const STACK_RESERVE: u64 = 8 * 1024 * 1024;
++
++/// The PE headers sit at the start of the image; reading them is enough.
++const HEADER_BYTES: u64 = 4096;
++
++/// `SizeOfStackReserve` from the optional header of a PE32+ image (x86_64, ARM64).
++fn stack_reserve(headers: &[u8]) -> u64 {
++    let at = |offset: usize, len: usize| -> &[u8] {
++        headers
++            .get(offset..offset + len)
++            .unwrap_or_else(|| panic!("PE headers end before offset {}", offset + len))
++    };
++    let nt = u32::from_le_bytes(at(0x3c, 4).try_into().expect("4 bytes")) as usize;
++    assert_eq!(at(nt, 4), b"PE\0\0", "not a PE image");
++    let optional = nt + 24;
++    let magic = u16::from_le_bytes(at(optional, 2).try_into().expect("2 bytes"));
++    assert_eq!(magic, 0x20b, "not a PE32+ image");
++    u64::from_le_bytes(at(optional + 72, 8).try_into().expect("8 bytes"))
++}
++
++#[test]
++fn test_exe_reserves_8_mib_of_stack() {
++    let exe = std::env::current_exe().expect("path of the running test");
++    let mut headers = Vec::new();
++    File::open(&exe)
++        .expect("open the running test")
++        .take(HEADER_BYTES)
++        .read_to_end(&mut headers)
++        .expect("read the PE headers");
++    assert_eq!(stack_reserve(&headers), STACK_RESERVE, "{}", exe.display());
++}

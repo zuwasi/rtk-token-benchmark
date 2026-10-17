@@ -1,0 +1,830 @@
+{
+  "commands": [
+    {
+      "id": "git_status",
+      "desc": "git status - dirty tree (12 modified, 11 untracked, 2 staged)",
+      "reps": 5,
+      "raw_argv": "git status",
+      "raw": {
+        "out_bytes": 1162,
+        "err_bytes": 0,
+        "comb_bytes": 1162,
+        "rc": 0,
+        "ms_median": 37.3,
+        "ms_all": [
+          39.8,
+          39.3,
+          37.3,
+          35.6,
+          35.6
+        ]
+      },
+      "rtk": {
+        "out_bytes": 693,
+        "err_bytes": 0,
+        "comb_bytes": 693,
+        "rc": 0,
+        "ms_median": 85.9,
+        "ms_all": [
+          83.3,
+          102.4,
+          85.9,
+          85.1,
+          93.5
+        ]
+      },
+      "bytes_saved_pct": 40.4,
+      "tokens": {
+        "gpt4o": {
+          "raw": 336,
+          "rtk": 209,
+          "saved_pct": 37.8
+        },
+        "claude": {
+          "raw": 369,
+          "rtk": 245,
+          "saved_pct": 33.6
+        },
+        "gemini": {
+          "raw": 373,
+          "rtk": 237,
+          "saved_pct": 36.5
+        },
+        "llama": {
+          "raw": 338,
+          "rtk": 211,
+          "saved_pct": 37.6
+        },
+        "qwen": {
+          "raw": 338,
+          "rtk": 211,
+          "saved_pct": 37.6
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 290,
+        "rtk": 173
+      }
+    },
+    {
+      "id": "git_log",
+      "desc": "git log -40 - 40 commits with full messages",
+      "reps": 5,
+      "raw_argv": "git log -40",
+      "raw": {
+        "out_bytes": 22938,
+        "err_bytes": 0,
+        "comb_bytes": 22938,
+        "rc": 0,
+        "ms_median": 32.9,
+        "ms_all": [
+          35.9,
+          29.9,
+          29.2,
+          32.9,
+          35.5
+        ]
+      },
+      "rtk": {
+        "out_bytes": 9324,
+        "err_bytes": 0,
+        "comb_bytes": 9324,
+        "rc": 0,
+        "ms_median": 49.0,
+        "ms_all": [
+          53.8,
+          46.9,
+          49.0,
+          48.0,
+          49.1
+        ]
+      },
+      "bytes_saved_pct": 59.4,
+      "tokens": {
+        "gpt4o": {
+          "raw": 7468,
+          "rtk": 2988,
+          "saved_pct": 60.0
+        },
+        "claude": {
+          "raw": 7605,
+          "rtk": 3184,
+          "saved_pct": 58.1
+        },
+        "gemini": {
+          "raw": 9238,
+          "rtk": 3445,
+          "saved_pct": 62.7
+        },
+        "llama": {
+          "raw": 7470,
+          "rtk": 2993,
+          "saved_pct": 59.9
+        },
+        "qwen": {
+          "raw": 8636,
+          "rtk": 3204,
+          "saved_pct": 62.9
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 5734,
+        "rtk": 2331
+      }
+    },
+    {
+      "id": "git_log_oneline",
+      "desc": "git log --oneline -40 - already-compact input",
+      "reps": 5,
+      "raw_argv": "git log --oneline",
+      "raw": {
+        "out_bytes": 2982,
+        "err_bytes": 0,
+        "comb_bytes": 2982,
+        "rc": 0,
+        "ms_median": 32.8,
+        "ms_all": [
+          35.4,
+          30.9,
+          31.3,
+          32.8,
+          36.3
+        ]
+      },
+      "rtk": {
+        "out_bytes": 2961,
+        "err_bytes": 0,
+        "comb_bytes": 2961,
+        "rc": 0,
+        "ms_median": 48.9,
+        "ms_all": [
+          46.6,
+          51.8,
+          48.9,
+          50.5,
+          46.1
+        ]
+      },
+      "bytes_saved_pct": 0.7,
+      "tokens": {
+        "gpt4o": {
+          "raw": 960,
+          "rtk": 957,
+          "saved_pct": 0.3
+        },
+        "claude": {
+          "raw": 1052,
+          "rtk": 1050,
+          "saved_pct": 0.2
+        },
+        "gemini": {
+          "raw": 1160,
+          "rtk": 1158,
+          "saved_pct": 0.2
+        },
+        "llama": {
+          "raw": 980,
+          "rtk": 977,
+          "saved_pct": 0.3
+        },
+        "qwen": {
+          "raw": 1127,
+          "rtk": 1124,
+          "saved_pct": 0.3
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 745,
+        "rtk": 740
+      }
+    },
+    {
+      "id": "git_diff",
+      "desc": "git diff HEAD~12 - 12-commit patch (~170 KB)",
+      "reps": 5,
+      "raw_argv": "git diff HEAD~12",
+      "raw": {
+        "out_bytes": 170379,
+        "err_bytes": 1280,
+        "comb_bytes": 171659,
+        "rc": 0,
+        "ms_median": 72.1,
+        "ms_all": [
+          70.4,
+          81.3,
+          72.1,
+          67.4,
+          79.3
+        ]
+      },
+      "rtk": {
+        "out_bytes": 23462,
+        "err_bytes": 0,
+        "comb_bytes": 23462,
+        "rc": 0,
+        "ms_median": 165.8,
+        "ms_all": [
+          197.2,
+          162.5,
+          156.7,
+          165.8,
+          182.8
+        ]
+      },
+      "bytes_saved_pct": 86.3,
+      "tokens": {
+        "gpt4o": {
+          "raw": 47842,
+          "rtk": 7102,
+          "saved_pct": 85.2
+        },
+        "claude": {
+          "raw": 58569,
+          "rtk": 8228,
+          "saved_pct": 86.0
+        },
+        "gemini": {
+          "raw": 56816,
+          "rtk": 8613,
+          "saved_pct": 84.8
+        },
+        "llama": {
+          "raw": 47631,
+          "rtk": 7076,
+          "saved_pct": 85.1
+        },
+        "qwen": {
+          "raw": 49338,
+          "rtk": 7816,
+          "saved_pct": 84.2
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 42914,
+        "rtk": 5865
+      }
+    },
+    {
+      "id": "ls",
+      "desc": "ls -la - repo root, 45 entries",
+      "reps": 5,
+      "raw_argv": "ls -la",
+      "raw": {
+        "out_bytes": 3102,
+        "err_bytes": 0,
+        "comb_bytes": 3102,
+        "rc": 0,
+        "ms_median": 12.6,
+        "ms_all": [
+          15.6,
+          12.0,
+          12.6,
+          14.9,
+          12.4
+        ]
+      },
+      "rtk": {
+        "out_bytes": 1144,
+        "err_bytes": 0,
+        "comb_bytes": 1144,
+        "rc": 0,
+        "ms_median": 40.3,
+        "ms_all": [
+          39.2,
+          36.1,
+          41.4,
+          40.3,
+          47.3
+        ]
+      },
+      "bytes_saved_pct": 63.1,
+      "tokens": {
+        "gpt4o": {
+          "raw": 1455,
+          "rtk": 497,
+          "saved_pct": 65.8
+        },
+        "claude": {
+          "raw": 1340,
+          "rtk": 576,
+          "saved_pct": 57.0
+        },
+        "gemini": {
+          "raw": 1916,
+          "rtk": 652,
+          "saved_pct": 66.0
+        },
+        "llama": {
+          "raw": 1454,
+          "rtk": 496,
+          "saved_pct": 65.9
+        },
+        "qwen": {
+          "raw": 1891,
+          "rtk": 620,
+          "saved_pct": 67.2
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 775,
+        "rtk": 286
+      }
+    },
+    {
+      "id": "rg",
+      "desc": "rg -n 'pub fn' src - 1300+ matches",
+      "reps": 5,
+      "raw_argv": "rg -n pub fn",
+      "raw": {
+        "out_bytes": 56920,
+        "err_bytes": 0,
+        "comb_bytes": 56920,
+        "rc": 0,
+        "ms_median": 34.7,
+        "ms_all": [
+          35.8,
+          35.5,
+          31.3,
+          34.7,
+          34.6
+        ]
+      },
+      "rtk": {
+        "out_bytes": 18490,
+        "err_bytes": 0,
+        "comb_bytes": 18490,
+        "rc": 0,
+        "ms_median": 63.2,
+        "ms_all": [
+          69.4,
+          63.2,
+          64.3,
+          63.0,
+          61.3
+        ]
+      },
+      "bytes_saved_pct": 67.5,
+      "tokens": {
+        "gpt4o": {
+          "raw": 18247,
+          "rtk": 6496,
+          "saved_pct": 64.4
+        },
+        "claude": {
+          "raw": 22317,
+          "rtk": 7751,
+          "saved_pct": 65.3
+        },
+        "gemini": {
+          "raw": 22379,
+          "rtk": 7713,
+          "saved_pct": 65.5
+        },
+        "llama": {
+          "raw": 17633,
+          "rtk": 6243,
+          "saved_pct": 64.6
+        },
+        "qwen": {
+          "raw": 18945,
+          "rtk": 6685,
+          "saved_pct": 64.7
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 14230,
+        "rtk": 4622
+      }
+    },
+    {
+      "id": "grep",
+      "desc": "grep -rn 'unwrap()' src - 1630 matches in 84 files",
+      "reps": 5,
+      "raw_argv": "grep -rn unwrap()",
+      "raw": {
+        "out_bytes": 143577,
+        "err_bytes": 0,
+        "comb_bytes": 143577,
+        "rc": 0,
+        "ms_median": 87.6,
+        "ms_all": [
+          84.0,
+          92.9,
+          87.6,
+          103.4,
+          76.6
+        ]
+      },
+      "rtk": {
+        "out_bytes": 17430,
+        "err_bytes": 0,
+        "comb_bytes": 17430,
+        "rc": 0,
+        "ms_median": 112.6,
+        "ms_all": [
+          128.4,
+          126.7,
+          110.6,
+          112.6,
+          109.2
+        ]
+      },
+      "bytes_saved_pct": 87.9,
+      "tokens": {
+        "gpt4o": {
+          "raw": 41258,
+          "rtk": 6176,
+          "saved_pct": 85.0
+        },
+        "claude": {
+          "raw": 52358,
+          "rtk": 7411,
+          "saved_pct": 85.8
+        },
+        "gemini": {
+          "raw": 53690,
+          "rtk": 7364,
+          "saved_pct": 86.3
+        },
+        "llama": {
+          "raw": 40676,
+          "rtk": 5921,
+          "saved_pct": 85.4
+        },
+        "qwen": {
+          "raw": 43929,
+          "rtk": 6293,
+          "saved_pct": 85.7
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 35894,
+        "rtk": 4357
+      }
+    },
+    {
+      "id": "cat_mid",
+      "desc": "cat file (83 KB Rust) vs rtk read --max-lines 150",
+      "reps": 5,
+      "raw_argv": "cat src/hooks/permissions.rs",
+      "raw": {
+        "out_bytes": 83325,
+        "err_bytes": 0,
+        "comb_bytes": 83325,
+        "rc": 0,
+        "ms_median": 10.2,
+        "ms_all": [
+          11.9,
+          10.1,
+          10.2,
+          9.5,
+          11.8
+        ]
+      },
+      "rtk": {
+        "out_bytes": 3820,
+        "err_bytes": 0,
+        "comb_bytes": 3820,
+        "rc": 0,
+        "ms_median": 18.6,
+        "ms_all": [
+          19.9,
+          18.8,
+          16.7,
+          18.6,
+          17.1
+        ]
+      },
+      "bytes_saved_pct": 95.4,
+      "tokens": {
+        "gpt4o": {
+          "raw": 19621,
+          "rtk": 938,
+          "saved_pct": 95.2
+        },
+        "claude": {
+          "raw": 23682,
+          "rtk": 1204,
+          "saved_pct": 94.9
+        },
+        "gemini": {
+          "raw": 22867,
+          "rtk": 1204,
+          "saved_pct": 94.7
+        },
+        "llama": {
+          "raw": 19580,
+          "rtk": 941,
+          "saved_pct": 95.2
+        },
+        "qwen": {
+          "raw": 19618,
+          "rtk": 943,
+          "saved_pct": 95.2
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 20831,
+        "rtk": 955
+      }
+    },
+    {
+      "id": "cat_huge",
+      "desc": "cat file (337 KB Rust) vs rtk read --max-lines 150",
+      "reps": 5,
+      "raw_argv": "cat src/cmds/git/diff_cmd.rs",
+      "raw": {
+        "out_bytes": 337658,
+        "err_bytes": 0,
+        "comb_bytes": 337658,
+        "rc": 0,
+        "ms_median": 10.7,
+        "ms_all": [
+          11.5,
+          10.6,
+          10.7,
+          10.6,
+          12.3
+        ]
+      },
+      "rtk": {
+        "out_bytes": 4718,
+        "err_bytes": 0,
+        "comb_bytes": 4718,
+        "rc": 0,
+        "ms_median": 19.2,
+        "ms_all": [
+          19.6,
+          16.3,
+          19.2,
+          19.5,
+          16.6
+        ]
+      },
+      "bytes_saved_pct": 98.6,
+      "tokens": {
+        "gpt4o": {
+          "raw": 84556,
+          "rtk": 1312,
+          "saved_pct": 98.4
+        },
+        "claude": {
+          "raw": 98968,
+          "rtk": 1526,
+          "saved_pct": 98.5
+        },
+        "gemini": {
+          "raw": 98629,
+          "rtk": 1517,
+          "saved_pct": 98.5
+        },
+        "llama": {
+          "raw": 84155,
+          "rtk": 1301,
+          "saved_pct": 98.5
+        },
+        "qwen": {
+          "raw": 85518,
+          "rtk": 1312,
+          "saved_pct": 98.5
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 84414,
+        "rtk": 1179
+      }
+    },
+    {
+      "id": "pytest",
+      "desc": "pytest - 114 tests, 12 failures, 2 warnings",
+      "reps": 3,
+      "raw_argv": "python -m pytest",
+      "raw": {
+        "out_bytes": 8024,
+        "err_bytes": 0,
+        "comb_bytes": 8024,
+        "rc": 1,
+        "ms_median": 526.0,
+        "ms_all": [
+          508.7,
+          526.0,
+          549.9
+        ]
+      },
+      "rtk": {
+        "out_bytes": 948,
+        "err_bytes": 0,
+        "comb_bytes": 948,
+        "rc": 1,
+        "ms_median": 671.7,
+        "ms_all": [
+          700.6,
+          671.7,
+          663.4
+        ]
+      },
+      "bytes_saved_pct": 88.2,
+      "tokens": {
+        "gpt4o": {
+          "raw": 2300,
+          "rtk": 274,
+          "saved_pct": 88.1
+        },
+        "claude": {
+          "raw": 2563,
+          "rtk": 305,
+          "saved_pct": 88.1
+        },
+        "gemini": {
+          "raw": 2664,
+          "rtk": 338,
+          "saved_pct": 87.3
+        },
+        "llama": {
+          "raw": 2290,
+          "rtk": 271,
+          "saved_pct": 88.2
+        },
+        "qwen": {
+          "raw": 2379,
+          "rtk": 279,
+          "saved_pct": 88.3
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 2006,
+        "rtk": 237
+      }
+    },
+    {
+      "id": "cargo_test",
+      "desc": "cargo test - 46 tests, 6 failures",
+      "reps": 3,
+      "raw_argv": "cargo test",
+      "raw": {
+        "out_bytes": 2916,
+        "err_bytes": 199,
+        "comb_bytes": 3115,
+        "rc": 101,
+        "ms_median": 46.5,
+        "ms_all": [
+          47.9,
+          46.5,
+          46.4
+        ]
+      },
+      "rtk": {
+        "out_bytes": 1085,
+        "err_bytes": 99,
+        "comb_bytes": 1184,
+        "rc": 101,
+        "ms_median": 77.5,
+        "ms_all": [
+          77.5,
+          72.1,
+          77.5
+        ]
+      },
+      "bytes_saved_pct": 62.0,
+      "tokens": {
+        "gpt4o": {
+          "raw": 1002,
+          "rtk": 386,
+          "saved_pct": 61.5
+        },
+        "claude": {
+          "raw": 1069,
+          "rtk": 406,
+          "saved_pct": 62.0
+        },
+        "gemini": {
+          "raw": 1168,
+          "rtk": 442,
+          "saved_pct": 62.2
+        },
+        "llama": {
+          "raw": 994,
+          "rtk": 379,
+          "saved_pct": 61.9
+        },
+        "qwen": {
+          "raw": 1138,
+          "rtk": 424,
+          "saved_pct": 62.7
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 778,
+        "rtk": 296
+      }
+    },
+    {
+      "id": "npm_test",
+      "desc": "npm test (jest) - 36 tests, 5 failures",
+      "reps": 3,
+      "raw_argv": "npm.cmd test",
+      "raw": {
+        "out_bytes": 34,
+        "err_bytes": 2173,
+        "comb_bytes": 2207,
+        "rc": 1,
+        "ms_median": 1159.8,
+        "ms_all": [
+          1159.8,
+          1241.2,
+          1156.6
+        ]
+      },
+      "rtk": {
+        "out_bytes": 2155,
+        "err_bytes": 0,
+        "comb_bytes": 2155,
+        "rc": 1,
+        "ms_median": 1249.2,
+        "ms_all": [
+          1096.4,
+          1249.2,
+          1295.6
+        ]
+      },
+      "bytes_saved_pct": 2.4,
+      "tokens": {
+        "gpt4o": {
+          "raw": 640,
+          "rtk": 626,
+          "saved_pct": 2.2
+        },
+        "claude": {
+          "raw": 635,
+          "rtk": 617,
+          "saved_pct": 2.8
+        },
+        "gemini": {
+          "raw": 703,
+          "rtk": 688,
+          "saved_pct": 2.1
+        },
+        "llama": {
+          "raw": 628,
+          "rtk": 614,
+          "saved_pct": 2.2
+        },
+        "qwen": {
+          "raw": 652,
+          "rtk": 638,
+          "saved_pct": 2.1
+        }
+      },
+      "est_bytes_div4": {
+        "raw": 551,
+        "rtk": 538
+      }
+    }
+  ],
+  "meta": {
+    "started": "2026-10-16T04:13:16.849878+00:00",
+    "rtk_version": "rtk 1.0.1",
+    "platform": "AMD64 / win32"
+  },
+  "totals": {
+    "gpt4o": {
+      "raw": 225685,
+      "rtk": 27961,
+      "saved_pct": 87.6
+    },
+    "claude": {
+      "raw": 270527,
+      "rtk": 32503,
+      "saved_pct": 88.0
+    },
+    "gemini": {
+      "raw": 271603,
+      "rtk": 33371,
+      "saved_pct": 87.7
+    },
+    "llama": {
+      "raw": 223829,
+      "rtk": 27423,
+      "saved_pct": 87.7
+    },
+    "qwen": {
+      "raw": 233509,
+      "rtk": 29549,
+      "saved_pct": 87.3
+    }
+  },
+  "model_names": {
+    "gpt4o": "GPT-4o (o200k_base)",
+    "claude": "Claude (Anthropic tokenizer)",
+    "gemini": "Gemini (Gemma-3 tokenizer)",
+    "llama": "Llama 3.3 (Llama-3.1 tokenizer)",
+    "qwen": "Qwen3 (Qwen3-8B tokenizer)"
+  },
+  "bytes_total": {
+    "raw": 836669,
+    "rtk": 86329,
+    "saved_pct": 89.7
+  },
+  "rtk_gain_json": "{\n  \"summary\": {\n    \"total_commands\": 49,\n    \"total_input\": 62684,\n    \"total_output\": 34542,\n    \"total_saved\": 28142,\n    \"avg_savings_pct\": 44.895029034522366,\n    \"total_time_ms\": 10211,\n    \"avg_time_ms\": 208,\n    \"oversized_excluded\": 34\n  },\n  \"daily\": [\n    {\n      \"date\": \"2026-10-16\",\n      \"commands\": 49,\n      \"input_tokens\": 62684,\n      \"output_tokens\": 34542,\n      \"saved_tokens\": 28142,\n      \"savings_pct\": 44.895029034522366,\n      \"total_time_ms\": 10211,\n      \"avg_time_ms\": 208\n    }\n  ],\n  \"weekly\": [\n    {\n      \"week_start\": \"2026-10-12\",\n      \"week_end\": \"2026-10-18\",\n      \"commands\": 49,\n      \"input_tokens\": 62684,\n      \"output_tokens\": 34542,\n      \"saved_tokens\": 28142,\n      \"savings_pct\": 44.895029034522366,\n      \"total_time_ms\": 10211,\n      \"avg_time_ms\": 208\n    }\n  ],\n  \"monthly\": [\n    {\n      \"month\": \"2026-10\",\n      \"commands\": 49,\n      \"input_tokens\": 62684,\n      \"output_tokens\": 34542,\n      \"saved_tokens\": 28142,\n      \"savings_pct\": 44.895029034522366,\n      \"total_time_ms\": 10211,\n      \"avg_time_ms\": 208\n    }\n  ]\n}\n",
+  "rtk_gain_text": "RTK Token Savings (Global Scope)\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nTotal commands:    49\nInput tokens:      62.7K\nOutput tokens:     34.5K\nTokens saved:      28.1K (44.9%)\nTotal exec time:   10.2s (avg 208ms)\nEfficiency meter: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 44.9%\nExcluded:          34 oversized outputs (input past the ~30k-char agent cap)\n\nBy Command\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n  #  Command                   Count   Saved  Total%    Time  Impact    \n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n 1.  rtk read                     17  557.9K   73.1%     0ms  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\n 2.  rtk git diff 'HEAD~12'        7  261.5K   86.4%   151ms  \u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\n 3.  rtk grep                      6  189.2K   87.9%    95ms  \u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n 4.  rtk rg                        6   57.6K   67.5%    43ms  \u2588\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n 5.  rtk git log -40               7   13.6K   45.5%    33ms  \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n 6.  rtk test python -m py...      4    6.9K   87.9%   652ms  \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n 7.  rtk ls -la                    6    2.9K   63.1%    25ms  \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n 8.  rtk cargo test                4    2.0K   63.2%    63ms  \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n 9.  rtk find . -name '*.rs'       1    1.7K   89.9%    38ms  \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n10.  rtk git status                7     826   40.5%    71ms  \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n"
+}

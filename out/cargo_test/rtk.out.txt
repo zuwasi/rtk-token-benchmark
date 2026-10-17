@@ -1,0 +1,39 @@
+---- tests::add_fails_001 stdout ----
+
+thread 'tests::add_fails_001' (24424) panicked at src\lib.rs:269:9:
+assertion `left == right` failed
+  left: 30
+ right: 35
+
+---- tests::add_fails_000 stdout ----
+
+thread 'tests::add_fails_000' (30420) panicked at src\lib.rs:264:9:
+assertion `left == right` failed
+  left: 5
+ right: 6
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- tests::divide_by_zero_fails stdout ----
+
+thread 'tests::divide_by_zero_fails' (40832) panicked at src\lib.rs:10:5:
+attempt to divide by zero
+
+---- tests::invariant_fails stdout ----
+
+thread 'tests::invariant_fails' (19244) panicked at src\lib.rs:289:9:
+invariant violated: expected 3
+
+---- tests::missing_feature_fails stdout ----
+
+thread 'tests::missing_feature_fails' (34784) panicked at src\lib.rs:284:9:
+feature not implemented yet: retry with backoff
+
+---- tests::scale_fails_000 stdout ----
+
+thread 'tests::scale_fails_000' (23404) panicked at src\lib.rs:274:9:
+assertion `left == right` failed
+  left: [2, 4, 6]
+ right: [1, 2, 3]
+
+
+[full output: rtk recall 5a0bf3ae0ddf]

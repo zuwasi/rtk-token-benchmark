@@ -1,0 +1,40 @@
+f16beca Merge pull request #4203 from Protocol-zero-0/chore/rewrite-exit-code-regression-test
+b7d9f5d test(hook): probe the ls exit code, cover a clean git diff, isolate the python probe
+5eb0509 Merge pull request #3613 from rhishi99/fix/build-mingw-stack-arg
+0508e11 Merge pull request #4575 from rtk-ai/dependabot/github_actions/develop/googleapis/release-please-action-5.0.0
+780151e Merge pull request #4574 from rtk-ai/dependabot/github_actions/develop/actions/checkout-7
+18c0492 Merge pull request #4573 from rtk-ai/dependabot/github_actions/develop/actions/upload-artifact-7
+4701ff7 Merge pull request #4476 from rtk-ai/dependabot/cargo/develop/which-8.0.6
+4f12b01 Merge pull request #4348 from rtk-ai/fix/helper-flags
+25cc7c7 chore(deps): bump which from 8.0.1 to 8.0.6
+263cb43 Merge pull request #4475 from rtk-ai/dependabot/cargo/develop/windows-sys-0.61.2
+2bcc599 Merge pull request #4284 from rtk-ai/fix/4281-gate-peel
+17cf0cd chore(deps): bump windows-sys from 0.59.0 to 0.61.2
+26fc9f2 Merge pull request #4474 from rtk-ai/dependabot/cargo/develop/encoding_rs-0.8.42
+8cc08be Merge pull request #4473 from rtk-ai/dependabot/cargo/develop/ignore-0.4.33
+4d239eb Merge pull request #4472 from rtk-ai/dependabot/cargo/develop/serde-1.0.229
+b465def fix(permissions): match deny and ask rules past assignments and wrappers (#4281)
+5db646b Merge pull request #4148 from KuSh/fix/4117-followup-log-probe
+01af0d9 chore(deps): bump googleapis/release-please-action from 4.4.1 to 5.0.0
+51547ba chore(deps): bump actions/checkout from 4 to 7
+07b5c1f chore(deps): bump actions/upload-artifact from 4 to 7
+51a659a Merge remote-tracking branch 'origin/fix/helper-flags' into fix/helper-flags
+151c759 Merge branch 'develop' into fix/helper-flags
+f53e603 Merge pull request #4563 from rtk-ai/fix/proxy-bind-env
+4a583f8 fix(proxy): honour RTK_PROXY_BIND in `llm-proxy start` and the agent launchers
+3257b0a Merge pull request #4561 from rtk-ai/fix/gain-share-hint-oss
+2d352df fix(gain): only suggest `rtk pipeline share` where the command exists
+8157d4d Merge pull request #4552 from rtk-ai/ci/proxy-musl-sqlite-vec
+e81575a ci(release): fix the rtk-proxy build on x86_64-unknown-linux-musl
+11d0c4d chore(deps): bump serde from 1.0.228 to 1.0.229
+1d2a6ba chore(deps): bump ignore from 0.4.25 to 0.4.32
+4790d64 chore(deps): bump encoding_rs from 0.8.35 to 0.8.42
+799ee99 Merge pull request #4550 from rtk-ai/feat/v1.0
+2b96061 fix(hooks): pipeline hook rules act on Claude Code only; the shared hook core is develop's again
+45d6ba7 fix(pipeline): route before an edit is refused; the hook load rejects tasks named after real commands; a blank message keeps a reason
+e61317a fix(release): one release and one v-tag for every crate
+0777208 chore: drop BREAKING_CHANGES.md and the release simulation script
+a379067 chore: contributor tooling
+83d8201 chore: release config, CI, packaging
+e8045ce docs: v1 guide, pipelines, proxy
+380a804 feat(hooks): agent plugins honour pipeline block and route

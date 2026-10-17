@@ -1,0 +1,127 @@
+f16beca Merge pull request #4203 from Protocol-zero-0/chore/rewrite-exit-code-regression-test (11 hours ago) <Nicolas...
+  test(hook): pin exit codes across rtk rewrite (#3492)
+b7d9f5d test(hook): probe the ls exit code, cover a clean git diff, isolate the python probe (28 hours ago) <Nicolas ...
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+5eb0509 Merge pull request #3613 from rhishi99/fix/build-mingw-stack-arg (28 hours ago) <Nicolas Le Cam>
+  fix(build): send the MinGW linker --stack, not MSVC's /STACK:
+0508e11 Merge pull request #4575 from rtk-ai/dependabot/github_actions/develop/googleapis/release-please-action-5.0.0...
+  chore(deps): bump googleapis/release-please-action from 4.4.1 to 5.0.0
+780151e Merge pull request #4574 from rtk-ai/dependabot/github_actions/develop/actions/checkout-7 (28 hours ago) <Nic...
+  chore(deps): bump actions/checkout from 4 to 7
+18c0492 Merge pull request #4573 from rtk-ai/dependabot/github_actions/develop/actions/upload-artifact-7 (28 hours ag...
+  chore(deps): bump actions/upload-artifact from 4 to 7
+4701ff7 Merge pull request #4476 from rtk-ai/dependabot/cargo/develop/which-8.0.6 (28 hours ago) <Nicolas Le Cam>
+  chore(deps): bump which from 8.0.1 to 8.0.6
+4f12b01 Merge pull request #4348 from rtk-ai/fix/helper-flags (28 hours ago) <Nicolas Le Cam>
+  fix(cli): hand -h, --help and help to the tool each subcommand wraps
+25cc7c7 chore(deps): bump which from 8.0.1 to 8.0.6 (29 hours ago) <dependabot[bot]>
+  Bumps [which](https://github.com/harryfei/which-rs) from 8.0.1 to 8.0.6.
+  - [Release notes](https://github.com/harryfei/which-rs/releases)
+  - [Changelog](https://github.com/harryfei/which-rs/blob/master/CHANGELOG.md)
+  [+8 lines omitted]
+263cb43 Merge pull request #4475 from rtk-ai/dependabot/cargo/develop/windows-sys-0.61.2 (29 hours ago) <Nicolas Le Cam>
+  chore(deps): bump windows-sys from 0.59.0 to 0.61.2
+2bcc599 Merge pull request #4284 from rtk-ai/fix/4281-gate-peel (29 hours ago) <Nicolas Le Cam>
+  fix(permissions): match deny and ask rules past assignments and wrappers (#4281)
+17cf0cd chore(deps): bump windows-sys from 0.59.0 to 0.61.2 (29 hours ago) <dependabot[bot]>
+  Bumps [windows-sys](https://github.com/microsoft/windows-rs) from 0.59.0 to 0.61.2.
+  - [Release notes](https://github.com/microsoft/windows-rs/releases)
+  - [Commits](https://github.com/microsoft/windows-rs/commits)
+  [+7 lines omitted]
+26fc9f2 Merge pull request #4474 from rtk-ai/dependabot/cargo/develop/encoding_rs-0.8.42 (29 hours ago) <Nicolas Le Cam>
+  chore(deps): bump encoding_rs from 0.8.35 to 0.8.42
+8cc08be Merge pull request #4473 from rtk-ai/dependabot/cargo/develop/ignore-0.4.33 (29 hours ago) <Nicolas Le Cam>
+  chore(deps): bump ignore from 0.4.25 to 0.4.32
+4d239eb Merge pull request #4472 from rtk-ai/dependabot/cargo/develop/serde-1.0.229 (29 hours ago) <Nicolas Le Cam>
+  chore(deps): bump serde from 1.0.228 to 1.0.229
+b465def fix(permissions): match deny and ask rules past assignments and wrappers (#4281) (3 weeks ago) <Nicolas Le Cam>
+  Claude Code matches a deny or ask rule past any leading assignment and past a
+  fixed set of wrappers — `timeout`, `time`, `nice`, `nohup`, `stdbuf`,
+  `command`, `builtin`, `noglob` and a bare `xargs` — so `Bash(git push *)` stops
+  [+40 lines omitted]
+5db646b Merge pull request #4148 from KuSh/fix/4117-followup-log-probe (30 hours ago) <Nicolas Le Cam>
+  fix(git): only announce the log cap on a walk git ran, and count it right
+01af0d9 chore(deps): bump googleapis/release-please-action from 4.4.1 to 5.0.0 (32 hours ago) <dependabot[bot]>
+  Bumps [googleapis/release-please-action](https://github.com/googleapis/release-please-action) from 4.4.1 to 5.0.0.
+  - [Release notes](https://github.com/googleapis/release-please-action/releases)
+  - [Changelog](https://github.com/googleapis/release-please-action/blob/main/CHANGELOG.md)
+  [+8 lines omitted]
+51547ba chore(deps): bump actions/checkout from 4 to 7 (32 hours ago) <dependabot[bot]>
+  Bumps [actions/checkout](https://github.com/actions/checkout) from 4 to 7.
+  - [Release notes](https://github.com/actions/checkout/releases)
+  - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+  [+8 lines omitted]
+07b5c1f chore(deps): bump actions/upload-artifact from 4 to 7 (32 hours ago) <dependabot[bot]>
+  Bumps [actions/upload-artifact](https://github.com/actions/upload-artifact) from 4 to 7.
+  - [Release notes](https://github.com/actions/upload-artifact/releases)
+  - [Commits](https://github.com/actions/upload-artifact/compare/v4...v7)
+  [+7 lines omitted]
+51a659a Merge remote-tracking branch 'origin/fix/helper-flags' into fix/helper-flags (2 days ago) <Adrien EPPLING>
+151c759 Merge branch 'develop' into fix/helper-flags (2 days ago) <Adrien EPPLING>
+  develop moved the whole CLI out of `src/main.rs` into `src/lib.rs` behind
+  `rtk::entry()`, so the help guard work had to be ported onto the library:
+  `rtk_command`, `release_meta_flags`, `forwards_to_native_tool`,
+  [+13 lines omitted]
+f53e603 Merge pull request #4563 from rtk-ai/fix/proxy-bind-env (2 days ago) <aesoft>
+  fix(proxy): honour RTK_PROXY_BIND in `llm-proxy start` and the agent launchers
+4a583f8 fix(proxy): honour RTK_PROXY_BIND in `llm-proxy start` and the agent launchers (2 days ago) <aesoft>
+  The daemon and `rtk llm-proxy status` read RTK_PROXY_BIND, but
+  `rtk llm-proxy start`, `rtk claude` (and the other launchers) and the
+  `rtk gain` hint still used 127.0.0.1:8080. With another service on 8080,
+  [+10 lines omitted]
+3257b0a Merge pull request #4561 from rtk-ai/fix/gain-share-hint-oss (2 days ago) <aesoft>
+  fix(gain): only suggest `rtk pipeline share` where the command exists
+2d352df fix(gain): only suggest `rtk pipeline share` where the command exists (2 days ago) <aesoft>
+  The Apache-2.0 edition is built without the pipeline engine, so it has no
+  `rtk pipeline` command, yet `rtk gain` and `rtk gain --watch` still told
+  its users to run `rtk pipeline share`. The hint now shows only in builds
+  [+3 lines omitted]
+8157d4d Merge pull request #4552 from rtk-ai/ci/proxy-musl-sqlite-vec (2 days ago) <aesoft>
+  ci(release): fix the rtk-proxy build on x86_64-unknown-linux-musl
+e81575a ci(release): fix the rtk-proxy build on x86_64-unknown-linux-musl (2 days ago) <aesoft>
+  sqlite-vec 0.1.9, linked through icm-store, declares uint8_t, uint16_t and
+  uint64_t from the BSD u_int*_t names, which musl does not provide. Define
+  them to the C99 types for that target so the daemon compiles there like
+  [+2 lines omitted]
+11d0c4d chore(deps): bump serde from 1.0.228 to 1.0.229 (2 days ago) <dependabot[bot]>
+  Bumps [serde](https://github.com/serde-rs/serde) from 1.0.228 to 1.0.229.
+  - [Release notes](https://github.com/serde-rs/serde/releases)
+  - [Commits](https://github.com/serde-rs/serde/compare/v1.0.228...v1.0.229)
+  [+7 lines omitted]
+1d2a6ba chore(deps): bump ignore from 0.4.25 to 0.4.32 (2 days ago) <dependabot[bot]>
+  Bumps [ignore](https://github.com/BurntSushi/ripgrep) from 0.4.25 to 0.4.32.
+  - [Release notes](https://github.com/BurntSushi/ripgrep/releases)
+  - [Changelog](https://github.com/BurntSushi/ripgrep/blob/master/CHANGELOG.md)
+  [+8 lines omitted]
+4790d64 chore(deps): bump encoding_rs from 0.8.35 to 0.8.42 (2 days ago) <dependabot[bot]>
+  Bumps [encoding_rs](https://github.com/hsivonen/encoding_rs) from 0.8.35 to 0.8.42.
+  - [Commits](https://github.com/hsivonen/encoding_rs/compare/v0.8.35...v0.8.42)
+  ---
+  [+6 lines omitted]
+799ee99 Merge pull request #4550 from rtk-ai/feat/v1.0 (2 days ago) <aesoft>
+  feat!: RTK v1.0 — pipelines and LLM proxy
+2b96061 fix(hooks): pipeline hook rules act on Claude Code only; the shared hook core is develop's again (2 days ago)...
+  decision.rs, rewrite_cmd.rs, hook_check.rs and the OpenCode, Pi, Hermes and
+  OpenClaw plugins are back to develop. Claude Code's hook consults the
+  pipeline from its own module (hook_cmd/claude_pipeline.rs, engine only)
+  [+5 lines omitted]
+45d6ba7 fix(pipeline): route before an edit is refused; the hook load rejects tasks named after real commands; a blan...
+  - `route` at hook.before_tool.edit is E005. The hand-over sent the edit to a
+  `generate` task, which rewrote the whole target from a spec and the
+  reference alone. A route at `any` no longer hands an Edit to `generate`.
+  [+6 lines omitted]
+e61317a fix(release): one release and one v-tag for every crate (2 days ago) <aesoft>
+  release-please releases the root package only, with tags kept as
+  v<version>. The workspace members (engine, plugin, text) follow it as the
+  Rust strategy bumps them; proxy/ is listed as an extra file. A per-crate
+  [+5 lines omitted]
+0777208 chore: drop BREAKING_CHANGES.md and the release simulation script (2 days ago) <aesoft>
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+a379067 chore: contributor tooling (2 days ago) <aesoft>
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+83d8201 chore: release config, CI, packaging (2 days ago) <aesoft>
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+e8045ce docs: v1 guide, pipelines, proxy (2 days ago) <aesoft>
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+380a804 feat(hooks): agent plugins honour pipeline block and route (2 days ago) <aesoft>
+  Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

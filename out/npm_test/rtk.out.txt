@@ -1,0 +1,65 @@
+> jest
+FAIL tests/api.test.js
+  ● lookup missing key returns 0
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 0
+    Received: undefined
+       7 |
+       8 | test('lookup missing key returns 0', () => {
+    >  9 |   expect(lookup({ alpha: 1 }, 'omega')).toBe(0);
+         |                                         ^
+      10 | });
+      11 |
+      12 | test('add 2 + 3 equals 6', () => {
+      at Object.toBe (tests/api.test.js:9:41)
+  ● add 2 + 3 equals 6
+    expect(received).toBe(expected) // Object.is equality
+    Expected: 6
+    Received: 5
+      11 |
+      12 | test('add 2 + 3 equals 6', () => {
+    > 13 |   expect(add(2, 3)).toBe(6);
+         |                     ^
+      14 | });
+      15 |
+      16 | test('network retry recovers', () => {
+      at Object.toBe (tests/api.test.js:13:21)
+  ● network retry recovers
+    connection refused: retry budget exhausted
+      15 |
+      16 | test('network retry recovers', () => {
+    > 17 |   throw new Error('connection refused: retry budget exhausted');
+         |         ^
+      18 | });
+      19 |
+      at Object.<anonymous> (tests/api.test.js:17:9)
+FAIL tests/string.test.js
+  ● uppercase conversion
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "rtk"
+    Received: "RTK"
+      1 | // Failing string tests (generated for the rtk benchmark).
+      2 | test('uppercase conversion', () => {
+    > 3 |   expect('rtk'.toUpperCase()).toBe('rtk');
+        |                               ^
+      4 | });
+      5 |
+      6 | test('string slice', () => {
+      at Object.toBe (tests/string.test.js:3:31)
+  ● string slice
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "benchmar"
+    Received: "benc"
+      5 |
+      6 | test('string slice', () => {
+    > 7 |   expect('benchmark'.slice(0, 4)).toBe('benchmar');
+        |                                   ^
+      8 | });
+      9 |
+      at Object.toBe (tests/string.test.js:7:35)
+PASS tests/math.test.js
+Test Suites: 2 failed, 1 passed, 3 total
+Tests:       5 failed, 31 passed, 36 total
+Snapshots:   0 total
+Time:        0.322 s, estimated 1 s
+Ran all test suites.
