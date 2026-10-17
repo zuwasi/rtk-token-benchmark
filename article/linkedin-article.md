@@ -97,4 +97,6 @@ If you use a coding agent on real repositories, install rtk (`rtk init -g`, or t
 
 *Benchmark by Daniel Liezrowice, Engineering Software Lab (ESL), https://eswlab.com.*
 
+*Disclosure: I have no commercial interest in rtk and have not contributed to it. If I find a change I consider necessary, I may submit it as a community contributor, with no commercial interest.*
+
 #AI #LLM #CodingAgents #ClaudeCode #DeveloperTools #TokenOptimization #OpenSource #SoftwareEngineering
