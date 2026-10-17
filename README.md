@@ -177,6 +177,7 @@ pwsh ./setup.ps1                              # rtk binary, rtk repo, tokenizers
 | `build_presentation.py`, `deck_style.css` | Build `presentation.html` from `results.json`, `out/` and `assets/` |
 | `index.html` | Redirects the GitHub Pages root to the presentation |
 | `amp/` | Amp plugin (`rtk.ts`) and the end-to-end A/B harness (`amp_bench.py`) |
+| `article/` | LinkedIn article (`linkedin-article.md`, HTML preview) and its slide images |
 | `agents/` | Claude Code and Droid A/B harness (`agent_bench.py`) and results |
 | `results.json` | Full measurements |
 | `out/` | Captured stdout and stderr of every command, raw and filtered. Local paths and the user name are replaced with `[your path]`, `[usr]` and `[group]`, so a few files differ slightly from the byte counts in `results.json`, which were measured before anonymizing |

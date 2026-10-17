@@ -968,6 +968,9 @@ let tx = null;
 addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, {passive: true});
 addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx;
   if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
+// ?clean hides the navigation controls, for exporting slide images.
+if (new URLSearchParams(location.search).has("clean"))
+  ["prev", "next", "home", "pos", "track"].forEach(id => document.getElementById(id).style.display = "none");
 go((parseInt(location.hash.slice(1)) || 1) - 1);
 </script>
 </body>
