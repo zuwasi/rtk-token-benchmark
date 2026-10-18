@@ -1,0 +1,12 @@
+# Manual install: paste this into rtk's config.toml (run `rtk config` to see where it is).
+# If the file already has a [hooks] table, put only the exclude_commands line inside it.
+# If [hooks] already has exclude_commands, add these entries to the existing list.
+
+# BEGIN rtk-lint-script-fix (rtk-ai/rtk#1489, #2094)
+[hooks]
+exclude_commands = [
+  "npm run lint", "npm run-script lint", "npm rum lint", "npm urn lint", "npm lint",
+  "pnpm lint", "pnpm run lint", "pnpm run-script lint",
+  "npx lint", "pnpx lint", "lint",
+]
+# END rtk-lint-script-fix

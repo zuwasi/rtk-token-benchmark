@@ -155,6 +155,14 @@ Windows notes: Claude Code also has a PowerShell tool that rtk's Bash hook never
 
 This study compares rtk with no tool. It does not compare rtk with other output-compression tools.
 
+## Fix for the rtk lint-script bug
+
+rtk 1.0.1 rewrites `npm run lint` and `pnpm lint` to `rtk lint`, which ignores the project's `package.json` script. Flags like `--max-warnings 0` and chained steps are lost, so an agent can see lint pass while CI fails ([rtk#1489](https://github.com/rtk-ai/rtk/issues/1489), [rtk#2094](https://github.com/rtk-ai/rtk/issues/2094); fix proposed in [PR #2860](https://github.com/rtk-ai/rtk/pull/2860), not yet released).
+
+**[Download rtk-lint-script-fix.zip](https://github.com/zuwasi/rtk-token-benchmark/raw/main/fixes/rtk-lint-script-fix.zip)**: install, verify and uninstall scripts for Windows, macOS, Linux and WSL. It uses rtk's own `exclude_commands` setting, backs up your config and can be removed. Instructions are in [`fixes/rtk-lint-script-fix/README.md`](fixes/rtk-lint-script-fix/README.md).
+
+None of the benchmark's 12 commands run a lint script, so the results above are not affected.
+
 ## Reproduce (Windows, PowerShell 7)
 
 Needs Git for Windows, Python 3.12+, Node 22 and Rust/Cargo.
@@ -179,6 +187,7 @@ pwsh ./setup.ps1                              # rtk binary, rtk repo, tokenizers
 | `amp/` | Amp plugin (`rtk.ts`) and the end-to-end A/B harness (`amp_bench.py`) |
 | `article/` | LinkedIn article (`linkedin-article.md`, HTML preview) and its slide images |
 | `agents/` | Claude Code and Droid A/B harness (`agent_bench.py`) and results |
+| `fixes/` | Workaround kit for the rtk lint-script bug (`rtk-lint-script-fix.zip`, its source folder and `make_zip.py`) |
 | `results.json` | Full measurements |
 | `out/` | Captured stdout and stderr of every command, raw and filtered. Local paths and the user name are replaced with `[your path]`, `[usr]` and `[group]`, so a few files differ slightly from the byte counts in `results.json`, which were measured before anonymizing |
 | `probes/` | Exploratory scripts used to choose the rtk invocation for each command |
